@@ -9,6 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +18,16 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - asset/
+    - asset/fonts/
+    - asset/image/
+
+  fonts:
+    - family: dancing script
+      fonts:
+        - asset: asset/fonts/DancingScript-Regular.ttf
+        - asset: asset/fonts/DancingScript-Medium.ttf
+          weight: 500
+        - asset: asset/fonts/DancingScript-Bold.ttf
+          weight: 700
