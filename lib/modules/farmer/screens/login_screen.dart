@@ -43,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: const Text(
                           "SMART AGRI",
                           style: TextStyle(
-                            color: Color.fromARGB(255, 51, 123, 53),
+                            color: Color.fromRGBO(2, 112, 2, 0.424),
                             fontFamily: 'dancing script',
                             fontSize: 28,
                           ),
