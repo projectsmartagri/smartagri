@@ -140,12 +140,32 @@ class HomePageContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
             const Text("Equipments"),
             TextButton(onPressed: () {
               print("see all");
-            }, child:Text("see all"))
-          ],)
+            },
+             child:Row(
+               children: [
+                 Text("see all "),
+                 Icon(Icons.arrow_right,),
+
+
+               ],
+             )
+            )
+          ],),
+          Card(
+            color: Colors.white,
+            child: Column(
+            children: [
+              Image.network('https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',height: 100,width: 100,),
+              Text("Tractor"),
+
+            ],
+          ),)
          
         ],
       ),
