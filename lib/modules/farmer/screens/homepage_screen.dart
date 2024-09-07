@@ -140,20 +140,13 @@ class HomePageContent extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text("Equipments"),
-          Card(
-            elevation: 4,
-            child: ListTile(
-              leading: Icon(Icons.add_card, size: 50),
-              title: Text('Card 1'),
-              subtitle: Text('This is the first card'),
-              trailing: Icon(Icons.more_vert),
-              onTap: () {
-                // Handle card tap
-                print('Card 1 tapped');
-              },
-            ),
-          ),
+          Row(children: [
+            const Text("Equipments"),
+            TextButton(onPressed: () {
+              print("see all");
+            }, child:Text("see all"))
+          ],)
+         
         ],
       ),
     );

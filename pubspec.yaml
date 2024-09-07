@@ -7,9 +7,16 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
+  carousel_slider: ^5.0.0
+  cloud_firestore: ^4.14.0
+  firebase_auth: ^4.16.0
+  firebase_core: ^2.24.2
+  firebase_storage: ^11.6.0
   flutter:
     sdk: flutter
   image_picker: ^1.1.2
+  phone_form_field: ^9.2.7
+  provider: ^6.1.2
 
 dev_dependencies:
   flutter_test:
