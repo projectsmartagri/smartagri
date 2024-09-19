@@ -19,10 +19,10 @@ Future<void> main() async {
   runApp(
     MaterialApp(
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white
        
       ),
-      home:HomepageScreen() ,)
-    );
+      home:HomepageScreen()) ,);
 }
 
 
