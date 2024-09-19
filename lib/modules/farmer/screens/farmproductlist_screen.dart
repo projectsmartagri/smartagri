@@ -42,6 +42,7 @@ class FarmProductListScreen extends StatelessWidget {
      }
    ];
 
+
   @override
   Widget build(BuildContext context) {
     final ht = MediaQuery.of(context).size.height;
@@ -53,7 +54,7 @@ class FarmProductListScreen extends StatelessWidget {
           children: [
             SizedBox(height: 50,),
         
-            Text('Equipments',
+            Text('Added products',
             style: TextStyle(
               fontSize: 20,
               color: Color(0xff181725),
@@ -75,14 +76,9 @@ class FarmProductListScreen extends StatelessWidget {
                   itemBuilder: (Buildcontext, int index) {
                    return  ListCardWidgets(
                      val: list[index],
+                     isCategories: true,
                      ontab: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => FarmEquipmentsDetails(
-                        image:  list[index]['image'],
-                        price: list[index]['price'],
-                        title:list[index]['title'],
-                        subtitle: list[index]['subtitle'],
-                        value:  list[index],
-                      ),));
+                     
 
                      },
                       image: list[index]['image'],

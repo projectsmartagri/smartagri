@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/farmer/screens/farmerproductlist_screen.dart';
+import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
+import 'package:smartagri/modules/farmer/screens/farmerequipmentlist_screen.dart';
+import 'package:smartagri/modules/farmer/screens/farmproductlist_screen.dart';
 import 'package:smartagri/modules/user/screens/beveragesScreen.dart';
 
 class HomepageScreen extends StatefulWidget {
@@ -132,6 +134,80 @@ class _HomepageScreenState extends State<HomepageScreen> {
 }
 
 class HomePageContent extends StatelessWidget {
+
+
+   List<Map<String,dynamic>> list= [
+     {
+       'image' : 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
+       'title' : 'Tractor',
+       'subtitle' : '',
+       'price' : 550.00
+     },
+     {
+       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpGp3hVwLQzIQH4k8RvTR00bW6mJswUoE1HQ&s',
+       'title' : 'Brushcutter',
+       'subtitle' : '',
+       'price' :280.00
+     },
+     
+     {
+       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDmtBPvo3FVULESCy3-dW8K7KdDvBpZNSyOA&s',
+       'title' : 'Waterpump',
+       'subtitle' : '',
+       'price' : 300.00
+     },
+     {
+       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzIH_gELrvINTYx83EEJMEzOVdXKJfxw540A&s',
+       'title' : 'Cultivator',
+       'subtitle' : '',
+       'price' : 420.00
+     },
+     {
+       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE8cdJVd9MPC6Hwlae6BtQWZmUQfq6dftDA&s',
+       'title' : 'Combine',
+       'subtitle' : '',
+       'price' : 840.00
+     },
+     {
+       'image' : 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
+       'title' : 'Tractor',
+       'subtitle' : '',
+       'price' : 550.00
+     },
+   ];
+
+   List categorieslist=[
+    {
+      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMcKnkjU6Flrtc-Vjd0uzSmNv68h-duaITvw&s',
+      'title':'vagetable'
+    },
+    {
+      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpX1Ut5eFtME_JjgpQhH89wDito-zZiVo4Kw&s',
+      'title':'fruits'
+    },
+    {
+      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfJAdWXJtAMRVA4vcs83Q3b1aqBC2sjSt7A&s',
+      'title':'seeds'
+    },
+    {
+      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfJAdWXJtAMRVA4vcs83Q3b1aqBC2sjSt7A&s',
+      'title':'seeds'
+    },
+    {
+      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpX1Ut5eFtME_JjgpQhH89wDito-zZiVo4Kw&s',
+      'title':'fruits'
+    },
+    {
+      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfJAdWXJtAMRVA4vcs83Q3b1aqBC2sjSt7A&s',
+      'title':'seeds'
+    },
+
+
+   ];
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -170,7 +246,7 @@ class HomePageContent extends StatelessWidget {
               children: [
               const Text("Equipments"),
               TextButton(onPressed: () {
-                Navigator.push(context,MaterialPageRoute(builder:(context) => FarmProductListScreen(),));
+                Navigator.push(context,MaterialPageRoute(builder:(context) => FarmEquipmentListScreen(),));
               },
                child:Row(
                  children: [
@@ -188,75 +264,29 @@ class HomePageContent extends StatelessWidget {
               child:Wrap(
                 alignment: WrapAlignment.center,
                 
-                children: [
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',height: 100,width: 100,),
-                    Text("Tractor"),
-                
-                  ],
-                ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',height: 100,width: 100,),
-                    Text("Tractor"),
-                
-                  ],
-                ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',height: 100,width: 100,),
-                    Text("Tractor"),
-                
-                  ],
-                ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',height: 100,width: 100,),
-                    Text("Tractor"),
-                
-                  ],
-                ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',height: 100,width: 100,),
-                    Text("Tractor"),
-                
-                  ],
-                ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',height: 100,width: 100,),
-                    Text("Tractor"),
-                
-                  ],
-                ),
-                  )
+                children: list.map((e) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) =>FarmEquipmentsDetails(image: e['image'], title: e['title'], subtitle: e['subtitle'], price: e['price'], value: e),) );
+                    },
+                    child: Card(
+                      color: Colors.white,
+                    child: Column(
+                    children: [
+                      Image.network(e['image'],height: 100,width: 100,),
+                      Text(e['title']),
+                                    
+                    ],
+                                    ),
+                    ),
+                  );
+                },).toList()
+                 
+                 
                 
                 
                 
                 
-                
-                
-                
-                ],
               )
             ),
           
@@ -268,7 +298,7 @@ class HomePageContent extends StatelessWidget {
               children: [
               const Text("Categories"),
               TextButton(onPressed: () {
-                print("see all");
+                Navigator.push(context,MaterialPageRoute(builder: (context) => FarmProductListScreen(),) );
               },
                child:Row(
                  children: [
@@ -280,58 +310,39 @@ class HomePageContent extends StatelessWidget {
                )
               )
             ],),
-          SizedBox(
+                 SizedBox(
               
               width: double.maxFinite,
               child:Wrap(
                 alignment: WrapAlignment.center,
                 
-                children: [
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMcKnkjU6Flrtc-Vjd0uzSmNv68h-duaITvw&s',height: 100,width: 100,),
-                    Text("Vagetable"),
-              
-                  ],
-                ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpX1Ut5eFtME_JjgpQhH89wDito-zZiVo4Kw&s',height: 100,width: 100,),
-                    Text("Fruits"),
-                
-                  ],
-                ),
-                  ),
-                  Card(
-                    color: Colors.white,
-                  child: Column(
-                  children: [
-                    Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfJAdWXJtAMRVA4vcs83Q3b1aqBC2sjSt7A&s',height: 100,width: 100,),
-                    Text("Seeds"),
-                
-                  ],
-                ),
-                  ),
+                children: categorieslist.map((e) {
+                  return GestureDetector(
+                    onTap: () {
+                    },
+                    child: Card(
+                      color: Colors.white,
+                    child: Column(
+                    children: [
+                      Image.network(e['image'],height: 100,width: 100,),
+                      Text(e['title']),
+                                    
+                    ],
+                                    ),
+                    ),
+                  );
+                },).toList()
                  
-                  
                  
                 
                 
                 
                 
-                
-                
-                
-                ],
               )
             ),
           
-         
+        
+        
          
           ],
         ),

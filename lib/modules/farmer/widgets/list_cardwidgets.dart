@@ -9,13 +9,16 @@ class ListCardWidgets extends StatelessWidget {
         required this.val,
       required this.title,
       required this.subtitle,
-      required this.price});
+      required this.price,
+      this.isCategories=false
+      });
 
 
   String image;
   String title;
   String subtitle;
   String price;
+  bool isCategories;
   Map<String,dynamic> val;
 
   void Function() ontab;
@@ -99,7 +102,7 @@ class ListCardWidgets extends StatelessWidget {
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff181725)),
                             ),
-                            ElevatedButton(
+                            isCategories? SizedBox() : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   fixedSize: Size(47.67, 47.67),
                                   backgroundColor: Color(0xff53B175),
