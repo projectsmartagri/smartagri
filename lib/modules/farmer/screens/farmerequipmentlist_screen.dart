@@ -39,6 +39,24 @@ class FarmEquipmentListScreen extends StatelessWidget {
        'title' : 'Combine',
        'subtitle' : '',
        'price' : 840.00
+     },
+     {
+       'image' : 'https://rukminim2.flixcart.com/image/850/1000/kk8mcnk0/shovel-spade/1/e/d/digging-hoe-iron-steel-spade-for-gardening-shovel-tadso-lid-original-imafzmgty4zyny8x.jpeg?q=90&crop=false',
+       'title' : 'Spade',
+       'subtitle' : '',
+       'price' : 48.00
+     },
+     {
+       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLI17EqaqJ8cJR-yjmLsbrRVSQQS-pyU6IA&s',
+       'title' : 'sprayer',
+       'subtitle' : '',
+       'price' : 235.00
+     },
+     {
+       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRZg7VaXJVb11wTMr2RWIiLhYaXqblnhHCZA&s',
+       'title' : 'rotavator',
+       'subtitle' : '',
+       'price' : 3236.00
      }
    ];
 

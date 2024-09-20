@@ -93,13 +93,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
               ),
             ),
             ListTile(
-              title: Text('Item 1'),
+              title: Text('settings'),
               onTap: () {
                 // Handle item 1 tap
               },
             ),
             ListTile(
-              title: Text('Item 2'),
+              title: Text('payment'),
               onTap: () {
                 // Handle item 2 tap
               },
@@ -169,37 +169,37 @@ class HomePageContent extends StatelessWidget {
        'price' : 840.00
      },
      {
-       'image' : 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
-       'title' : 'Tractor',
+       'image' : 'https://rukminim2.flixcart.com/image/850/1000/kk8mcnk0/shovel-spade/1/e/d/digging-hoe-iron-steel-spade-for-gardening-shovel-tadso-lid-original-imafzmgty4zyny8x.jpeg?q=90&crop=false',
+       'title' : 'Spade',
        'subtitle' : '',
-       'price' : 550.00
+       'price' : 48.00
      },
    ];
 
    List categorieslist=[
     {
       'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMcKnkjU6Flrtc-Vjd0uzSmNv68h-duaITvw&s',
-      'title':'vagetable'
+      'title':'Vegetables'
     },
     {
       'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpX1Ut5eFtME_JjgpQhH89wDito-zZiVo4Kw&s',
-      'title':'fruits'
+      'title':'Fruits'
     },
     {
-      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfJAdWXJtAMRVA4vcs83Q3b1aqBC2sjSt7A&s',
-      'title':'seeds'
+      'image':'https://as2.ftcdn.net/v2/jpg/03/97/86/81/1000_F_397868193_nUAOTup7Z8R4kijdaJ9BuCwVSi8LobpR.jpg',
+      'title':'Seeds'
     },
     {
-      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfJAdWXJtAMRVA4vcs83Q3b1aqBC2sjSt7A&s',
-      'title':'seeds'
+      'image':'https://img.freepik.com/premium-photo/legumes-white-isolated-background_982005-10433.jpg',
+      'title':'Legumes'
     },
     {
-      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpX1Ut5eFtME_JjgpQhH89wDito-zZiVo4Kw&s',
-      'title':'fruits'
+      'image':'https://as1.ftcdn.net/v2/jpg/00/60/25/94/1000_F_60259460_5ABiMHI7kE3c7vRTS8KW0Nv50EnxYX6T.jpg',
+      'title':'Tubers'
     },
     {
-      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzfJAdWXJtAMRVA4vcs83Q3b1aqBC2sjSt7A&s',
-      'title':'seeds'
+      'image':'https://thumbs.dreamstime.com/b/mixed-nuts-group-isolated-white-background-37777972.jpg',
+      'title':'Nuts'
     },
 
 
@@ -296,7 +296,7 @@ class HomePageContent extends StatelessWidget {
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-              const Text("Categories"),
+              const Text("Products"),
               TextButton(onPressed: () {
                 Navigator.push(context,MaterialPageRoute(builder: (context) => FarmProductListScreen(),) );
               },
