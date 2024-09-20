@@ -1,27 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
-class AddProductScreen extends StatefulWidget {
-  @override
-  _AddProductScreenState createState() => _AddProductScreenState();
-}
-
-class _AddProductScreenState extends State<AddProductScreen> {
+class AddProductScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
+  final ImagePicker _picker = ImagePicker();
+  XFile? _pickedImage;
 
   String _productName = '';
   String _productDescription = '';
   double _productPrice = 0.0;
+  int _productQuantity = 0;
   String _productCategory = '';
+
+  // Image picker function
+  Future<void> _pickImage() async {
+    final image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      _pickedImage = image;
+    }
+  }
 
   // Save the form
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      // Process the data (e.g., send to server, store locally, etc.)
+      // Handle the data (e.g., send to server, store locally, etc.)
       print('Product Name: $_productName');
       print('Description: $_productDescription');
       print('Price: $_productPrice');
+      print('Quantity: $_productQuantity');
       print('Category: $_productCategory');
+      print('Image Path: ${_pickedImage?.path ?? 'No image selected'}');
     }
   }
 
@@ -38,7 +47,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
           child: ListView(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Product Name'),
+                decoration: InputDecoration(
+                  labelText: 'Product Name',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a product name';
@@ -49,11 +61,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   _productName = value!;
                 },
               ),
+              SizedBox(height: 15),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Product Description'),
+                decoration: InputDecoration(
+                  labelText: 'Product Description',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
+                    return 'Please enter a product description';
                   }
                   return null;
                 },
@@ -61,8 +77,12 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   _productDescription = value!;
                 },
               ),
+              SizedBox(height: 15),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Product Price'),
+                decoration: InputDecoration(
+                  labelText: 'Product Price',
+                  border: OutlineInputBorder(),
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || double.tryParse(value) == null) {
@@ -74,8 +94,29 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   _productPrice = double.parse(value!);
                 },
               ),
+              SizedBox(height: 15),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Product Category'),
+                decoration: InputDecoration(
+                  labelText: 'Product Quantity',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || int.tryParse(value) == null) {
+                    return 'Please enter a valid quantity';
+                  }
+                  return null;
+                },
+                onSaved: (value) {
+                  _productQuantity = int.parse(value!);
+                },
+              ),
+              SizedBox(height: 15),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Product Category',
+                  border: OutlineInputBorder(),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a category';
@@ -86,10 +127,24 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   _productCategory = value!;
                 },
               ),
+              SizedBox(height: 15),
+              ElevatedButton.icon(
+                onPressed: _pickImage,
+                icon: Icon(Icons.image),
+                label: Text('Upload Image'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green, 
+                  shape:RoundedRectangleBorder() // Change the button color to green
+                ),
+              ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Add Product'),
+                child: Text('Submit'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  shape: RoundedRectangleBorder() // Change the button color to green
+                ),
               ),
             ],
           ),

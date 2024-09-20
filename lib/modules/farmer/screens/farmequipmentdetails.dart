@@ -1,6 +1,8 @@
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
+import 'package:smartagri/modules/farmer/screens/addrentalorder_screen.dart';
 import 'package:smartagri/modules/user/widgets/custombuttonWidget.dart';
 
 
@@ -181,7 +183,7 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
         
                   SizedBox(height: 8),
         
-                  Text('Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.',
+                  Text('used for ploughing fields',
                   style: TextStyle(
                     color: Color(0xff7C7C7C),
                     fontSize: 13
@@ -240,8 +242,10 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                   SizedBox(height: 25,),
         
                   CustomButtonWidget(
-                    text: 'Add',
+                    text: 'Order',
+      
                     action: () {
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => DateFormScreen(),));
         
                     },
                   ),

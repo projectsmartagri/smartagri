@@ -1,5 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 import 'package:smartagri/modules/farmer/screens/farmerequipmentlist_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmproductlist_screen.dart';
@@ -319,6 +320,7 @@ class HomePageContent extends StatelessWidget {
                 children: categorieslist.map((e) {
                   return GestureDetector(
                     onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddProductScreen(),));
                     },
                     child: Card(
                       color: Colors.white,
