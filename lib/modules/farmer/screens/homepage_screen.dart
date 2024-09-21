@@ -20,7 +20,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
     // Home Page with Cards
     HomePageContent(),
     // Cart Page
-    const Center(child: Text('Cart Page', style: TextStyle(fontSize: 24))),
+    const Center(child: Text('order Page', style: TextStyle(fontSize: 24))),
     // Profile Page
     const Center(child: Text('Profile Page', style: TextStyle(fontSize: 24))),
   ];
@@ -118,7 +118,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
-            label: 'Cart',
+            label: 'order',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),

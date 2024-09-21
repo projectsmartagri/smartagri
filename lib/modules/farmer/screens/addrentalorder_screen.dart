@@ -8,24 +8,36 @@ class DateFormScreen extends StatefulWidget {
 
 class _DateFormScreenState extends State<DateFormScreen> {
   final _formKey = GlobalKey<FormState>();
-  DateTime? _fromDate;
-  DateTime? _toDate;
+
+  // Use controllers to manage date inputs
+  final TextEditingController _fromDateController = TextEditingController();
+  final TextEditingController _toDateController = TextEditingController();
   String _name = '';
   String _address = '';
+
+  @override
+  void dispose() {
+    _fromDateController.dispose();
+    _toDateController.dispose();
+    super.dispose();
+  }
 
   Future<void> _selectDate(BuildContext context, bool isFromDate) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: isFromDate ? (_fromDate ?? DateTime.now()) : (_toDate ?? DateTime.now()),
+      initialDate: DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
-    if (picked != null && picked != (_fromDate ?? _toDate)) {
+
+    if (picked != null) {
       setState(() {
+        // Format the date and update the appropriate controller
+        final formattedDate = "${picked.toLocal().year}-${picked.toLocal().month.toString().padLeft(2, '0')}-${picked.toLocal().day.toString().padLeft(2, '0')}";
         if (isFromDate) {
-          _fromDate = picked;
+          _fromDateController.text = formattedDate;
         } else {
-          _toDate = picked;
+          _toDateController.text = formattedDate;
         }
       });
     }
@@ -35,15 +47,15 @@ class _DateFormScreenState extends State<DateFormScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       // Process the data
-      print('From Date: $_fromDate');
-      print('To Date: $_toDate');
+      print('From Date: ${_fromDateController.text}');
+      print('To Date: ${_toDateController.text}');
       print('Name: $_name');
       print('Address: $_address');
 
       // Navigate to PaymentPage
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => PaymentPage()),
+        MaterialPageRoute(builder: (context) => PaymentScreen()),
       );
     }
   }
@@ -91,9 +103,10 @@ class _DateFormScreenState extends State<DateFormScreen> {
                       onTap: () => _selectDate(context, true),
                       child: AbsorbPointer(
                         child: TextFormField(
+                          controller: _fromDateController,
                           decoration: InputDecoration(
                             labelText: 'From Date',
-                            hintText: _fromDate == null ? 'Select Date' : _fromDate!.toLocal().toString().split(' ')[0],
+                            hintText: 'Select Date',
                           ),
                         ),
                       ),
@@ -105,9 +118,10 @@ class _DateFormScreenState extends State<DateFormScreen> {
                       onTap: () => _selectDate(context, false),
                       child: AbsorbPointer(
                         child: TextFormField(
+                          controller: _toDateController,
                           decoration: InputDecoration(
                             labelText: 'To Date',
-                            hintText: _toDate == null ? 'Select Date' : _toDate!.toLocal().toString().split(' ')[0],
+                            hintText: 'Select Date',
                           ),
                         ),
                       ),
