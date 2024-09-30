@@ -55,7 +55,7 @@ class OrderSuccessPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => MyApp(orderNumber: orderNumber),
+                      builder: (context) =>OrderDetailsPage(orderNumber: orderNumber),
                     ),
                   );
                 },
@@ -94,4 +94,3 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 }
-
