@@ -33,7 +33,7 @@ class Homescreen extends StatelessWidget {
    List<Map<String,dynamic>> list2=[
      {
        'id' :'3',
-       'image' : 'asset/images/tomato.png',
+       'image' : 'https://yaraurl.com/j0r1',
        'title' : 'Tomato',
        'subtitle' : '1kg Price ',
        'price' : 4.99,
@@ -41,7 +41,7 @@ class Homescreen extends StatelessWidget {
      },
      {
        'id' : '4',
-       'image' : 'asset/images/ginger.png',
+       'image' : 'https://www.asiafarming.com/wp-content/uploads/2023/04/Ginger-Farming-Business-Plan2-1024x683.jpg',
        'title' : 'Ginger',
        'subtitle' : '500gm, Priceg',
        'price' : 4.99,
