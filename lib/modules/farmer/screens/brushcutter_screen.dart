@@ -12,7 +12,7 @@ class BrushcutterScreen extends StatelessWidget {
         'company': 'John Deere',
         'description': 'Heavy-duty brushcutter, ideal for rugged terrain and tall grass.',
         'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_VM4opuy4P8FgJbXgL2bhJZvAvB7b9I1hJg&s',
-        'rentRate': '\$70/day'
+        'rentRate': '₹70/day'
       },
     
       {
@@ -20,21 +20,21 @@ class BrushcutterScreen extends StatelessWidget {
         'company': 'Kubota',
         'description': 'Compact and powerful, perfect for both professional and domestic use.',
         'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTDRYJn61jV8P5hW1nvziEIa9mMLeDmNKGuvQ&s',
-        'rentRate': '\$65/day'
+        'rentRate': '₹65/day'
       },
       {
         'name': 'New Holland BC110',
         'company': 'New Holland',
         'description': 'Durable brushcutter, designed for extreme conditions and long hours of work.',
         'imageUrl': 'https://toptools.in/media/catalog/product/cache/1/small_image/300x300/9df78eab33525d08d6e5fb8d27136e95/e/m/em2500.jpg',
-        'rentRate': '\$75/day'
+        'rentRate': '₹75/day'
       },
       {
         'name': 'Swaraj BC50',
         'company': 'Swaraj',
         'description': 'Reliable and easy-to-use brushcutter for everyday garden maintenance.',
         'imageUrl': 'https://redrhino.co.za/cdn/shop/products/RedRhinoCG430BrushcutterSBCG430B-6009801316666-Copy.jpg?v=1662704068',
-        'rentRate': '\$55/day'
+        'rentRate': '₹55/day'
       },
     ];
 

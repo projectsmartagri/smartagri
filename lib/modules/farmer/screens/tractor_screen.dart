@@ -12,35 +12,35 @@ class TractorScreen extends StatelessWidget {
         'company': 'John Deere',
         'description': '75 HP, 4WD, suitable for heavy-duty tasks.',
         'imageUrl': 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
-        'rentRate': '\$150/day'
+        'rentRate': '₹150/day'
       },
       {
         'name': 'Mahindra 475 DI',
         'company': 'Mahindra',
         'description': '42 HP, efficient for medium farming.',
         'imageUrl': 'https://www.mahindratractor.com/sites/default/files/styles/homepage_pslider_472x390_/public/2023-10/xp_plus.webp',
-        'rentRate': '\$120/day'
+        'rentRate': '₹120/day'
       },
       {
         'name': 'Kubota MU5501',
         'company': 'Kubota',
         'description': '55 HP, great fuel efficiency.',
         'imageUrl': 'https://cdn.britannica.com/43/128643-004-17C2CD69/Tractor.jpg',
-        'rentRate': '\$140/day'
+        'rentRate': '₹140/day'
       },
       {
         'name': 'New Holland 3630 TX Plus',
         'company': 'New Holland',
         'description': '50 HP, durable and versatile.',
         'imageUrl': 'https://5.imimg.com/data5/SELLER/Default/2023/5/308608806/LO/XL/TE/159409609/excel-3230-tx-new-holland-tractor.jpg',
-        'rentRate': '\$130/day'
+        'rentRate': '₹130/day'
       },
       {
         'name': 'Swaraj 744 FE',
         'company': 'Swaraj',
         'description': '48 HP, robust and long-lasting.',
         'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJWpNpA7o3RMLpZQ1IuzwIgb1a_PHXkumvJg&s',
-        'rentRate': '\$110/day'
+        'rentRate': '₹110/day'
       },
     ];
 
