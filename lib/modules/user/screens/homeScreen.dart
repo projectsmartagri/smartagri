@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 import '../services/add_to_cart.dart';
 import '../widgets/homescreenCustomwidget.dart';
 import '../widgets/homescreenCustomwidget2.dart';

@@ -44,7 +44,7 @@ class _LoginscreenState extends State<Loginscreen> {
             child: Column(
               children: [
                 const SizedBox(height: 80),
-                Image.asset('asset/images/carrot_color.png'),
+               Image.asset('asset/images/carrot_color.png'),
                 const SizedBox(height: 80),
                 Column(
                   children: [

@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
+import 'package:smartagri/modules/supplier/screens/Settings_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -142,10 +143,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(), // Empty container instead of text
                   ),
                   ListTile(
-                    leading: Icon(Icons.home),
+                  //  leading: Icon(Icons.home),
                     title: Text('Home'),
                     onTap: () {
-                      Navigator.pop(context); // Close the drawer
+                      Navigator.pop(context); 
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const HomeScreen()),
+                      );// Close the drawer
                     },
                   ),
                   ListTile(
@@ -167,6 +172,16 @@ class _HomeScreenState extends State<HomeScreen> {
                        
                     },
                   ),
+                   ListTile(
+                    title: Text('Profile'),
+                    onTap: () {
+                      Navigator.pop(context);
+                     /* Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfileScreen()),
+                      );*/
+                    },
+                  ),
                   ListTile(
                    // leading: Icon(Icons.settings),
                     title: Text('Settings'),
@@ -176,6 +191,20 @@ class _HomeScreenState extends State<HomeScreen> {
                         context,
                         MaterialPageRoute(builder: (context) => const SettingsScreen()),
                       );
+                    },
+                  ),
+                   const Divider(), // Divider before LOG OUT
+                  ListTile(
+                    title: Text(
+                      'LOG OUT',
+                      style: TextStyle(
+                        color: Colors.red, // Change color to red for emphasis
+                      ),
+                    ),
+                    onTap: () {
+                      // Handle log out logic here
+                      Navigator.pop(context); // Close the drawer
+                      // Add your log out logic here, e.g., navigate to login screen
                     },
                   ),
                 ],
@@ -356,6 +385,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
+
+
+class ProfileScreen {
+  const ProfileScreen();
+}
+
 // Placeholder for Notification Screen
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({Key? key}) : super(key: key);
@@ -365,19 +400,6 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Notifications")),
       body: Center(child: Text("Notification Screen")),
-    );
-  }
-}
-
-// Placeholder for Settings Screen
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Settings")),
-      body: Center(child: Text("Settings Screen")),
     );
   }
 }
