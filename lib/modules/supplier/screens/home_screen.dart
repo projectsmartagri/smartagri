@@ -1,5 +1,7 @@
-import 'package:carousel_slider/carousel_slider.dart';
+                                                                                                        import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
+import 'package:smartagri/modules/supplier/screens/Equipment_Details_screen.dart';
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
 import 'package:smartagri/modules/supplier/screens/Settings_screen.dart';
 
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     // List of equipment image URLs, names, and rent rates
     final List<Map<String, String>> equipmentList = [
+      
       {
         'name': 'Tractor',
         'imageUrl': 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
@@ -47,29 +50,30 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       {
         'name': 'Cultivator',
-        'imageUrl': 'https://assets.tractorjunction.com/tractor-junction/assets/images/images/implementTractor/standard-duty-spring-type-36-1648717712.webp?format=webp', 
+        'imageUrl': 'https://assets.tractorjunction.com/tractor-junction/assets/images/images/implementTractor/standard-duty-spring-type-36-1648717712.webp?format=webp',
         'rentRate': '₹400/hr',
       },
       {
         'name': 'Waterpump',
-        'imageUrl': 'https://www.spaark.in/cdn/shop/files/5-5-hp-diesel-engine-water-pump-3-inch-1.jpg?v=1716409998', 
+        'imageUrl': 'https://www.spaark.in/cdn/shop/files/5-5-hp-diesel-engine-water-pump-3-inch-1.jpg?v=1716409998',
         'rentRate': '₹100/hr',
       },
       {
         'name': 'Rotavator',
-        'imageUrl': 'https://5.imimg.com/data5/DH/KW/MY-57495971/tractor-rotavator-500x500.jpg', 
+        'imageUrl': 'https://5.imimg.com/data5/DH/KW/MY-57495971/tractor-rotavator-500x500.jpg',
         'rentRate': '₹600/hr',
       },
       {
         'name': 'Sprayer',
-        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLI17EqaqJ8cJR-yjmLsbrRVSQQS-pyU6IA&s', 
+        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLI17EqaqJ8cJR-yjmLsbrRVSQQS-pyU6IA&s',
         'rentRate': '₹200/hr',
       },
       {
         'name': 'Combine',
-        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE8cdJVd9MPC6Hwlae6BtQWZmUQfq6dftDA&s', 
+        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE8cdJVd9MPC6Hwlae6BtQWZmUQfq6dftDA&s',
         'rentRate': '₹800/hr',
       },
+      
     ];
 
     // List for "Available for Rent" section
@@ -80,24 +84,46 @@ class _HomeScreenState extends State<HomeScreen> {
         'rentRate': '₹150/day',
       },
       {
-       'name': 'Spade',
+        'name': 'Spade',
         'imageUrl': 'https://rukminim2.flixcart.com/image/850/1000/kk8mcnk0/shovel-spade/1/e/d/digging-hoe-iron-steel-spade-for-gardening-shovel-tadso-lid-original-imafzmgty4zyny8x.jpeg?q=90&crop=false',
         'rentRate': '₹50/day',
       },
       {
-         'name': 'Cultivator',
-        'imageUrl': 'https://assets.tractorjunction.com/tractor-junction/assets/images/images/implementTractor/standard-duty-spring-type-36-1648717712.webp?format=webp', 
+        'name': 'Cultivator',
+        'imageUrl': 'https://assets.tractorjunction.com/tractor-junction/assets/images/images/implementTractor/standard-duty-spring-type-36-1648717712.webp?format=webp',
         'rentRate': '₹400/hr',
       },
-       {
+      {
         'name': 'Rotavator',
-        'imageUrl': 'https://5.imimg.com/data5/DH/KW/MY-57495971/tractor-rotavator-500x500.jpg', 
+        'imageUrl': 'https://5.imimg.com/data5/DH/KW/MY-57495971/tractor-rotavator-500x500.jpg',
         'rentRate': '₹600/hr',
       },
-       {
+      {
         'name': 'Sprayer',
-        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLI17EqaqJ8cJR-yjmLsbrRVSQQS-pyU6IA&s', 
+        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLI17EqaqJ8cJR-yjmLsbrRVSQQS-pyU6IA&s',
         'rentRate': '₹200/hr',
+      },
+    ];
+
+    // List for "Not Available" section with availability status
+    final List<Map<String, String>> notAvailableList = [
+      {
+        'name': 'Brushcutter',
+        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_VM4opuy4P8FgJbXgL2bhJZvAvB7b9I1hJg&s',
+        'rentRate': '₹150/hr',
+        'availabilityStatus': 'Out of Stock',
+      },
+      {
+        'name': 'Waterpump',
+        'imageUrl': 'https://www.spaark.in/cdn/shop/files/5-5-hp-diesel-engine-water-pump-3-inch-1.jpg?v=1716409998',
+        'rentRate': '₹100/hr',
+        'availabilityStatus': 'Under Maintenance',
+      },
+      {
+        'name': 'Combine',
+        'imageUrl': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE8cdJVd9MPC6Hwlae6BtQWZmUQfq6dftDA&s',
+        'rentRate': '₹800/hr',
+        'availabilityStatus': 'Temporarily Unavailable',
       },
     ];
 
@@ -143,14 +169,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Container(), // Empty container instead of text
                   ),
                   ListTile(
-                  //  leading: Icon(Icons.home),
                     title: Text('Home'),
                     onTap: () {
                       Navigator.pop(context); 
-                        Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const HomeScreen()),
-                      );// Close the drawer
+                      ); // Close the drawer
                     },
                   ),
                   ListTile(
@@ -159,30 +184,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.pop(context); // Close the drawer
                     },
                   ),
-                   ListTile(
-                   
+                  ListTile(
                     title: Text('Other Companies'),
                     onTap: () {
                       Navigator.pop(context);
-                       Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const OtherCompaniesScreen()),
-                      
                       ); // Close the drawer
-                       
                     },
                   ),
-                   ListTile(
+                  ListTile(
                     title: Text('Profile'),
                     onTap: () {
                       Navigator.pop(context);
                      /* Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProfileScreen()),
-                      );*/
+                        MaterialPageRoute(builder: (context) => const ProfileScreen()),
+                      );*/ // Close the drawer
                     },
                   ),
-                  ListTile(
+                    ListTile(
                    // leading: Icon(Icons.settings),
                     title: Text('Settings'),
                     onTap: () {
@@ -207,103 +229,154 @@ class _HomeScreenState extends State<HomeScreen> {
                       // Add your log out logic here, e.g., navigate to login screen
                     },
                   ),
+                 
                 ],
               ),
             ),
           ),
-          // Main Content
+          // Main content area
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Sliding Advertisement Images
+                  // Carousel Slider
                   CarouselSlider(
                     options: CarouselOptions(
-                      height: 200.0,
+                      height: 200,
                       autoPlay: true,
-                      enlargeCenterPage: true,
-                      aspectRatio: 16 / 9,
-                      viewportFraction: 0.8,
                     ),
-                    items: imgList.map((item) => Container(
-                      margin: EdgeInsets.all(5.0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                        child: Image.network(item, fit: BoxFit.cover, width: 1000.0),
-                      ),
-                    )).toList(),
+                    items: imgList
+                        .map((item) => Container(
+                              child: Center(
+                                child: Image.network(
+                                  item,
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              ),
+                            ))
+                        .toList(),
                   ),
+                                    // Heading for Equipments
+                   // Heading for Equipments with Add Equipment Button
+                   // Heading for Equipments with Add Equipment Button and Title
+Padding(
+  padding: const EdgeInsets.all(8.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween, // This will space the title and Add button apart
+    children: [
+      Text(
+        'ALL EQUIPMENTS',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+     Row(
+  children: [
+    Text(
+      'Add', // Add label next to the button
+      style: TextStyle(
+        fontSize: 16,
+        color: Colors.green,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    GestureDetector(
+      onTap: () {
+        // Define what happens when the button is pressed
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => AddEquipmentscreen()), // Navigate to AddEquipmentScreen
+        );
+      },
+      child: Icon(
+        Icons.add, // Add icon for adding equipment
+        color: Colors.green,
+        size: 24,
+      ),
+    ),
+  ],
+),
 
-                  // Heading for Equipments
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'EQUIPMENTS',
+    ],
+  ),
+),
+          // Inside the HomeScreen class, replace the ListView.builder for ALL EQUIPMENTS
+
+ListView.builder(
+  shrinkWrap: true,
+  physics: NeverScrollableScrollPhysics(),
+  itemCount: equipmentList.length,
+  itemBuilder: (context, index) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to EquipmentDetailsScreen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>EquipmentDetailsscreen(
+              name: equipmentList[index]['name']!,
+              imageUrl: equipmentList[index]['imageUrl']!,
+              rentRate: equipmentList[index]['rentRate']!,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: EdgeInsets.all(8.0),
+        child: Card(
+          elevation: 3.0,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                // Equipment Image on the left
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    equipmentList[index]['imageUrl']!,
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(width: 16), // Add space between image and text
+                // Equipment Name and Rent Rate
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        equipmentList[index]['name']!,
                         style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
-                  ),
-
-                  // Vertical List of Cards for Equipments
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: equipmentList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: EdgeInsets.all(8.0),
-                        child: Card(
-                          elevation: 3.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                // Equipment Image on the left
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    equipmentList[index]['imageUrl']!,
-                                    height: 100,
-                                    width: 100,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                SizedBox(width: 16), // Add space between image and text
-                                // Equipment Name and Rent Rate
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        equipmentList[index]['name']!,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 5),
-                                      Text(
-                                        'Rent Rate: ${equipmentList[index]['rentRate']}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+                      SizedBox(height: 5),
+                      Text(
+                        'Rent Rate: ${equipmentList[index]['rentRate']}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[600],
                         ),
-                      );
-                    },
+                      ),
+                    ],
                   ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  },
+),
+
+
+
+                  const SizedBox(height: 20),
 
                   // Heading for Available for Rent Section
                   Padding(
@@ -320,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
 
-                  // List of Cards for Available for Rent Equipments
+                  // List of Cards for Available Equipments
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -375,6 +448,85 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                   ),
+
+                  // Heading for Not Available for Rent Section
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        'NOT AVAILABLE',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // List of Cards for Not Available Equipments
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: notAvailableList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 3.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                // Equipment Image on the left
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(
+                                    notAvailableList[index]['imageUrl']!,
+                                    height: 100,
+                                    width: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                SizedBox(width: 16), // Add space between image and text
+                                // Equipment Name, Rent Rate, and Availability Status
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        notAvailableList[index]['name']!,
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        'Rent Rate: ${notAvailableList[index]['rentRate']}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                      SizedBox(height: 5),
+                                      Text(
+                                        'Status: ${notAvailableList[index]['availabilityStatus']}',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.red, // Highlight status in red
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -387,19 +539,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-class ProfileScreen {
-  const ProfileScreen();
-}
-
-// Placeholder for Notification Screen
+// Placeholder classes for Navigation (you may replace these with your actual implementations)
 class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({Key? key}) : super(key: key);
+  const NotificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text("Notifications")),
-      body: Center(child: Text("Notification Screen")),
-    );
+    return Scaffold(appBar: AppBar(title: Text('Notifications')));
   }
 }
+
+
