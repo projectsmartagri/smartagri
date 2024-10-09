@@ -1,121 +1,199 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:smartagri/modules/user/screens/loginScreen.dart';
 
-import 'homeScreen.dart';
-
-class Signupscreen extends StatelessWidget {
-  const Signupscreen({super.key});
+class signupScreen extends StatefulWidget {
+  const signupScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final ht = MediaQuery.of(context).size.height;
-    final wt = MediaQuery.of(context).size.width;
+  _SupplierSignupScreenState createState() => _SupplierSignupScreenState();
+}
 
+class _SupplierSignupScreenState extends State<signupScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+  
+
+ 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+       // title: const Text('SIGN UP'),
+       // backgroundColor: Colors.green,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: SingleChildScrollView(
-          child: Column(
-          
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: ListView(
             children: [
-              SizedBox(height: 60,),
-          
-              Image.asset('asset/images/carrot_color.png'),
-          
-              SizedBox(height: 60,),
-          
-              Column(
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Sign Up',
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          color: Color(0xff181725),
-                          fontSize: ht/34.59,
-                          fontWeight: FontWeight.w600
-                      ),),
-                  ),
-          
-                  SizedBox(height: 20,),
-          
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text('Enter your credentials to continue',
-                      style: TextStyle(
-                          color: Color(0xff7C7C7C),
-                          fontSize: 16
-                      ),),
-                  ),
-          
-                  SizedBox(height: 35,),
-          
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Username'
+              const Text(
+                'SIGN UP',
+                style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 20),
+
+              // Company Name Field
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Company Name',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter company name';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+
+              // Email Field
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Email',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+                validator: (value) {
+                  if (value == null || value.isEmpty || !value.contains('@')) {
+                    return 'Please enter a valid email';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+
+              // Phone Number Field
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: 'Phone Number',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a phone number';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+
+              // Password Field
+              TextFormField(
+                controller: _passwordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
                   ),
-          
-                  SizedBox(height: 35,),
-          
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Email'
+                ),
+                obscureText: _obscurePassword,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a password';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 16.0),
+
+              // Confirm Password Field
+              TextFormField(
+                controller: _confirmPasswordController,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
                   ),
-          
-                  SizedBox(height: 35,),
-          
-                  TextField(
-                    decoration: InputDecoration(
-                        labelText: 'Password',
-                        suffixIcon: Icon(Icons.visibility_off_outlined)
+                ),
+                obscureText: _obscureConfirmPassword,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please confirm your password';
+                  }
+                  if (value != _passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
+                },
+              ),
+             
+              const SizedBox(height: 20),
+
+              // Sign Up Button
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
+                    backgroundColor: Colors.green,
                   ),
-          
-                  SizedBox(height: 20,),
-          
-                  RichText(text: TextSpan(
-                    text: 'By continuing you agree to our ',style: TextStyle(color: Colors.black12,fontSize: 14),
-                    children:[
-                      TextSpan(text: 'Terms of Service ',style: TextStyle(color: Colors.green,fontSize: 14)),
-                      TextSpan(text: 'and ',style: TextStyle(color: Colors.black12,fontSize: 14)),
-                      TextSpan(text: 'Privacy Policy ',style: TextStyle(color: Colors.green,fontSize: 14))
-                    ]
-                  )),
-          
-          
-                  SizedBox(height: 30,),
-          
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)
-                        ),
-                        fixedSize: Size(364, 67),
-                        backgroundColor: Color(0xff53B175),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Supplier account created successfully')),
+                      );
+                    }
+                  },
+                  child: const Text(
+                    'SIGN UP',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ),
+               const SizedBox(height: 16.0),
+                    Spacer(),
+
+                    // Create Account Button
+                    RichText(
+                      textAlign:TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Already have an account? ',
+                            style: TextStyle(color: Color.fromARGB(255, 11, 10, 10)),
+                          ),
+                          TextSpan(
+                            text: 'Login',
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => Loginscreen()),
+                                );
+                              },
+                          ),
+                        ],
                       ),
-                      onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Homescreen(),));
-          
-                      },
-                      child: Text('Sign Up',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),)),
-          
-                  SizedBox(height: 15,),
-          
-                  RichText(text: TextSpan(text:"Already have an account? ",
-                      style: TextStyle(color: Colors.black,
-                          fontWeight: FontWeight.w600),
-                      children:[TextSpan(text: "Signup",
-                          style: TextStyle(color: Colors.green))
-                      ]
-                  ),
-                  )
-                ],
-              )
+                    ),
             ],
           ),
         ),

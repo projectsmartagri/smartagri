@@ -1,159 +1,142 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // Import provider package
-import 'package:smartagri/modules/user/screens/forget_password_screen.dart';
-import 'package:smartagri/modules/user/screens/singinScreen.dart';
-import 'package:smartagri/modules/user/widgets/custombuttonWidget.dart';
-import 'package:smartagri/utils/helper.dart';
-
-import '../../../../widgets/custom_text_field.dart';
-import 'bottomnavigationbar.dart';
-import '../view_model/auth_view_model.dart'; // Import your ViewModel
+import 'package:smartagri/modules/user/screens/signupScreen.dart';
 
 class Loginscreen extends StatefulWidget {
-  Loginscreen({super.key, this.zone, this.area});
-  String? zone;
-  String? area;
+  const Loginscreen({super.key});
 
   @override
-  State<Loginscreen> createState() => _LoginscreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginscreenState extends State<Loginscreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>(); // Form key
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-  bool obscureText = true;
+class _LoginScreenState extends State<Loginscreen> {
+  bool _obscurePassword = true;
+  
+  
 
   @override
   Widget build(BuildContext context) {
-    print(widget.area);
-
-    final ht = MediaQuery.of(context).size.height;
-    final wt = MediaQuery.of(context).size.width;
-
-    // Access AuthViewModel using Provider
-    final authViewModel = Provider.of<AuthViewModel>(context);
-
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                const SizedBox(height: 80),
-               Image.asset('asset/images/carrot_color.png'),
-                const SizedBox(height: 80),
-                Column(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+            
+         // Image.asset(
+            //'asset/image/image.jpg',
+           // fit: BoxFit.cover,
+        //  ),
+          // Foreground Content
+          Container(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min, 
                   children: [
+                    
+                    Spacer(),
                     Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Log In',
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            color: const Color(0xff181725),
-                            fontSize: ht / 34.59,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'Enter your email and password',
-                        style:
-                            TextStyle(color: Color(0xff7C7C7C), fontSize: 16),
-                      ),
-                    ),
-                    const SizedBox(height: 35),
-                    CustomTextField(
-                      controller: emailController,
-                      labelText: 'Email',
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (value) =>
-                          ValidationHelper.validateEmail(value),
-                    ),
-                    const SizedBox(height: 35),
-                    CustomTextField(
-                      controller: passwordController,
-                      labelText: 'Password',
-                      obscureText: obscureText,
-                      validator: (value) =>
-                          ValidationHelper.validatePassword(value),
-                      suffixIcon: IconButton(
-                        icon: Icon(obscureText
-                            ? Icons.visibility
-                            : Icons.visibility_off_outlined),
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const ForgotPasswordScreen(),));
-                          
-                        
-                        },
+                      alignment: Alignment.bottomCenter,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 60.0),
                         child: const Text(
-                          'Forgot Password?',
-                          textAlign: TextAlign.right,
-                          style: TextStyle(color: Colors.green),
+                          "SMART AGRI",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromRGBO(2, 112, 2, 0.424),
+                            fontFamily: 'dancing script',
+                            fontSize: 28,
+                          ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 15),
-                    authViewModel.isLoading
-                        ? const CircularProgressIndicator(
-                            color: Colors.green,
-                          )
-                        : CustomButtonWidget(
-                            text: 'Login',
-                            action: () {
-                              if (_formKey.currentState?.validate() ?? false) {
-                                authViewModel.loginUser(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                  context: context,
-                                );
-                              }
-                            },
+
+                    // Field 1: Username/Email
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Username/Email',
+                        border: OutlineInputBorder(),
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                    const SizedBox(height: 16.0),
+
+                    // Field 2: Password
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
                           ),
-                    const SizedBox(height: 15),
+                          onPressed: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                        ),
+                      ),
+                      obscureText: _obscurePassword,
+                    ),
+                    const SizedBox(height: 16.0),
+
+                    // Submit Button
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      height: 50,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                          ),
+                          backgroundColor: Colors.green,
+                        ),
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('Login successfully')),
+                          );
+                        },
+                        child: const Text('LOGIN', style: TextStyle(color: Color.fromARGB(255, 3, 105, 49))),
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 16.0),
+                    Spacer(),
+
+                    // Create Account Button
                     RichText(
                       text: TextSpan(
-                        text: "Don't have an account? ",
-                        style: const TextStyle(
-                            color: Colors.black, fontWeight: FontWeight.w600),
                         children: [
                           TextSpan(
-                            text: 'Sign up',
-                            style: const TextStyle(color: Colors.green),
+                            text: 'Don\'t have an account? ',
+                            style: TextStyle(color: const Color.fromARGB(255, 52, 51, 51)),
+                          ),
+                          TextSpan(
+                            text: 'SIGN UP',
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => Singinscreen(),));
-                                // Handle sign up navigation
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => signupScreen()),
+                                );
                               },
-                          )
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
-              ],
+              ),
             ),
           ),
-        ),
+          ]
+        
       ),
     );
   }
