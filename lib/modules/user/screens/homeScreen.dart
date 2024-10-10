@@ -1,285 +1,317 @@
 import 'package:flutter/material.dart';
-
-import '../services/add_to_cart.dart';
-import '../widgets/homescreenCustomwidget.dart';
-import '../widgets/homescreenCustomwidget2.dart';
-import 'mycartScreen.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/rendering.dart';
 
 class Homescreen extends StatelessWidget {
-   Homescreen({super.key,this.zone,this.area});
-   String ? zone;
-   String ? area;
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Smart Agri',
+      home: HomePage(),
+    );
+  }
+}
 
-   List<Map<String,dynamic>> list1= [
-     {
-       'id' : '1',
-       'image' : 'asset/images/banana.png',
-       'title' : 'Organic Banana',
-       'subtitle' : '7pc, Priceg',
-       'price' : 4.99,
-       'quantity' : 1
-     },
-     {
-       'id' : '2',
-       'image' : 'asset/images/apple.png',
-       'title' : 'Red Apple',
-       'subtitle' : '1kg, Priceg',
-       'price' : 4.99,
-       'quantity' : 1
-     },
-     ];
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
-   List<Map<String,dynamic>> list2=[
-     {
-       'id' :'3',
-       'image' : 'https://yaraurl.com/j0r1',
-       'title' : 'Tomato',
-       'subtitle' : '1kg Price ',
-       'price' : 4.99,
-       'quantity' : 1
-     },
-     {
-       'id' : '4',
-       'image' : 'https://www.asiafarming.com/wp-content/uploads/2023/04/Ginger-Farming-Business-Plan2-1024x683.jpg',
-       'title' : 'Ginger',
-       'subtitle' : '500gm, Priceg',
-       'price' : 4.99,
-       'quantity' : 1
-     }
-   ];
+class _HomePageState extends State<HomePage> {
+  String _selectedCategory = 'All'; // Default selected category
 
-   List<Map<String,dynamic>> groc= [
-     {
-       'image' : 'asset/images/pulses.png',
-       'text' : 'Pulses',
-       'color' : Color(0xffF8A44C)
-     },
-     {
-       'image' : 'asset/images/rice.png',
-       'text' : 'Rice',
-       'color' : Color(0xff53B175)
-     }
-   ];
+  final List<String> imgList = [
+    'https://5.imimg.com/data5/SELLER/Default/2023/11/364648303/OR/VC/GX/186750549/jangeer-multicrop-thresher-500x500.jpeg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTL2wkfKp1i7WvvRbQkiLFmAyiNxctUXuWCQ&s',
+    'https://media.licdn.com/dms/image/v2/D5612AQG8JZ0pQy8Dog/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1709282970844?e=2147483647&v=beta&t=EldBFEM6BXbZurlbMZBQbBhsPcrn9Y9TO0JDvXjg92o',
+  ];
 
-   List<Map<String,dynamic>> list3=[
-     {
-       'id' : '5',
-      'image' : 'asset/images/beef.png',
-      'title' : 'Beef Bone',
-      'subtitle' :  '1kg, Priceg',
-       'price' : 4.99,
-       'quantity' : 1
-     },
-     {
-       'id' : '6',
-       'image' : 'asset/images/chicken.png',
-       'title' : 'Broiler Chicken',
-       'subtitle' : '1kg, Priceg',
-       'price' : 4.99,
-       'quantity' : 1
-     }
-   ];
+  final List<String> categories = [
+    'All',   // All products
+    'Fruits',
+    'Vegetables',
+    'Grains',
+    'cereals',
+    'Spices',
+    'Medicinal Plants',
+    'Organic Products',
+    'Dairy',
+    'Poultry',
+    'Seeds',
+    'Fertilizers'
+  ];
+
+  final Map<String, List<Product>> products = {
+    'All': [
+      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
+      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
+      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
+      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
+      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
+      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
+      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
+      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
+    ],
+
+     'Fruits': [
+      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
+      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
+      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
+      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
+      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
+      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
+      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
+      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
+      ],
+   
+   
+    'Vegetables': [
+      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
+      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
+      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
+      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
+      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
+      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
+      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
+      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
+    ],
+   
+   
+    'Grains': [
+      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
+      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
+      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
+      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
+      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
+      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
+      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
+      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
+    ],
+   
+   
+    'Cereals': [Product(name: 'Cereal 1', imageUrl: 'https://via.placeholder.com/100/0000FF/FFFFFF?text=Cereal+1')],
+    
+    
+    'Spices': [Product(name: 'Spice 1', imageUrl: 'https://via.placeholder.com/100/FF0000/FFFFFF?text=Spice+1')],
+    
+    
+    
+   
+    'Medicinal Plants': [Product(name: 'Plant 1', imageUrl: 'https://via.placeholder.com/100/00FF00/FFFFFF?text=Plant+1')],
+   
+   
+    'Organic Products': [Product(name: 'Organic Product 1', imageUrl: 'https://via.placeholder.com/100/000000/FFFFFF?text=Organic+1')],
+   
+   
+   
+   
+   
+    
+   
+   
+    'Dairy': [Product(name: 'Dairy Product 1', imageUrl: 'https://via.placeholder.com/100/00AAFF/FFFFFF?text=Dairy+1')],
+   
+   
+    'Poultry': [Product(name: 'Poultry Product 1', imageUrl: 'https://via.placeholder.com/100/AAAAAA/FFFFFF?text=Poultry+1')],
+   
+   
+    'Seeds': [Product(name: 'Seed 1', imageUrl: 'https://via.placeholder.com/100/FFAAAA/FFFFFF?text=Seed+1')],
+   
+   
+    'Fertilizers': [Product(name: 'Fertilizer 1', imageUrl: 'https://via.placeholder.com/100/00FFAA/FFFFFF?text=Fertilizer+1')],
+  
+  
+  };
+  @override
+  Widget build(BuildContext context) {
+    List<Product> displayedProducts = products[_selectedCategory] ?? [];
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Text(
+          'Smart Agri',
+          style: TextStyle(
+            fontSize: 24.0,
+            fontFamily: 'Dancing Script',
+            fontWeight: FontWeight.bold,
+            color: const Color.fromARGB(255, 6, 106, 23),
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications, color: const Color.fromARGB(255, 68, 69, 68)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => NotificationScreen()),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: TextField(
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: const Color.fromARGB(255, 239, 234, 234),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30.0),
+                  borderSide: BorderSide.none,
+                ),
+                labelText: 'Search here...',
+                prefixIcon: Icon(Icons.search),
+                contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+              ),
+            ),
+          ),
+
+          // Advertisement Slider
+          CarouselSlider(
+            options: CarouselOptions(
+              height: 200.0,
+              autoPlay: true,
+              enlargeCenterPage: true,
+              aspectRatio: 16 / 9,
+              autoPlayCurve: Curves.fastOutSlowIn,
+              enableInfiniteScroll: true,
+              autoPlayAnimationDuration: Duration(milliseconds: 800),
+              viewportFraction: 0.8,
+            ),
+            items: imgList.map((item) => Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Image.network(item, fit: BoxFit.cover),
+              ),
+            )).toList(),
+          ),
+
+          // Sliding Category List
+          Container(
+            height: 60,
+            margin: const EdgeInsets.symmetric(vertical: 10),
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (context, index) {
+                String category = categories[index];
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: CategoryButton(
+                    label: category,
+                    isSelected: _selectedCategory == category,
+                    onPressed: () {
+                      setState(() {
+                        _selectedCategory = category; // Set selected category
+                      });
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+
+          // Displaying products based on selected category
+          Expanded(
+            child: GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.75,
+              ),
+              padding: EdgeInsets.all(8),
+              itemCount: displayedProducts.length,
+              itemBuilder: (context, index) {
+                return ProductCard(product: displayedProducts[index]);
+              },
+            ),
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Favorites'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
+        ],
+      ),
+    );
+  }
+}
+
+class NotificationScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.green,
+        title: Text('Notifications'),
+      ),
+      body: Center(
+        child: Text(
+          'No new notifications',
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryButton extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  const CategoryButton({
+    Key? key,
+    required this.label,
+    required this.isSelected,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final ht = MediaQuery.of(context).size.height;
-    final wt = MediaQuery.of(context).size.width;
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        foregroundColor: isSelected
+            ? const Color.fromARGB(255, 252, 250, 250)
+            : const Color.fromARGB(255, 231, 229, 229),
+        backgroundColor: isSelected ? Colors.green : const Color.fromARGB(255, 72, 72, 72),
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      ),
+      child: Text(label),
+    );
+  }
+}
 
-    return Scaffold(
-      body: SafeArea(
-        
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 35,
-                ),
-                Image.asset('asset/images/carrot_color.png'),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.location_pin,
-                      color: Colors.black,
-                    ),
-                    Text(
-                      '${(zone??'zone')+ ','+(area??'location')}',
-                      style: TextStyle(
-                          color: Color(
-                            0xff4C4F4D,
-                          ),
-                          fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                TextField(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xffF2F3F2),
-                    prefixIcon: Icon(Icons.search),
-                    hintText: 'Search Store',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(18),
-                        borderSide: BorderSide.none),
-                  ),
-                ),
+// Product class to hold product data
+class Product {
+  final String name;
 
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          width: wt/1.12,
-                          height: ht/7.82,
-                          child:  Image.asset('asset/images/banner.png')
-                        ),
-                      ),
+  Product({required this.name, required String imageUrl});
+}
 
+class ProductCard extends StatelessWidget {
+  final Product product;
 
-                      HomeScreenCustomWidget(
-                        text1: 'Exclusive Offer',
-                        text2: 'See all',
+  const ProductCard({Key? key, required this.product}) : super(key: key);
 
-                      ),
-                SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: list1.length,
-                    itemBuilder: (context, index) {
-                      return HomeScreenCustomWidget2(
-                        val: list1[index],
-                        ontab: () {
-                          addToCart(values:list1[index]);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Mycartscreen(),));
-                        },
-
-
-                        image: list1[index]['image'],
-                        title: list1[index]['title'],
-                        subtitle: list1[index]['subtitle'],
-                        price: list1[index]['price'],
-
-                      );
-                    },
-                  ),
-                ),
-
-
-
-
-
-                HomeScreenCustomWidget(
-                  text1: 'Best Selling',
-                  text2: 'See all',
-
-                ),
-
-                SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                    itemCount: list2.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return HomeScreenCustomWidget2(
-                        val: list2[index],
-                        ontab: () {
-                          addToCart(values:list2[index]);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Mycartscreen(),));
-
-                        },
-                          image: list2[index]['image'],
-                          title: list2[index]['title'],
-                          subtitle: list2[index]['subtitle'],
-                        price: list2[index]['price'],
-                      );
-                    },
-                  ),
-                ),
-
-
-
-                      HomeScreenCustomWidget(
-                        text1: 'Groceries',
-                        text2: 'See all',
-
-                      ),
-
-
-
-                Container(
-                  height: ht/4.99,
-                  child: ListView.builder(
-                    itemCount: groc.length,
-                    scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index){
-                        return Card(
-                          color: groc[index]['color'],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                          child: Container(
-                            height: ht/8.57,
-                            width: wt/1.65,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal:12),
-                              child: Row(
-                                children: [
-                                  Image.asset(groc[index]['image'],
-                                  width: wt/5.72,
-                                  height: ht/12.50,),
-
-                                  SizedBox(width: 40,),
-
-                                  Text(groc[index]['text'],
-                                    style: TextStyle(
-                                      color: Color(0xff3E423F),
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 20
-                                    ),)
-                                ],
-                              ),
-                            ),
-
-                          ),
-                        );
-                      }),
-                ),
-
-                SizedBox(
-                  height: 300,
-                  child: ListView.builder(
-                    itemCount: list3.length,
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) {
-                      return  HomeScreenCustomWidget2(
-                        val: list3[index],
-                        ontab: (){
-                          addToCart(values:list3[index]);
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Mycartscreen(),));
-                        },
-                              image: list3[index]['image'],
-                              title: list3[index]['title'],
-                              subtitle: list3[index]['subtitle'],
-                        price: list3[index]['price'],
-                      );
-
-                    },
-                  ),
-                ),
-
-                SizedBox(height: 50,)
-
-              ],
-            ),
-          ),
-        ),
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 5,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.network('https://via.placeholder.com/100', height: 60),
+          Text(product.name, style: TextStyle(fontWeight: FontWeight.bold)),
+        ],
       ),
     );
   }
