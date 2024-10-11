@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/rendering.dart';
 
 class Homescreen extends StatelessWidget {
   @override
@@ -28,11 +27,11 @@ class _HomePageState extends State<HomePage> {
   ];
 
   final List<String> categories = [
-    'All',   // All products
+    'All', // All products
     'Fruits',
     'Vegetables',
     'Grains',
-    'cereals',
+    'Cereals',
     'Spices',
     'Medicinal Plants',
     'Organic Products',
@@ -44,6 +43,25 @@ class _HomePageState extends State<HomePage> {
 
   final Map<String, List<Product>> products = {
     'All': [
+      Product(name: 'Tomato', imageUrl: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTQvCg9Mub2HqzBhjpq72jMNr0c_jJZ-bmz08GHhCq2GF_ivqIJ'),
+      Product(name: 'Onion', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw0myvN9d65xTuId6xx26JQDC106zRdbtZoQ&s'),
+      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
+      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
+      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
+       Product(name: 'Potato', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP0eqkPvKnP9hdTDq01i9tZi_u5EJvkzcBRg&s'),
+      Product(name: 'Cauliflower', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu9zKy6_MNdNjpVkaSXub6-NGE7Oxad4WqmQ&s'),
+      Product(name: 'Cucumber', imageUrl: 'https://organicmandya.com/cdn/shop/files/Cucumber.jpg?v=1721383087&width=1024'),
+      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
+      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
+       Product(name: 'Cabbage', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWgRBeB_SsY1NbHIriVpXPd0K3Tr9YOD5evQ&s'),
+      Product(name: 'Garlic', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWy0HyqAPyeV2F6GnB0jxnS9Js5LLRruS0A&s'),
+      Product(name: 'Beans', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmK6vLW_he9gNupBjz7pgLowe4EVMWXsNzZA&s'),
+      Product(name: 'Carrot', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbjm8N6pW0euFA33rYzRZajobwS9k0XR8o8Q&s'),
+      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
+      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
+      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
+    ],
+    'Fruits': [
       Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
       Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
       Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
@@ -54,75 +72,30 @@ class _HomePageState extends State<HomePage> {
       Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
     ],
 
-     'Fruits': [
-      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
-      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
-      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
-      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
-      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
-      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
-      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
-      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
-      ],
-   
-   
-    'Vegetables': [
-      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
-      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
-      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
-      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
-      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
-      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
-      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
-      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
+      'Vegetables': [
+      Product(name: 'Tomato', imageUrl: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTQvCg9Mub2HqzBhjpq72jMNr0c_jJZ-bmz08GHhCq2GF_ivqIJ'),
+      Product(name: 'Onion', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw0myvN9d65xTuId6xx26JQDC106zRdbtZoQ&s'),
+      Product(name: 'Potato', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP0eqkPvKnP9hdTDq01i9tZi_u5EJvkzcBRg&s'),
+      Product(name: 'Cauliflower', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu9zKy6_MNdNjpVkaSXub6-NGE7Oxad4WqmQ&s'),
+      Product(name: 'Cucumber', imageUrl: 'https://organicmandya.com/cdn/shop/files/Cucumber.jpg?v=1721383087&width=1024'),
+      Product(name: 'Cabbage', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWgRBeB_SsY1NbHIriVpXPd0K3Tr9YOD5evQ&s'),
+      Product(name: 'Garlic', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWy0HyqAPyeV2F6GnB0jxnS9Js5LLRruS0A&s'),
+      Product(name: 'Beans', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmK6vLW_he9gNupBjz7pgLowe4EVMWXsNzZA&s'),
+      Product(name: 'Carrot', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbjm8N6pW0euFA33rYzRZajobwS9k0XR8o8Q&s'),
     ],
    
-   
-    'Grains': [
-      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
-      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
-      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
-      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
-      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
-      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
-      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
-      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
+     'Seeds': [
+       Product(name: 'Chia Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlHlewKMgxGj47U6sox-rV7itf_HwDu38VuQ&s'),
+      Product(name: 'Pumpkin Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZy1GMZhrmqXNXf-4BrySLi3RdEA5879YNKQ&s'),
+      Product(name: 'Sunflower Seed', imageUrl: 'https://royalfantasy.in/cdn/shop/products/Sun-Flower-Seeds-1.jpg?v=1627732329'),
+      Product(name: 'Coriander Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShxoIG_0t1q7e5wXFU-8hv1AVchCNfngZHgg&s'),
+      Product(name: 'Cluster Beans Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjAE5nYYzLGW_65zA3OpeBqxzbSiyytHctmQ&s'),
+      
     ],
    
-   
-    'Cereals': [Product(name: 'Cereal 1', imageUrl: 'https://via.placeholder.com/100/0000FF/FFFFFF?text=Cereal+1')],
     
-    
-    'Spices': [Product(name: 'Spice 1', imageUrl: 'https://via.placeholder.com/100/FF0000/FFFFFF?text=Spice+1')],
-    
-    
-    
-   
-    'Medicinal Plants': [Product(name: 'Plant 1', imageUrl: 'https://via.placeholder.com/100/00FF00/FFFFFF?text=Plant+1')],
-   
-   
-    'Organic Products': [Product(name: 'Organic Product 1', imageUrl: 'https://via.placeholder.com/100/000000/FFFFFF?text=Organic+1')],
-   
-   
-   
-   
-   
-    
-   
-   
-    'Dairy': [Product(name: 'Dairy Product 1', imageUrl: 'https://via.placeholder.com/100/00AAFF/FFFFFF?text=Dairy+1')],
-   
-   
-    'Poultry': [Product(name: 'Poultry Product 1', imageUrl: 'https://via.placeholder.com/100/AAAAAA/FFFFFF?text=Poultry+1')],
-   
-   
-    'Seeds': [Product(name: 'Seed 1', imageUrl: 'https://via.placeholder.com/100/FFAAAA/FFFFFF?text=Seed+1')],
-   
-   
-    'Fertilizers': [Product(name: 'Fertilizer 1', imageUrl: 'https://via.placeholder.com/100/00FFAA/FFFFFF?text=Fertilizer+1')],
-  
-  
   };
+
   @override
   Widget build(BuildContext context) {
     List<Product> displayedProducts = products[_selectedCategory] ?? [];
@@ -170,7 +143,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-
           // Advertisement Slider
           CarouselSlider(
             options: CarouselOptions(
@@ -191,7 +163,6 @@ class _HomePageState extends State<HomePage> {
               ),
             )).toList(),
           ),
-
           // Sliding Category List
           Container(
             height: 60,
@@ -216,15 +187,14 @@ class _HomePageState extends State<HomePage> {
               },
             ),
           ),
-
           // Displaying products based on selected category
           Expanded(
             child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.75,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 3,
+                childAspectRatio: 0.7,
               ),
-              padding: EdgeInsets.all(8),
+              padding: const EdgeInsets.all(8),
               itemCount: displayedProducts.length,
               itemBuilder: (context, index) {
                 return ProductCard(product: displayedProducts[index]);
@@ -280,21 +250,18 @@ class CategoryButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         foregroundColor: isSelected
-            ? const Color.fromARGB(255, 252, 250, 250)
-            : const Color.fromARGB(255, 231, 229, 229),
-        backgroundColor: isSelected ? Colors.green : const Color.fromARGB(255, 72, 72, 72),
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ? Colors.white
+            : const Color.fromARGB(255, 34, 90, 4),
+        backgroundColor: isSelected
+            ? Colors.green
+            : const Color.fromARGB(255, 186, 221, 189),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
       ),
       child: Text(label),
     );
   }
-}
-
-// Product class to hold product data
-class Product {
-  final String name;
-
-  Product({required this.name, required String imageUrl});
 }
 
 class ProductCard extends StatelessWidget {
@@ -305,14 +272,30 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      elevation: 5,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.network('https://via.placeholder.com/100', height: 60),
-          Text(product.name, style: TextStyle(fontWeight: FontWeight.bold)),
+          Image.network(
+            product.imageUrl,
+            fit: BoxFit.cover,
+            height: 100,
+            width: 100,
+          ),
+          Text(product.name,
+          style: TextStyle(fontSize: 16,fontWeight:FontWeight.bold), 
+          
+          ),
+          // Add more details if necessary
         ],
       ),
     );
   }
+}
+
+class Product {
+  final String name;
+  final String imageUrl;
+    
+  Product({required this.name, required this.imageUrl});
 }
