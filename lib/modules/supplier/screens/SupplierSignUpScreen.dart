@@ -176,7 +176,7 @@ class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
                   labelText: 'Address',
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.phone,
+                
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter address';
