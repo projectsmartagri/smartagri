@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:smartagri/modules/user/screens/List_itemsScreen.dart';
 import 'package:smartagri/modules/user/screens/accountScreen.dart';
 import 'package:smartagri/modules/user/screens/favouriteScreen.dart';
 import 'package:smartagri/modules/user/screens/mycartScreen.dart';
+import 'package:smartagri/modules/user/screens/productdetailScreen.dart';
 
 
 
@@ -92,6 +94,60 @@ class _HomePageState extends State<HomePage> {
     ],
    
   };
+
+
+  final List<Map<String, String>> vegetableList = [
+  {
+    'name': 'Fresh Tomatoes',
+    'imageUrl': 'https://example.com/tomatoes.jpg',
+    'farmer': 'Farmer A',
+    'description': 'Freshly picked organic tomatoes.',
+    'rate': '\$5/kg',
+  },
+  {
+    'name': 'Green Bell Peppers',
+    'imageUrl': 'https://example.com/bellpeppers.jpg',
+    'farmer': 'Farmer B',
+    'description': 'Crisp and delicious green bell peppers.',
+    'rate': '\$3/kg',
+  },
+  {
+    'name': 'Carrots',
+    'imageUrl': 'https://example.com/carrots.jpg',
+    'farmer': 'Farmer C',
+    'description': 'Sweet and crunchy organic carrots.',
+    'rate': '\$2/kg',
+  },
+  {
+    'name': 'Broccoli',
+    'imageUrl': 'https://example.com/broccoli.jpg',
+    'farmer': 'Farmer D',
+    'description': 'Freshly harvested broccoli, high in nutrients.',
+    'rate': '\$4/kg',
+  },
+  {
+    'name': 'Spinach',
+    'imageUrl': 'https://example.com/spinach.jpg',
+    'farmer': 'Farmer E',
+    'description': 'Leafy organic spinach, perfect for salads.',
+    'rate': '\$2.5/kg',
+  },
+  {
+    'name': 'Cucumbers',
+    'imageUrl': 'https://example.com/cucumbers.jpg',
+    'farmer': 'Farmer F',
+    'description': 'Crisp and refreshing organic cucumbers.',
+    'rate': '\$3/kg',
+  },
+  {
+    'name': 'Red Onions',
+    'imageUrl': 'https://example.com/onions.jpg',
+    'farmer': 'Farmer G',
+    'description': 'Flavorful red onions, ideal for cooking.',
+    'rate': '\$2/kg',
+  },
+];
+
 
 
 
@@ -208,17 +264,22 @@ class _HomePageState extends State<HomePage> {
             itemCount: displayedProducts.length,
             itemBuilder: (context, index) {
               Product product = displayedProducts[index];
-              return Column(
-                children: [
-                  Image.network(
-                    product.imageUrl,
-                    height: 120,
-                    width: 120,
-                    fit: BoxFit.cover,
-                  ),
-                  const SizedBox(height: 8.0),
-                  Text(product.name),
-                ],
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => UserListitemScreen(itemList: vegetableList,)));
+                },
+                child: Column(
+                  children: [
+                    Image.network(
+                      product.imageUrl,
+                      height: 120,
+                      width: 120,
+                      fit: BoxFit.cover,
+                    ),
+                    const SizedBox(height: 8.0),
+                    Text(product.name),
+                  ],
+                ),
               );
             },
           ),
