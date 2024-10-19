@@ -1,20 +1,42 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+import 'package:smartagri/modules/supplier/services/Supplier_auth%20_services.dart';
+
+class FarmerSignupScreen extends StatefulWidget {
+  const FarmerSignupScreen({super.key});
 
   @override
-  _SignupScreenState createState() => _SignupScreenState();
+  _FarmerSignupScreenState createState() => _FarmerSignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _namecontroller = TextEditingController();
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _phonenocontroller = TextEditingController();
+
+
+
+
+
+
+
+
+
+
   File? _image;
+  bool isLoading=false;
+   final auth =  SupplierAuthServices();
 
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
 
     if (pickedFile != null) {
       setState(() {
@@ -22,6 +44,56 @@ class _SignupScreenState extends State<SignupScreen> {
       });
     }
   }
+    void signuphandler() async{
+ 
+    try{
+      setState(() {
+        isLoading = true;
+      });
+
+      await auth.registerSupplier(
+        name: _namecontroller.text, 
+        email: _emailcontroller.text, 
+        password: _passwordController.text, 
+        phone: _phonenocontroller.text, 
+        address: '',
+        companyLicenseFile: File(_image!.path));
+
+        Navigator.pop(context);
+
+
+        setState(() {
+        isLoading = false;
+      });
+
+
+      
+
+    }on FirebaseAuthException catch (e) {
+      // Handle Firebase authentication errors
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message??'somthing went wrong')));
+      
+    } 
+    
+    
+    
+    
+    catch(e){
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+
+
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +120,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                 // Field 1: Full Name
                 TextFormField(
+                  
                   decoration: const InputDecoration(
                     labelText: 'User Name',
                     border: OutlineInputBorder(),
