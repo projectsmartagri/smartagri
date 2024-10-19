@@ -39,7 +39,7 @@ class _BottomnavigationbarState extends State<Bottomnavigationbar> {
     });
     
     pages.addAll([
-      Homescreen(zone:widget.zone,area: widget.area,),
+      HomePage(),
       ExploreScreen(),
       // Searchscreen(),
       Mycartscreen(),

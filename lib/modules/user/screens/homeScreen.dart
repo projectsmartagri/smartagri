@@ -5,18 +5,7 @@ import 'package:smartagri/modules/user/screens/favouriteScreen.dart';
 import 'package:smartagri/modules/user/screens/mycartScreen.dart';
 
 
-class Homescreen extends StatelessWidget {
-  const Homescreen({super.key, String? zone, String? area});
 
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Smart Agri',
-      home: HomePage(),
-    );
-  }
-}
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -104,19 +93,14 @@ class _HomePageState extends State<HomePage> {
    
   };
 
-  List<Widget> _screens() => [
-        _homeScreen(),
-        Mycartscreen(),
-        Accountscreen(),
-      ];
+
 
   @override
   Widget build(BuildContext context) {
     List<Product> displayedProducts = products[_selectedCategory] ?? [];
 
     return Scaffold(
-      appBar: _selectedIndex == 0 // Only show the AppBar on the Home screen (index 0)
-          ? AppBar(
+      appBar: AppBar(
               backgroundColor: Colors.white,
               elevation: 0,
               title: const Text(
@@ -150,50 +134,20 @@ class _HomePageState extends State<HomePage> {
                 
               ],
               
-            )
-          : null, // No AppBar for other screens
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: _screens(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Cart'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
+            ), // No AppBar for other screens
+      body: _homeScreen()
+     
     );
   }
 
-  Widget _homeScreen() {
-    List<Product> displayedProducts = products[_selectedCategory] ?? [];
 
-    return Column(
+  Widget _homeScreen() {
+  List<Product> displayedProducts = products[_selectedCategory] ?? [];
+
+  return SingleChildScrollView(
+    child: Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: const Color.fromARGB(255, 239, 234, 234),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(30.0),
-                borderSide: BorderSide.none,
-              ),
-              labelText: 'Search here...',
-              prefixIcon: const Icon(Icons.search),
-              contentPadding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
-            ),
-          ),
-        ),
-        // Advertisement Slider
+       
         CarouselSlider(
           options: CarouselOptions(
             height: 200.0,
@@ -240,9 +194,11 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         // Product Grid
-        Expanded(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: GridView.builder(
-            padding: const EdgeInsets.all(16.0),
+            shrinkWrap: true,  // Important to allow grid to resize inside the scroll view
+            physics: const NeverScrollableScrollPhysics(),  // Disable Grid's internal scrolling
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               childAspectRatio: 0.75,
@@ -268,8 +224,13 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
+}
+
+
+
+
 }
 
 // Category Button Widget
