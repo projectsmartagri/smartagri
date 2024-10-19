@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:smartagri/modules/user/screens/signupScreen.dart';
 
 class Loginscreen extends StatefulWidget {
-  const Loginscreen({super.key});
+  const Loginscreen({super.key, String? zone, String? area});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();

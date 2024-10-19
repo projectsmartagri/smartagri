@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -8,8 +9,9 @@ import 'exploreScreen.dart';
 import 'favouriteScreen.dart';
 import 'homeScreen.dart';
 import 'mycartScreen.dart';
-import 'searchScreen.dart';
+//import 'searchScreen.dart';
 
+// ignore: must_be_immutable
 class Bottomnavigationbar extends StatefulWidget {
    Bottomnavigationbar({super.key,this.zone,this.area});
 
@@ -51,10 +53,12 @@ class _BottomnavigationbarState extends State<Bottomnavigationbar> {
 
   @override
   Widget build(BuildContext context) {
-    final ht = MediaQuery.of(context).size.height;
-    final wt = MediaQuery.of(context).size.width;
+    //final ht = MediaQuery.of(context).size.height;
+    //final wt = MediaQuery.of(context).size.width;
 
-    print(widget.area);
+    if (kDebugMode) {
+      print(widget.area);
+    }
 
     return Scaffold(
      
@@ -73,14 +77,14 @@ class _BottomnavigationbarState extends State<Bottomnavigationbar> {
             });
           },
 
-          items: [
+          items: const [
             BottomNavigationBarItem(label: 'Shop', icon: Icon(Icons.shopping_bag_outlined,color: Colors.black,)),
             BottomNavigationBarItem(label: 'Explore', icon: Icon(Icons.manage_search,color: Colors.black,)),
             BottomNavigationBarItem(label: 'Cart', icon: Icon(Icons.shopping_cart_outlined,color: Colors.black,)),
             BottomNavigationBarItem(label: 'Favourites', icon: Icon(Icons.favorite_outline_sharp,color: Colors.black,)),
             BottomNavigationBarItem(label: 'Account', icon: Icon(Icons.account_box_outlined,color: Colors.black,))
           ],
-            selectedLabelStyle: TextStyle(color: Colors.black),
+            selectedLabelStyle: const TextStyle(color: Colors.black),
 
         ),
       ),

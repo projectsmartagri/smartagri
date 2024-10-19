@@ -4,7 +4,7 @@ import '../utils/helper.dart';
 import 'loginScreen.dart';
 
 class Locationscreen extends StatefulWidget {
-  Locationscreen({super.key});
+  const Locationscreen({super.key});
 
   @override
   State<Locationscreen> createState() => _LocationscreenState();

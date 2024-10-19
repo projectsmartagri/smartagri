@@ -32,17 +32,18 @@ class _MycartscreenState extends State<Mycartscreen> {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            Text(
+            const Text(
               'My Cart',
               style: TextStyle(
                   fontSize: 20,
                   color: Color(0xff181725),
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            
+            const SizedBox(
               height: 30,
             ),
             Divider(
@@ -302,7 +303,7 @@ class _MycartscreenState extends State<Mycartscreen> {
                         Divider(height: 5),
                         SizedBox(height: 10,),
 
-                        RichText(text: TextSpan(
+                        RichText(text: const TextSpan(
                           text: 'By placing an order you agree to our ',
                           style: TextStyle(
                             color: Color(0xff7C7C7C),
@@ -333,13 +334,13 @@ class _MycartscreenState extends State<Mycartscreen> {
                         )
                         ),
 
-                        SizedBox(height: 30,),
+                        const SizedBox(height: 30,),
 
 
                         CustomButtonWidget(
                           text: 'Place Order',
                           action: () {
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Orderacceptedscreen(),));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Orderacceptedscreen(),));
                           },
                         )
 
