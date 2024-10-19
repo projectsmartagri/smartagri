@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smartagri/firebase_options.dart';
 import 'package:smartagri/modules/farmer/screens/signup_screen.dart';
 import 'package:smartagri/modules/supplier/screens/EquipmentListPage_screen.dart';
@@ -11,6 +12,7 @@ import 'package:smartagri/modules/supplier/screens/home_screen.dart';
 import 'package:smartagri/modules/user/screens/homeScreen.dart';
 import 'package:smartagri/modules/user/screens/loginScreen.dart';
 import 'package:smartagri/modules/user/screens/signupScreen.dart';
+import 'package:smartagri/modules/user/view_model/auth_view_model.dart';
 
 
 
@@ -26,12 +28,15 @@ Future<void> main() async {
   ); 
   
   runApp(
-    MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white
-       
-      ),
-      home: Homescreen()) ,);
+    ChangeNotifierProvider(
+      create: (context) => AuthViewModel(),
+      child: MaterialApp(
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white
+         
+        ),
+        home: Homescreen()),
+    ) ,);
 }
 
 
