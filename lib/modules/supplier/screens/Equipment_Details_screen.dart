@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/supplier/screens/home_screen.dart';
+import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
 
 class EquipmentDetailsscreen extends StatelessWidget {
   final String name;
@@ -24,7 +24,7 @@ class EquipmentDetailsscreen extends StatelessWidget {
             Navigator.pop(context); 
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()), // Navigate to HomeScreen
+              MaterialPageRoute(builder: (context) => SupplierHomeScreen()), // Navigate to HomeScreen
             );// Navigate back to the previous screen
           },
         ),

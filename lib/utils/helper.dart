@@ -1,5 +1,9 @@
 // lib/utils/validation_helper.dart
 
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
+
 class ValidationHelper {
   // Validate email address
   static String? validateEmail(String? value) {
@@ -39,3 +43,27 @@ class ValidationHelper {
     return null;
   }
 }
+
+final FirebaseStorage _storage = FirebaseStorage.instance;
+
+
+ // Helper function to upload the company license image to Firebase Storage
+  Future<String> uploadfile({required String name,required String uid,required File file}) async {
+    try {
+      // Define the storage path for the company license
+      Reference storageRef = _storage.ref().child('$name/$uid.jpg');
+
+      // Upload the file to Firebase Storage
+      UploadTask uploadTask = storageRef.putFile(file);
+
+      // Wait for the upload to complete and get the download URL
+      TaskSnapshot snapshot = await uploadTask;
+      String downloadUrl = await snapshot.ref.getDownloadURL();
+
+      return downloadUrl;
+    } catch (e) {
+      print('Error uploading company license: $e');
+      throw e;
+    }
+  }
+

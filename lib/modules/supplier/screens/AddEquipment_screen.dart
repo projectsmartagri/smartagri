@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smartagri/modules/supplier/screens/home_screen.dart';
+import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
 
 class AddEquipmentscreen extends StatefulWidget {
   @override
@@ -50,7 +50,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
             Navigator.pop(context);
              Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()), // Navigate to HomeScreen
+              MaterialPageRoute(builder: (context) => SupplierHomeScreen()), // Navigate to HomeScreen
             ); // Navigates back to the previous screen
           },
         ),

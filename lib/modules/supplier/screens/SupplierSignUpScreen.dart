@@ -1,20 +1,33 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smartagri/modules/supplier/services/Supplier_auth%20_services.dart';
 
-class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({super.key});
+class SupplierSignupScreen extends StatefulWidget {
+  const SupplierSignupScreen({super.key});
 
   @override
-  _SupplierSignupScreenState createState() => _SupplierSignupScreenState();
+  _SupplierSupplierSignupScreenState createState() => _SupplierSupplierSignupScreenState();
 }
 
-class _SupplierSignupScreenState extends State<SignUpScreen> {
+class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _namecontroller = TextEditingController();
+  final TextEditingController _emailcontroller = TextEditingController();
+  final TextEditingController _phonenocontroller = TextEditingController();
+  final TextEditingController _addresscontroller = TextEditingController();
+
+
+
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   XFile? _companyDocument;
+  final auth =  SupplierAuthServices();
+
 
   // Function to pick image/document
   Future<void> _pickDocument() async {
@@ -26,6 +39,60 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
     });
   }
 
+  bool isLoading = false;
+
+
+
+  void signuphandler() async{
+ 
+    try{
+      setState(() {
+        isLoading = true;
+      });
+
+      await auth.registerSupplier(
+        name: _namecontroller.text, 
+        email: _emailcontroller.text, 
+        password: _passwordController.text, 
+        phone: _phonenocontroller.text, 
+        address: _addresscontroller.text,
+        companyLicenseFile: File(_companyDocument!.path));
+
+        Navigator.pop(context);
+
+
+        setState(() {
+        isLoading = false;
+      });
+
+
+      
+
+    }on FirebaseAuthException catch (e) {
+      // Handle Firebase authentication errors
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message??'somthing went wrong')));
+      
+    } 
+    
+    
+    
+    
+    catch(e){
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
+
+
+    }
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +100,9 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
         title: const Text('SIGN UP'),
         backgroundColor: Colors.green,
       ),
-      body: Padding(
+      body:isLoading ?  const Center(
+        child: CircularProgressIndicator(),
+      )  : Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -48,6 +117,8 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
 
               // Company Name Field
               TextFormField(
+                controller: _namecontroller,
+
                 decoration: const InputDecoration(
                   labelText: 'Company Name',
                   border: OutlineInputBorder(),
@@ -63,6 +134,7 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
 
               // Email Field
               TextFormField(
+                controller: _emailcontroller,
                 decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
@@ -79,6 +151,7 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
 
               // Phone Number Field
               TextFormField(
+                controller: _phonenocontroller,
                 decoration: const InputDecoration(
                   labelText: 'Phone Number',
                   border: OutlineInputBorder(),
@@ -87,6 +160,26 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a phone number';
+                  }
+                  return null;
+                },
+              ),
+
+              const SizedBox(height: 16.0),
+
+              // Phone Number Field
+              TextFormField(
+                controller: _addresscontroller,
+                minLines: 6,
+                maxLines: 20,
+                decoration: const InputDecoration(
+                  labelText: 'Address',
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.phone,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter address';
                   }
                   return null;
                 },
@@ -148,6 +241,9 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
                   return null;
                 },
               ),
+             
+             
+             
               const SizedBox(height: 16.0),
 
               // Upload Company Document Button
@@ -181,9 +277,11 @@ class _SupplierSignupScreenState extends State<SignUpScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Supplier account created successfully')),
-                      );
+
+                      signuphandler();
+
+
+                     
                     }
                   },
                   child: const Text(

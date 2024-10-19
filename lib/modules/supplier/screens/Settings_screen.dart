@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/supplier/screens/home_screen.dart';
+import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -15,7 +15,7 @@ class SettingsScreen extends StatelessWidget {
             Navigator.pop(context);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              MaterialPageRoute(builder: (context) => const SupplierHomeScreen()),
             ); // Navigate back to the previous screen
           },
         ),

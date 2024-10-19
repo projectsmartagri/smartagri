@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/supplier/screens/home_screen.dart'; // Import HomeScreen
+import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart'; // Import HomeScreen
 import 'package:smartagri/modules/supplier/screens/EquipmentListPage_screen.dart'; // Import EquipmentListPage (adjust path)
 
 class OtherCompaniesScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class OtherCompaniesScreen extends StatelessWidget {
             Navigator.pop(context); // Navigate back to the previous screen
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen()), // Navigate to HomeScreen
+              MaterialPageRoute(builder: (context) =>SupplierHomeScreen()), // Navigate to HomeScreen
             );
           },
         ),

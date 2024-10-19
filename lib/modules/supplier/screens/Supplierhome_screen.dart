@@ -5,14 +5,14 @@ import 'package:smartagri/modules/supplier/screens/Equipment_Details_screen.dart
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
 import 'package:smartagri/modules/supplier/screens/Settings_screen.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class SupplierHomeScreen extends StatefulWidget {
+  const SupplierHomeScreen({super.key});
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _SupplierHomeScreenState createState() => _SupplierHomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
   double _drawerWidth = 0;
 
   void _toggleDrawer() {
@@ -174,7 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Navigator.pop(context); 
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const HomeScreen()),
+                        MaterialPageRoute(builder: (context) => const SupplierHomeScreen()),
                       ); // Close the drawer
                     },
                   ),
@@ -302,7 +302,7 @@ Padding(
     ],
   ),
 ),
-          // Inside the HomeScreen class, replace the ListView.builder for ALL EQUIPMENTS
+          // Inside the SupplierHomeScreen class, replace the ListView.builder for ALL EQUIPMENTS
 
 ListView.builder(
   shrinkWrap: true,
