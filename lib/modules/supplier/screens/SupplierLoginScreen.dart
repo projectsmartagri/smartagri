@@ -91,13 +91,13 @@ class _SupplierLoginScreenState extends State<SupplierLoginScreen> {
                     const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 60.0),
+                        padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           "SMART AGRI",
                           style: TextStyle(
-                            color: Color.fromRGBO(247, 249, 247, 0.968),
-                            fontFamily: 'dancing script',
-                            fontSize: 28,
+                            color: Color.fromRGBO(3, 70, 3, 0.965),
+                            //fontFamily: 'dancing script',
+                            fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

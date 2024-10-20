@@ -4,6 +4,9 @@ import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
 import 'package:smartagri/modules/supplier/screens/Equipment_Details_screen.dart';
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
 import 'package:smartagri/modules/supplier/screens/Settings_screen.dart';
+import 'package:smartagri/modules/supplier/screens/SupplierLoginScreen.dart';
+import 'package:smartagri/modules/supplier/screens/SupplierProfile_Screen.dart';
+import 'package:smartagri/modules/supplier/screens/Supplier_bookingdetails_screen.dart';
 
 class SupplierHomeScreen extends StatefulWidget {
   const SupplierHomeScreen({super.key});
@@ -181,7 +184,11 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ListTile(
                     title: Text('Booking Details'),
                     onTap: () {
-                      Navigator.pop(context); // Close the drawer
+                      Navigator.pop(context);
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SupplierBookingdetailsScreen()),
+                      ); // Close the drawer
                     },
                   ),
                   ListTile(
@@ -198,10 +205,10 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                     title: Text('Profile'),
                     onTap: () {
                       Navigator.pop(context);
-                     /* Navigator.push(
+                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const ProfileScreen()),
-                      );*/ // Close the drawer
+                        MaterialPageRoute(builder: (context) => const SupplierprofileScreen()),
+                      );// Close the drawer
                     },
                   ),
                     ListTile(
@@ -225,8 +232,11 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                     ),
                     onTap: () {
                       // Handle log out logic here
-                      Navigator.pop(context); // Close the drawer
-                      // Add your log out logic here, e.g., navigate to login screen
+                      Navigator.pop(context); 
+                       Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const SupplierLoginScreen()),
+                      );
                     },
                   ),
                  
@@ -272,33 +282,32 @@ Padding(
           fontWeight: FontWeight.bold,
         ),
       ),
-     Row(
-  children: [
-    Text(
-      'Add', // Add label next to the button
-      style: TextStyle(
-        fontSize: 16,
-        color: Colors.green,
-        fontWeight: FontWeight.bold,
+     GestureDetector(
+        onTap: () {
+          // Define what happens when the button or text is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddEquipmentscreen()), // Navigate to AddEquipmentScreen
+          );
+        },
+        child: Row(
+          children: [
+            Text(
+              'Add',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Icon(
+              Icons.add,
+              color: Colors.green,
+              size: 24,
+            ),
+          ],
+        ),
       ),
-    ),
-    GestureDetector(
-      onTap: () {
-        // Define what happens when the button is pressed
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => AddEquipmentscreen()), // Navigate to AddEquipmentScreen
-        );
-      },
-      child: Icon(
-        Icons.add, // Add icon for adding equipment
-        color: Colors.green,
-        size: 24,
-      ),
-    ),
-  ],
-),
-
     ],
   ),
 ),

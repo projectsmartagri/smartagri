@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:smartagri/modules/supplier/screens/SupplierLoginScreen.dart';
 import 'package:smartagri/modules/supplier/services/Supplier_auth%20_services.dart';
 
 class SupplierSignupScreen extends StatefulWidget {
@@ -96,10 +98,10 @@ class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+     /* appBar: AppBar(
         title: const Text('SIGN UP'),
         backgroundColor: Colors.green,
-      ),
+      ),*/
       body:isLoading ?  const Center(
         child: CircularProgressIndicator(),
       )  : Padding(
@@ -290,6 +292,28 @@ class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
                   ),
                 ),
               ),
+               RichText(
+                      textAlign:TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Already have an account? ',
+                            style: TextStyle(color: Color.fromARGB(255, 11, 10, 10)),
+                          ),
+                          TextSpan(
+                            text: 'Login',
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => SupplierLoginScreen()),
+                                );
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
             ],
           ),
         ),
