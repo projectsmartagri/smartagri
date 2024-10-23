@@ -1,7 +1,7 @@
                                                                                                         import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
-import 'package:smartagri/modules/supplier/screens/Equipment_Details_screen.dart';
+import 'package:smartagri/modules/supplier/screens/SupplierEquipment_Details_screen.dart';
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
 import 'package:smartagri/modules/supplier/screens/Settings_screen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierLoginScreen.dart';
@@ -187,7 +187,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                       Navigator.pop(context);
                        Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SupplierBookingdetailsScreen()),
+                        MaterialPageRoute(builder: (context) => const SupplierBookingDetailsScreen()),
                       ); // Close the drawer
                     },
                   ),
@@ -207,7 +207,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                       Navigator.pop(context);
                      Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => const SupplierprofileScreen()),
+                        MaterialPageRoute(builder: (context) => const SupplierProfileScreen()),
                       );// Close the drawer
                     },
                   ),
@@ -324,10 +324,13 @@ ListView.builder(
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>EquipmentDetailsscreen(
+            builder: (context) =>SupplierEquipmentDetailsScreen(
               name: equipmentList[index]['name']!,
               imageUrl: equipmentList[index]['imageUrl']!,
-              rentRate: equipmentList[index]['rentRate']!,
+              rentRate: equipmentList[index]['rentRate']!, 
+              description: 'description of equipment',
+               quantity: 2,
+                farmersOrders: [],
             ),
           ),
         );

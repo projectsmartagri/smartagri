@@ -112,10 +112,10 @@ class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
             children: [
               const Text(
                 'SIGN UP',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style: TextStyle(color: Color.fromARGB(255, 2, 69, 8),fontSize: 24, fontWeight: FontWeight.bold ),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
 
               // Company Name Field
               TextFormField(
@@ -292,6 +292,8 @@ class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
+
                RichText(
                       textAlign:TextAlign.center,
                       text: TextSpan(
