@@ -1,4 +1,4 @@
-                                                                                                        import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierEquipment_Details_screen.dart';
@@ -17,16 +17,20 @@ class SupplierHomeScreen extends StatefulWidget {
 
 class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
   double _drawerWidth = 0;
+   int _currentIndex = 0; // To track the current index of the carousel
+
 
   void _toggleDrawer() {
     setState(() {
       _drawerWidth = _drawerWidth == 0 ? MediaQuery.of(context).size.width * 0.5 : 0;
     });
   }
-
+  
+  
   @override
   Widget build(BuildContext context) {
     // List of advertisement image URLs
+    
     final List<String> imgList = [
       'https://5.imimg.com/data5/SELLER/Default/2023/11/364648303/OR/VC/GX/186750549/jangeer-multicrop-thresher-500x500.jpeg',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTL2wkfKp1i7WvvRbQkiLFmAyiNxctUXuWCQ&s',
@@ -249,24 +253,61 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Carousel Slider
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: 200,
-                      autoPlay: true,
-                    ),
-                    items: imgList
-                        .map((item) => Container(
-                              child: Center(
-                                child: Image.network(
-                                  item,
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                ),
+                    CarouselSlider(
+                        options: CarouselOptions(
+                          height: 300,
+                          autoPlay: true,
+                           enlargeCenterPage: true, // Enlarge the center item
+                          aspectRatio: 2.0, // Aspect ratio to stretch the images
+                          onPageChanged: (index, reason) {
+                            setState(() {
+                              _currentIndex = index; // Update current index
+                            });
+                          },
+                        ),
+                        items: imgList
+                            .map((item) => Container(
+                              width: MediaQuery.of(context).size.width, // Set width to full
+                                  
+                                  child: Center(
+                                    child: Image.network(
+                                      item,
+                                      fit: BoxFit.cover, // Optional: Use BoxFit to cover the container
+                                      height: 300, // Height of the image
+                                      width: double.infinity,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                      // Indicators
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: imgList.asMap().entries.map((entry) {
+                          return GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                _currentIndex = entry.key; // Update index on tap
+                              });
+                              // Navigate to the respective page
+                              // You can uncomment this if needed
+                              // CarouselSlider.of(context).animateToPage(entry.key);
+                             
+                            },
+                             
+
+                            child: Container(
+                              width: 8.0,
+                              height: 8.0,
+                              margin: EdgeInsets.symmetric(horizontal: 4.0),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: (Colors.black.withOpacity(_currentIndex == entry.key ? 0.9 : 0.4)),
                               ),
-                            ))
-                        .toList(),
-                  ),
+                            ),
+                          );
+                        }).toList(),
+                      ),
                                     // Heading for Equipments
                    // Heading for Equipments with Add Equipment Button
                    // Heading for Equipments with Add Equipment Button and Title
@@ -560,5 +601,6 @@ class NotificationScreen extends StatelessWidget {
     return Scaffold(appBar: AppBar(title: Text('Notifications')));
   }
 }
+
 
 
