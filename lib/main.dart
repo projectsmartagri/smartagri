@@ -29,7 +29,7 @@ Future<void> main() async {
           scaffoldBackgroundColor: Colors.white
          
         ),
-        home: SupplierHomeScreen()),
+        home: SupplierLoginScreen()),
     ) ,);
 }
 

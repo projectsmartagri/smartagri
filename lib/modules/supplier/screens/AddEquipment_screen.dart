@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
+import 'package:smartagri/modules/supplier/services/supplier_machinery_service.dart';
 
 class AddEquipmentscreen extends StatefulWidget {
   @override
@@ -15,6 +16,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   double rentalPrice = 0.0;
   String availability = 'Available';
   XFile? _image;
+  bool loading=false;
 
   // Function to pick an image
   Future<void> _pickImage() async {
@@ -24,15 +26,21 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   }
 
   // Function to save machinery details
-  void _saveMachinery() {
+  void _saveMachinery() async{
     if (_formKey.currentState!.validate()) {
-      // Here you can handle the saving logic, e.g., sending data to the backend
+      
+    setState(() {
+      loading=true;
+    });
+     await SupplierMachineryService().addMachinary(machineryName, description, rentalPrice,availability,File(_image!.path));
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Machinery Added Successfully!')),
       );
       // Reset fields after saving
       _formKey.currentState!.reset();
       setState(() {
+        loading=false;
         _image = null; // Reset image selection
       });
     }
@@ -43,12 +51,11 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Machinery'),
-        
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
-             Navigator.push(
+            Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => SupplierHomeScreen()), // Navigate to HomeScreen
             ); // Navigates back to the previous screen
@@ -135,9 +142,17 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
                 ),
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _saveMachinery,
-                child: Text('Add Machinery'),
+              SizedBox(
+                width: double.infinity, // Full-width button
+                child: ElevatedButton(
+                  onPressed: _saveMachinery,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 71, 177, 74), // Green color for the button
+                    minimumSize: Size(double.infinity, 50), // Set height
+                  ),
+                  child:loading? CircularProgressIndicator()
+                  :Text('Add Machinery'),
+                ),
               ),
             ],
           ),
