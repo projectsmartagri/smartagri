@@ -4,20 +4,7 @@ import 'package:smartagri/modules/farmer/screens/login_screen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierLoginScreen.dart';
 import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 
-void main() {
-  runApp(MyApp());
-}
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Smart Agri',
-      home: ChooseScreen(),
-    );
-  }
-}
 
 class ChooseScreen extends StatelessWidget {
   ChooseScreen({super.key});
