@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 
 import '../view_model/auth_view_model.dart';
-import 'loginScreen.dart';
 
 import 'package:image_picker/image_picker.dart';
 
@@ -186,7 +186,7 @@ class _AccountscreenState extends State<Accountscreen> {
                   // backgroundColor: Color(0xff53B175),
                   fixedSize: Size(364, 67)),
               onPressed: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Loginscreen(),), (route) => false,);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>UserLoginscreen(),), (route) => false,);
               },
               child: Row(
                 children: [

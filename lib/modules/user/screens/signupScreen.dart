@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smartagri/modules/user/screens/loginScreen.dart';
+import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 
 class signupScreen extends StatefulWidget {
   const signupScreen({super.key});
@@ -24,7 +24,7 @@ class _SupplierSignupScreenState extends State<signupScreen> {
     return Scaffold(
       appBar: AppBar(
        // title: const Text('SIGN UP'),
-       // backgroundColor: Colors.green,
+       backgroundColor: Colors.white,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -34,7 +34,7 @@ class _SupplierSignupScreenState extends State<signupScreen> {
             children: [
               const Text(
                 'SIGN UP',
-                style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold,),
+                style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold, color: Color.fromRGBO(4, 75, 4, 0.424),),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),
@@ -187,7 +187,7 @@ class _SupplierSignupScreenState extends State<signupScreen> {
                               ..onTap = () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => Loginscreen()),
+                                  MaterialPageRoute(builder: (context) => UserLoginscreen()),
                                 );
                               },
                           ),

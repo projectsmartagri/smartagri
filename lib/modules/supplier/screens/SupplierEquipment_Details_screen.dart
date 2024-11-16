@@ -66,6 +66,29 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
             );
           },
         ),
+        actions: [
+          // Edit button
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () {
+               Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => EditEquipmentScreen(initialName: '', initialImageUrl: '', initialRentRate: '', initialDescription: '', initialQuantity: quantity,),
+                        ),
+                      );
+              
+            },
+          ),
+          // Delete button
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              // Handle delete action (you can implement your own logic here)
+              print('Delete button clicked');
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -102,7 +125,7 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
             // Quantity
             Text(
               'Available Quantity: $quantity',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, ),
             ),
             const Divider(height: 30),
 
@@ -140,6 +163,115 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
               },
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+//edit details
+class EditEquipmentScreen extends StatefulWidget {
+  final String initialName;
+  final String initialImageUrl;
+  final String initialRentRate;
+  final String initialDescription;
+  final int initialQuantity;
+
+  const EditEquipmentScreen({
+    Key? key,
+    required this.initialName,
+    required this.initialImageUrl,
+    required this.initialRentRate,
+    required this.initialDescription,
+    required this.initialQuantity,
+  }) : super(key: key);
+
+  @override
+  _EditEquipmentScreenState createState() => _EditEquipmentScreenState();
+}
+
+class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _imageUrlController = TextEditingController();
+  final TextEditingController _rentRateController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize the controllers with current data
+    _nameController.text = widget.initialName;
+    _imageUrlController.text = widget.initialImageUrl;
+    _rentRateController.text = widget.initialRentRate;
+    _descriptionController.text = widget.initialDescription;
+    _quantityController.text = widget.initialQuantity.toString();
+  }
+
+  void _saveChanges() {
+    // Implement save functionality (e.g., update data in a database or send to an API)
+    print("Equipment details updated");
+    // For now, simply print the updated values
+    print("Name: ${_nameController.text}");
+    print("Image URL: ${_imageUrlController.text}");
+    print("Rent Rate: ${_rentRateController.text}");
+    print("Description: ${_descriptionController.text}");
+    print("Quantity: ${_quantityController.text}");
+    
+    // After saving, pop the screen
+    Navigator.pop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Equipment'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Equipment Name'),
+              ),
+              TextField(
+                controller: _imageUrlController,
+                decoration: const InputDecoration(labelText: 'Image URL'),
+              ),
+              TextField(
+                controller: _rentRateController,
+                decoration: const InputDecoration(labelText: 'Rent Rate'),
+              ),
+              TextField(
+                controller: _descriptionController,
+                decoration: const InputDecoration(labelText: 'Description'),
+                maxLines: 3,
+              ),
+              TextField(
+                controller: _quantityController,
+                decoration: const InputDecoration(labelText: 'Available Quantity'),
+                keyboardType: TextInputType.number,
+              ),
+              const SizedBox(height: 20), // Add spacing before the Save button
+              Center(
+                child: ElevatedButton(
+                  onPressed: _saveChanges,
+                  child: const Text('Save Changes'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green, // Set the button background to green
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
