@@ -95,9 +95,9 @@ class _SupplierLoginScreenState extends State<SupplierLoginScreen> {
                         child: Text(
                           "Smart Agri",
                           style: TextStyle(
-                            color: Color.fromRGBO(3, 70, 3, 0.965),
+                            color: Color.fromRGBO(4, 75, 4, 1),
                             fontFamily: 'dancing script',
-                            fontSize: 25,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

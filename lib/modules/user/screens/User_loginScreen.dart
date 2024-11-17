@@ -18,7 +18,7 @@ class _LoginScreenState extends State<UserLoginscreen> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Container(
-        color: Color.fromARGB(255, 234, 246, 234), // Background color (light green)
+        color: Color.fromARGB(255, 242, 244, 242), // Background color (light green)
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -35,12 +35,12 @@ class _LoginScreenState extends State<UserLoginscreen> {
                     const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 60.0),
+                        padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           "Smart Agri",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(4, 75, 4, 0.424),
+                             color: Color.fromRGBO(4, 75, 4, 0.961),
                             fontFamily: 'dancing script',
                             fontSize: 30,
                           ),
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<UserLoginscreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 1.0), // Add small spacing between the title and text field
+                  
                     // Field 1: Username/Email
                     TextFormField(
                       decoration: const InputDecoration(
@@ -88,18 +88,18 @@ class _LoginScreenState extends State<UserLoginscreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          backgroundColor: Colors.green,
+                          backgroundColor: const Color.fromARGB(255, 65, 154, 68),
                         ),
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Login successfully')),
                           );
                         },
-                        child: const Text('LOGIN', style: TextStyle(color: Color.fromARGB(255, 3, 105, 49))),
+                        child: const Text('LOGIN', style: TextStyle(fontSize:16 ,color: Color.fromARGB(255, 236, 243, 239))),
                       ),
                     ),
                     
-                    const SizedBox(height: 16.0),
+                    const SizedBox(height:16.0),
                     Spacer(),
 
                     // Create Account Button

@@ -35,17 +35,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min, 
                   children: [
-                    Spacer(),
-                    Align(
+                    const Spacer(),
+                    const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
-                        padding: const EdgeInsets.only(bottom: 60.0),
-                        child: const Text(
-                          "SMART AGRI",
+                        padding: EdgeInsets.only(bottom: 20.0),
+                        child: Text(
+                          "Smart Agri",
                           style: TextStyle(
-                            color: Color.fromRGBO(2, 112, 2, 0.424),
+                            fontWeight:FontWeight.bold,
+                             color: Color.fromRGBO(4, 75, 4, 1),
                             fontFamily: 'dancing script',
-                            fontSize: 28,
+                            fontSize: 30,
                           ),
                         ),
                       ),

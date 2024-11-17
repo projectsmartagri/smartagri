@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/choose_screen.dart';
 import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierEquipment_Details_screen.dart';
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
@@ -105,6 +106,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
         title: Text(
           'Smart Agri',
           style: TextStyle(
+             color: Color.fromRGBO(4, 75, 4, 0.961),
             fontFamily: 'Dancing Script',
             fontSize: 24,
           ),
@@ -210,7 +212,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SupplierLoginScreen()),
+                            builder: (context) => ChooseScreen()),
                       );
                     },
                   ),

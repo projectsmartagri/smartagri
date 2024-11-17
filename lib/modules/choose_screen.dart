@@ -17,7 +17,7 @@ class ChooseScreen extends StatelessWidget {
         title: const Text(
           'Smart Agri',
           style: TextStyle(
-            color: Color(0xFF2E7D32), // Dark green
+             color: Color.fromRGBO(4, 75, 4, 0.961),
             fontFamily: 'Dancing Script',
             fontSize: 30,
             fontWeight: FontWeight.bold,

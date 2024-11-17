@@ -35,12 +35,12 @@ class _LoginScreenState extends State<Adminloginscreen> {
                     const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 60.0),
+                        padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           "Smart Agri",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(4, 75, 4, 0.424),
+                            color: Color.fromRGBO(4, 75, 4, 0.961),
                             fontFamily: 'dancing script',
                             fontSize: 30,
                           ),
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<Adminloginscreen> {
                       ),
                     ),
                     
-                    const SizedBox(height: 1.0), // Add small spacing between the title and text field
+                    
                     // Field 1: Username/Email
                     TextFormField(
                       decoration: const InputDecoration(
