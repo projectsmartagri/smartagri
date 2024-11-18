@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/admin/screen/UserDetails.dart';
 
 class ManageUser extends StatelessWidget {
   const ManageUser({super.key});
@@ -26,9 +27,9 @@ class ManageUser extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  _buildUserCard('Alice Johnson', 'alice.j@gmail.com', 'Admin'),
-                  _buildUserCard('Bob Smith', 'bob.smith@gmail.com', 'Supplier'),
-                  _buildUserCard('Charlie Brown', 'charlie.b@gmail.com', 'Farmer'),
+                  _buildUserCard(context, 'Alice Johnson', 'alice.j@gmail.com', 'Admin'),
+                  _buildUserCard(context, 'Bob Smith', 'bob.smith@gmail.com', 'Supplier'),
+                  _buildUserCard(context, 'Charlie Brown', 'charlie.b@gmail.com', 'Farmer'),
                   // Add more users as needed
                 ],
               ),
@@ -55,7 +56,8 @@ class ManageUser extends StatelessWidget {
     );
   }
 
-  Widget _buildUserCard(String name, String email, String role) {
+  // Reusable method to build user cards
+  Widget _buildUserCard(BuildContext context, String name, String email, String role) {
     return Card(
       elevation: 4,
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -80,7 +82,24 @@ class ManageUser extends StatelessWidget {
             ];
           },
         ),
+        onTap: () {
+          // Navigate to the UserDetails page when the card is tapped
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => UserDetails(
+                name: name,
+                email: email,
+                role: role, phone: '',
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 }
+
+
+
+

@@ -1,4 +1,3 @@
-// ignore: file_names
 import 'package:flutter/material.dart';
 
 class SupplierDetails extends StatelessWidget {
@@ -14,7 +13,7 @@ class SupplierDetails extends StatelessWidget {
     required this.email,
     required this.phone,
     required this.address,
-    required this.companyDocumentUrl,
+    required this.companyDocumentUrl, required String name, required String companyname,
   });
 
   @override
@@ -24,8 +23,9 @@ class SupplierDetails extends StatelessWidget {
         title: const Text(
           'Supplier Details',
           style: TextStyle(
-            fontSize: 22,
+            fontSize: 24,
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         backgroundColor: const Color.fromARGB(255, 39, 156, 68),
@@ -47,9 +47,9 @@ class SupplierDetails extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               Card(
-                elevation: 8,
+                elevation: 10,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(16),
                 ),
@@ -116,7 +116,7 @@ class SupplierDetails extends StatelessWidget {
               ),
               const SizedBox(height: 30),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   _buildActionButton(
                     context,
@@ -129,6 +129,7 @@ class SupplierDetails extends StatelessWidget {
                       );
                     },
                   ),
+                  const SizedBox(width: 20),
                   _buildActionButton(
                     context,
                     label: 'Reject',
@@ -158,29 +159,31 @@ class SupplierDetails extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: const Color.fromARGB(255, 27, 143, 38), size: 24),
+        Icon(icon, color: const Color.fromARGB(255, 27, 143, 38), size: 28),
         const SizedBox(width: 12),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black87,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black87,
+                ),
               ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              value,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-                color: Colors.black54,
+              const SizedBox(height: 4),
+              Text(
+                value,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.black54,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );
@@ -211,6 +214,7 @@ class SupplierDetails extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         elevation: 5,
+        textStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/admin/screen/SupplierDetails.dart';
 
 // Dummy data for suppliers
 class ManageSupplierScreen extends StatelessWidget {
@@ -56,8 +57,8 @@ class ManageSupplierScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => SupplierDetails(
-                              name: supplier['name']!,
-                              email: supplier['email']!,
+                              companyname: supplier['name']!,
+                              email: supplier['email']!, companyName: '', phone: '', address: '', companyDocumentUrl: '', name: '',
                             ),
                           ),
                         );
@@ -87,7 +88,7 @@ class ManageSupplierScreen extends StatelessWidget {
                               MaterialPageRoute(
                                 builder: (context) => SupplierDetails(
                                   name: supplier['name']!,
-                                  email: supplier['email']!,
+                                  email: supplier['email']!, companyName: '', phone: '', address: '', companyDocumentUrl: '', companyname: '',  
                                 ),
                               ),
                             );
@@ -124,69 +125,3 @@ class ManageSupplierScreen extends StatelessWidget {
   }
 }
 
-// SupplierDetails Page to show details
-class SupplierDetails extends StatelessWidget {
-  final String name;
-  final String email;
-
-  const SupplierDetails({
-    super.key,
-    required this.name,
-    required this.email,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Supplier Details',
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-        backgroundColor: Colors.green,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Name: $name',
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'Email: $email',
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Handle your edit or delete functionality here
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Edit/Delete functionality')),
-                );
-              },
-              icon: const Icon(Icons.edit),
-              label: const Text('Edit Supplier'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                minimumSize: const Size(double.infinity, 50),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
