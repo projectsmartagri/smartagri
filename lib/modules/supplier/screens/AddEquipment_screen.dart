@@ -14,6 +14,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   String machineryName = '';
   String description = '';
   double rentalPrice = 0.0;
+   int quantity = 0;
   String availability = 'Available';
   XFile? _image;
   bool loading=false;
@@ -32,7 +33,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
     setState(() {
       loading=true;
     });
-     await SupplierMachineryService().addMachinary(machineryName, description, rentalPrice,availability,File(_image!.path));
+     await SupplierMachineryService().addMachinary(machineryName, description, rentalPrice,availability,quantity as File,File(_image!.path));
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Machinery Added Successfully!')),
@@ -105,6 +106,22 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
                 },
                 onChanged: (value) {
                   rentalPrice = double.tryParse(value) ?? 0.0;
+                },
+              ),
+               TextFormField(
+                decoration: InputDecoration(labelText: 'Quantity'),
+                keyboardType: TextInputType.number,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the quantity';
+                  }
+                  if (int.tryParse(value) == null || int.parse(value) <= 0) {
+                    return 'Please enter a valid positive number';
+                  }
+                  return null;
+                },
+                onChanged: (value) {
+                  quantity = int.tryParse(value) ?? 0;
                 },
               ),
               DropdownButtonFormField<String>(

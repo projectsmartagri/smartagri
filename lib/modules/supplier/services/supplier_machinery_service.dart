@@ -10,7 +10,7 @@ class SupplierMachineryService {
    final  FirebaseAuth  _auth = FirebaseAuth.instance;
 
 
-   Future<void> addMachinary(String name,String desc,double price,String avail,File image) async
+   Future<void> addMachinary(String name,String desc,double price,String avail,File image, File file) async
    {
     try
     {
