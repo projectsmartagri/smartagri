@@ -50,6 +50,18 @@ class ManageSupplierScreen extends StatelessWidget {
                         style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       subtitle: Text(supplier['email']!),
+                      onTap: () {
+                        // Navigate to the SupplierDetails page when the card is tapped
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SupplierDetails(
+                              name: supplier['name']!,
+                              email: supplier['email']!,
+                            ),
+                          ),
+                        );
+                      },
                       trailing: PopupMenuButton(
                         icon: const Icon(Icons.more_vert),
                         itemBuilder: (context) => [

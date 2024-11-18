@@ -1,21 +1,20 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 
 class SupplierDetails extends StatelessWidget {
-  final String name;
+  final String companyName;
   final String email;
   final String phone;
-  final String location;
-  final String company;
-  final String productCategory;
+  final String address;
+  final String companyDocumentUrl;
 
   const SupplierDetails({
     super.key,
-    required this.name,
+    required this.companyName,
     required this.email,
     required this.phone,
-    required this.location,
-    required this.company,
-    required this.productCategory,
+    required this.address,
+    required this.companyDocumentUrl,
   });
 
   @override
@@ -29,7 +28,7 @@ class SupplierDetails extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        backgroundColor: Colors.blue.shade700,
+        backgroundColor: const Color.fromARGB(255, 39, 156, 68),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -44,15 +43,15 @@ class SupplierDetails extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+                    color: Color.fromARGB(255, 23, 135, 74),
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
               Card(
-                elevation: 6,
+                elevation: 8,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -60,9 +59,9 @@ class SupplierDetails extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _buildInfoRow(
-                        icon: Icons.person,
-                        label: 'Name',
-                        value: name,
+                        icon: Icons.business,
+                        label: 'Company Name',
+                        value: companyName,
                       ),
                       const SizedBox(height: 16),
                       _buildInfoRow(
@@ -79,20 +78,37 @@ class SupplierDetails extends StatelessWidget {
                       const SizedBox(height: 16),
                       _buildInfoRow(
                         icon: Icons.location_on,
-                        label: 'Location',
-                        value: location,
+                        label: 'Address',
+                        value: address,
                       ),
-                      const SizedBox(height: 16),
-                      _buildInfoRow(
-                        icon: Icons.business,
-                        label: 'Company',
-                        value: company,
+                      const SizedBox(height: 24),
+                      const Text(
+                        'Uploaded Company Document:',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
                       ),
-                      const SizedBox(height: 16),
-                      _buildInfoRow(
-                        icon: Icons.category,
-                        label: 'Product Category',
-                        value: productCategory,
+                      const SizedBox(height: 12),
+                      Center(
+                        child: companyDocumentUrl.isNotEmpty
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  companyDocumentUrl,
+                                  height: 200,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : const Text(
+                                'No document uploaded.',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              ),
                       ),
                     ],
                   ),
@@ -104,23 +120,23 @@ class SupplierDetails extends StatelessWidget {
                 children: [
                   _buildActionButton(
                     context,
-                    label: 'Contact Supplier',
-                    icon: Icons.contact_mail,
-                    color: Colors.green.shade600,
+                    label: 'Approve',
+                    icon: Icons.check,
+                    color: const Color.fromARGB(255, 14, 161, 26),
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Contact Supplier Tapped')),
+                        const SnackBar(content: Text('Supplier Approved')),
                       );
                     },
                   ),
                   _buildActionButton(
                     context,
-                    label: 'View Products',
-                    icon: Icons.list_alt,
-                    color: Colors.blue.shade600,
+                    label: 'Reject',
+                    icon: Icons.close,
+                    color: Colors.red.shade600,
                     onPressed: () {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('View Products Tapped')),
+                        const SnackBar(content: Text('Supplier Rejected')),
                       );
                     },
                   ),
@@ -133,6 +149,7 @@ class SupplierDetails extends StatelessWidget {
     );
   }
 
+  // Reusable method to build info rows with icon and label
   Widget _buildInfoRow({
     required IconData icon,
     required String label,
@@ -141,7 +158,7 @@ class SupplierDetails extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, color: Colors.blue, size: 24),
+        Icon(icon, color: const Color.fromARGB(255, 27, 143, 38), size: 24),
         const SizedBox(width: 12),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -169,6 +186,7 @@ class SupplierDetails extends StatelessWidget {
     );
   }
 
+  // Reusable action button for Approve and Reject
   Widget _buildActionButton(
     BuildContext context, {
     required String label,
