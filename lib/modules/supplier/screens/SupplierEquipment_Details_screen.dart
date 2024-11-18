@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
+import 'package:smartagri/modules/supplier/services/supplier_machinery_service.dart';
+import 'package:smartagri/utils/helper.dart';
 
 class SupplierEquipmentDetailsScreen extends StatelessWidget {
   final String name;
@@ -7,6 +12,7 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
   final String rentRate;
   final String description;
   final int quantity;
+  final String id;
 
   const SupplierEquipmentDetailsScreen({
     Key? key,
@@ -15,7 +21,11 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
     required this.rentRate,
     required this.description,
     required this.quantity, required List farmersOrders,
+    required this.id,
+
   }) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +62,27 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
         .where((order) => order['returnDate'] == '') // Check for empty return date
         .toList();
 
+    void Machinarydel()async{
+      try{
+
+        await SupplierMachineryService().machinarydel(id);
+
+        Navigator.pop(context);
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('s')));
+
+
+      }
+      catch(e){
+
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('f')));
+
+      }
+
+
+
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Equipment Details'),
@@ -74,7 +105,7 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
                Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => EditEquipmentScreen(initialName: '', initialImageUrl: '', initialRentRate: '', initialDescription: '', initialQuantity: quantity,),
+                          builder: (context) => EditEquipmentScreen(id: id,initialName: name, initialImageUrl: imageUrl, initialRentRate: rentRate, initialDescription:description, initialQuantity: quantity,),
                         ),
                       );
               
@@ -84,8 +115,8 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
-              // Handle delete action (you can implement your own logic here)
-              print('Delete button clicked');
+              Machinarydel();
+              
             },
           ),
         ],
@@ -124,7 +155,7 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
 
             // Quantity
             Text(
-              'Available Quantity: $quantity',
+              'Quantity: $quantity',
               style: const TextStyle(fontSize: 18, ),
             ),
             const Divider(height: 30),
@@ -175,18 +206,20 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
 //edit details
 class EditEquipmentScreen extends StatefulWidget {
   final String initialName;
-  final String initialImageUrl;
+  String initialImageUrl;
   final String initialRentRate;
   final String initialDescription;
   final int initialQuantity;
+  String id;
 
-  const EditEquipmentScreen({
+  EditEquipmentScreen({
     Key? key,
     required this.initialName,
     required this.initialImageUrl,
     required this.initialRentRate,
     required this.initialDescription,
     required this.initialQuantity,
+    required this.id,
   }) : super(key: key);
 
   @override
@@ -200,10 +233,14 @@ class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
 
+
+  bool isloading = false;
+
   @override
   void initState() {
     super.initState();
     // Initialize the controllers with current data
+    
     _nameController.text = widget.initialName;
     _imageUrlController.text = widget.initialImageUrl;
     _rentRateController.text = widget.initialRentRate;
@@ -212,17 +249,27 @@ class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
   }
 
   void _saveChanges() {
-    // Implement save functionality (e.g., update data in a database or send to an API)
-    print("Equipment details updated");
-    // For now, simply print the updated values
-    print("Name: ${_nameController.text}");
-    print("Image URL: ${_imageUrlController.text}");
-    print("Rent Rate: ${_rentRateController.text}");
-    print("Description: ${_descriptionController.text}");
-    print("Quantity: ${_quantityController.text}");
+
+    SupplierMachineryService().machinaryedit(
+      name: _nameController.text , imageUrl: widget.initialImageUrl, rentRate: _rentRateController.text, description: _descriptionController.text, quantity: _quantityController.text , id: widget.id);
     
-    // After saving, pop the screen
     Navigator.pop(context);
+  }
+
+    Future<void> _pickImage() async {
+
+      setState(() {
+        isloading = true;
+      });
+    final ImagePicker _picker = ImagePicker();
+    final image = await _picker.pickImage(source: ImageSource.gallery);
+
+    if(image != null){
+     widget.initialImageUrl = await  uploadfile(name: 'machine', uid: widget.id , file: File(image.path));
+    }
+    setState(() {
+      isloading = false;
+    });
   }
 
   @override
@@ -231,19 +278,37 @@ class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
       appBar: AppBar(
         title: const Text('Edit Equipment'),
       ),
-      body: Padding(
+      body: isloading ? Center(
+        child: CircularProgressIndicator(),
+      )  : Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             children: [
+               Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    _pickImage();
+                    
+                  },
+                  child: const Text('Edit image'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color.fromARGB(255, 221, 227, 221), // Set the button background to green
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0),
+                    textStyle: const TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+
+              Image.network(widget.initialImageUrl),
+               
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(labelText: 'Equipment Name'),
               ),
-              TextField(
-                controller: _imageUrlController,
-                decoration: const InputDecoration(labelText: 'Image URL'),
-              ),
+
+            
+             
               TextField(
                 controller: _rentRateController,
                 decoration: const InputDecoration(labelText: 'Rent Rate'),
@@ -255,7 +320,7 @@ class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
               ),
               TextField(
                 controller: _quantityController,
-                decoration: const InputDecoration(labelText: 'Available Quantity'),
+                decoration: const InputDecoration(labelText: 'Quantity'),
                 keyboardType: TextInputType.number,
               ),
               const SizedBox(height: 20), // Add spacing before the Save button
