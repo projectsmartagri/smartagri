@@ -38,6 +38,7 @@ class SupplierMachineryService {
 
       });
 
+      
 
 
      }
@@ -52,6 +53,41 @@ class SupplierMachineryService {
 
      }
    }
+
+
+   Future<void>machinarydel(String id)async{
+        try{
+         await  _firestore.collection('machinary').doc(id).delete();
+
+        }
+        catch(e){
+          rethrow;
+        }
+
+      }
+       Future<void>machinaryedit({required String name,required imageUrl,required rentRate,required description,required quantity,required id})async{
+        try{
+         await  _firestore.collection('machinary').doc(id).update(
+          {
+            'description':description,
+            'image':imageUrl,
+            'name':name,
+            'price':rentRate,
+            'Quantity':quantity,
+
+
+          }
+         );
+
+        }
+        catch(e){
+          rethrow;
+        }
+
+      }
+
+
+
 
 
 

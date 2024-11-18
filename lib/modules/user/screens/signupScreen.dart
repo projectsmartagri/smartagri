@@ -34,7 +34,7 @@ class _SupplierSignupScreenState extends State<signupScreen> {
             children: [
               const Text(
                 'SIGN UP',
-                style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold, color: Color.fromRGBO(4, 75, 4, 0.424),),
+                style: TextStyle(fontSize: 24,fontWeight: FontWeight.bold, color: Color.fromRGBO(4, 75, 4, 0.767),),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 20),

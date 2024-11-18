@@ -353,13 +353,15 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                                   MaterialPageRoute(
                                     builder: (context) =>
                                         SupplierEquipmentDetailsScreen(
+                                          id: dataDoc[index].id,
                                       name: dataDoc[index]['name']!,
                                       imageUrl: dataDoc[index]['image']!,
                                       rentRate:
                                           dataDoc[index]['price'].toString(),
                                       description: dataDoc[index]
                                           ['description']!,
-                                      quantity: 2,
+                                      quantity:  int.parse(dataDoc[index]
+                                          ['Quantity']!),
                                       farmersOrders: [],
                                     ),
                                   ),
