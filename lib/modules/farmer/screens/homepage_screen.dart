@@ -58,13 +58,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
             fontWeight: FontWeight.bold, // Change to your desired font weight
           ),
         ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Open the drawer
-            
-          },
-        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.search),
@@ -76,39 +69,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ),
         ],
       ),
-      drawer: Drawer(
-        // Add your drawer content here
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Drawer Header',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text('settings'),
-              onTap: () {
-                // Handle item 1 tap
-              },
-            ),
-            ListTile(
-              title: Text('payment'),
-              onTap: () {
-                // Handle item 2 tap
-              },
-            ),
-            // Add more items here
-          ],
-        ),
-      ),
+   
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
