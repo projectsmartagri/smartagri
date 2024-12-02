@@ -76,7 +76,7 @@ class OtherCompaniesScreen extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EquipmentListPagescreen(companyId: companyId), // Pass companyId to EquipmentListPage
+            builder: (context) => EquipmentListPagescreen (companyId: companyId, companyName: '',), // Pass companyId to EquipmentListPage
           ),
         );
       },
