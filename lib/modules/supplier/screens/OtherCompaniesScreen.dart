@@ -9,14 +9,14 @@ class OtherCompaniesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Other Companies'),
+        title: const Text('Other Companies'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context); // Navigate back to the previous screen
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) =>SupplierHomeScreen()), // Navigate to HomeScreen
+              MaterialPageRoute(builder: (context) =>const SupplierHomeScreen()), // Navigate to HomeScreen
             );
           },
         ),
@@ -26,11 +26,11 @@ class OtherCompaniesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Select Companies',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16), // Space between title and list
+            const SizedBox(height: 16), // Space between title and list
             Expanded(
               child: ListView(
                 children: [
@@ -104,7 +104,7 @@ class OtherCompaniesScreen extends StatelessWidget {
               alignment: Alignment.center,
               child: Text(
                 companyName,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 29, // Increased font size for better visibility
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

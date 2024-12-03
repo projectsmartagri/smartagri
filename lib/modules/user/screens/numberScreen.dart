@@ -28,13 +28,13 @@ class Number extends StatelessWidget {
               style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: ht/37.48,
-                color: Color(0xff181725)
+                color: const Color(0xff181725)
               ),),
             ),
 
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
 
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
               child: Text('Mobile Number',
               style: TextStyle(
@@ -44,7 +44,7 @@ class Number extends StatelessWidget {
               ),
               ),
             ),
-            SizedBox(height:10,),
+            const SizedBox(height:10,),
             
             PhoneFormField(
               initialValue:
@@ -63,7 +63,7 @@ class Number extends StatelessWidget {
                   flagSize: 16),
             ),
             
-            Spacer(),
+            const Spacer(),
             
 
 
@@ -74,11 +74,11 @@ class Number extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
 
-          Navigator.push(context, MaterialPageRoute(builder: (context) => Verificationscreen(),));
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const Verificationscreen(),));
         },
-        child: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,),
         backgroundColor: Colors.green,
-        shape:CircleBorder()
+        shape:const CircleBorder(),
+        child: Icon(Icons.arrow_forward_ios_rounded,color: Colors.white,)
       ),
 
     );

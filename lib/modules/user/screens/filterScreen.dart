@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../widgets/checkboxCustomwidget.dart';
 
 class Filterscreen extends StatefulWidget {
-   Filterscreen({super.key});
+   const Filterscreen({super.key});
 
   @override
   State<Filterscreen> createState() => _FilterscreenState();
@@ -20,14 +20,14 @@ class _FilterscreenState extends State<Filterscreen> {
 
     return Scaffold(
       body: SafeArea(
-        child: Container(
+        child: SizedBox(
           width: MediaQuery.of(context).size.width,
           child: Column(
 
             children: [
-              SizedBox(height: 50,),
+              const SizedBox(height: 50,),
 
-              Center(
+              const Center(
                 child: Text('Filters',
                   style: TextStyle(
                       fontSize: 20,
@@ -36,12 +36,12 @@ class _FilterscreenState extends State<Filterscreen> {
                   ),),
               ),
 
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
 
               Expanded(
                 child: Container(
                   width: MediaQuery.of(context).size.width,
-                  color: Color(0xffF2F3F2),
+                  color: const Color(0xffF2F3F2),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -51,7 +51,7 @@ class _FilterscreenState extends State<Filterscreen> {
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           fontSize: ht/37.48,
-                          color: Color(0xff181725)
+                          color: const Color(0xff181725)
                         )),
                       ),
 
@@ -74,7 +74,7 @@ class _FilterscreenState extends State<Filterscreen> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: ht/37.48,
-                                color: Color(0xff181725)
+                                color: const Color(0xff181725)
                             )),
                       ),
                       Checkboxcustomwidget(

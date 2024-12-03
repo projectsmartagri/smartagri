@@ -9,7 +9,7 @@ class SupplierBookingdetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back), // Back button
+          icon: const Icon(Icons.arrow_back), // Back button
           onPressed: () {
             Navigator.pop(context);
              Navigator.push(
@@ -18,7 +18,7 @@ class SupplierBookingdetailsScreen extends StatelessWidget {
                       ); // Navigate back when pressed
           },
         ),
-        title: Text(
+        title: const Text(
           'Booking Details', // Title of the screen
           style: TextStyle(
             fontWeight: FontWeight.bold,

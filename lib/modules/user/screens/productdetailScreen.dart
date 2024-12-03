@@ -32,6 +32,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
     });
   }
 
+  @override
   void initState() {
 
       isFavorite =  favList.contains(widget.value);
@@ -58,7 +59,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
             Container(
               width: wt/0.99,
               height: ht/2.42,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Color(0xffF2F3F2)
               ),
         
@@ -77,8 +78,8 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
+                    autoPlayInterval: const Duration(seconds: 3),
+                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
                     autoPlayCurve: Curves.fastOutSlowIn,
                     enlargeCenterPage: true,
                     enlargeFactor: 0.3,
@@ -106,7 +107,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                     children: [
                       Text(widget.title,
                       style: TextStyle(
-                        color: Color(0xff181725),
+                        color: const Color(0xff181725),
                         fontWeight: FontWeight.bold,
                         fontSize: ht/37.48
                       ),),
@@ -139,7 +140,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                   Row(
                     children: [
                       Text(widget.subtitle,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Color(0xff7C7C7C),
                         fontSize: 16,
                         fontWeight: FontWeight.w600
@@ -147,7 +148,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                     ],
                   ),
         
-                  SizedBox(height: 25,),
+                  const SizedBox(height: 25,),
         
                   Row(
                     children: [
@@ -161,13 +162,13 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                               }
                             });
             },
-                          child: Icon(
+                          child: const Icon(
                             Icons.remove,
                             color: Color(0xffB3B3B3),
                             size: 20,
                           )),
         
-                      SizedBox(width: 15,),
+                      const SizedBox(width: 15,),
         
                       Container(
                         height: ht/22.48,
@@ -183,7 +184,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                         ),
                       ),
         
-                      SizedBox(width: 15,),
+                      const SizedBox(width: 15,),
         
                       // Image.asset('asset/images/+.png',),
         
@@ -193,14 +194,14 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                               itemCount++;
                             });
                           },
-                          child: Icon(
+                          child: const Icon(
                             Icons.add,
                             color: Colors.green,
                             size: 20,
                           )),
         
         
-                      Spacer(),
+                      const Spacer(),
         
                       Text('\$${widget.price.toStringAsFixed(2)}',
                       style: TextStyle(
@@ -210,15 +211,15 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                     ],
                   ),
         
-                  SizedBox(height: 25,),
+                  const SizedBox(height: 25,),
         
-                  Divider(
+                  const Divider(
                     height: 8,
                   ),
         
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
         
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Product Detail',
@@ -233,44 +234,44 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                     ],
                   ),
         
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
         
-                  Text('Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.',
+                  const Text('Apples are nutritious. Apples may be good for weight loss. apples may be good for your heart. As part of a healtful and varied diet.',
                   style: TextStyle(
                     color: Color(0xff7C7C7C),
                     fontSize: 13
                   ),),
         
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
         
-                  Divider(
+                  const Divider(
                     height:8
                   ),
         
-                  SizedBox(height: 12),
+                  const SizedBox(height: 12),
         
                   Row(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Nutritions',
+                      const Text('Nutritions',
                       style: TextStyle(
                         color: Color(0xff181725),
                         fontSize: 16,
                         fontWeight: FontWeight.w600
                       ),),
-                      Spacer(),
+                      const Spacer(),
         
                       Container(
                         height: ht/44.97,
                         width: wt/11.75,
                         decoration: BoxDecoration(
                             border: Border.all(
-                                color: Color(0xff7C7C7C)
+                                color: const Color(0xff7C7C7C)
                             ),
-                            color: Color(0xff7C7C7C),
+                            color: const Color(0xff7C7C7C),
                             borderRadius: BorderRadius.circular(5)
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text('100 gr',
                           style: TextStyle(
                             fontSize: 9
@@ -279,21 +280,21 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                         ),
                       ),
         
-                      SizedBox(width: 10,),
+                      const SizedBox(width: 10,),
         
-                      Icon(Icons.arrow_forward_ios_rounded)
+                      const Icon(Icons.arrow_forward_ios_rounded)
                     ],
                   ),
         
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
         
-                  Divider(
+                  const Divider(
                     height: 8,
                   ),
         
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
         
-                  Row(
+                  const Row(
                     children: [
                       Text('Review',
                       style: TextStyle(
@@ -330,7 +331,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                     ],
                   ),
         
-                  SizedBox(height: 25,),
+                  const SizedBox(height: 25,),
         
                   CustomButtonWidget(
                     text: 'Add To Basket',

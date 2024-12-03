@@ -17,7 +17,7 @@ class Orderacceptedscreen extends StatelessWidget {
       body: Column(
         // crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height:110 ,),
+          const SizedBox(height:110 ,),
 
           Padding(
             padding: const EdgeInsets.all(50.0),
@@ -38,16 +38,16 @@ class Orderacceptedscreen extends StatelessWidget {
             fontWeight: FontWeight.w600,
           )
           ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
           
-          Text('Your item has been placed and is on \nits way to being processed',
+          const Text('Your item has been placed and is on \nits way to being processed',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,
             color: Color(0xff7C7C7C)
           ),),
 
-          SizedBox(height: 90,),
+          const SizedBox(height: 90,),
 
           CustomButtonWidget(
             text: 'Track Order',
@@ -60,7 +60,7 @@ class Orderacceptedscreen extends StatelessWidget {
             onPressed: () {  
               Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Bottomnavigationbar(),), (route) => false);
             },
-            child: Text('Back to home',
+            child: const Text('Back to home',
               style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,

@@ -5,7 +5,7 @@ import '../widgets/custombuttonWidget.dart';
 import 'orderacceptedScreen.dart';
 
 class Mycartscreen extends StatefulWidget {
-  Mycartscreen({super.key});
+  const Mycartscreen({super.key});
 
   @override
   State<Mycartscreen> createState() => _MycartscreenState();
@@ -48,7 +48,7 @@ class _MycartscreenState extends State<Mycartscreen> {
               ),
               ListView.builder(
                 shrinkWrap: true, // Ensures that ListView takes up minimal space
-                physics: NeverScrollableScrollPhysics(), // Prevents ListView from scrolling independently
+                physics: const NeverScrollableScrollPhysics(), // Prevents ListView from scrolling independently
                 itemCount: cartList.length,
                 itemBuilder: (context, index) {
                   int itemCount = cartList.elementAt(index)['quantity'];
@@ -161,7 +161,7 @@ class _MycartscreenState extends State<Mycartscreen> {
                   showModalBottomSheet(
                     context: context,
                     builder: (context) => SingleChildScrollView(
-                      child: Container(
+                      child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                         child: Padding(
                           padding: const EdgeInsets.all(20.0),
@@ -183,8 +183,8 @@ class _MycartscreenState extends State<Mycartscreen> {
                               const SizedBox(height: 10),
                               const Divider(height: 5),
                               const SizedBox(height: 10),
-                              Row(
-                                children: const [
+                              const Row(
+                                children: [
                                   Text(
                                     'Delivery',
                                     style: TextStyle(
@@ -202,8 +202,8 @@ class _MycartscreenState extends State<Mycartscreen> {
                               const SizedBox(height: 10),
                               const Divider(height: 5),
                               const SizedBox(height: 10),
-                              Row(
-                                children: const [
+                              const Row(
+                                children: [
                                   Text(
                                     'Payment',
                                     style: TextStyle(
@@ -216,8 +216,8 @@ class _MycartscreenState extends State<Mycartscreen> {
                               const SizedBox(height: 10),
                               const Divider(height: 5),
                               const SizedBox(height: 10),
-                              Row(
-                                children: const [
+                              const Row(
+                                children: [
                                   Text(
                                     'Promo Code',
                                     style: TextStyle(

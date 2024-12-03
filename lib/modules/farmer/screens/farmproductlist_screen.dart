@@ -61,23 +61,23 @@ class FarmProductListScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
-            Text(
+            const Text(
               'Added products',
               style: TextStyle(
                   fontSize: 20,
                   color: Color(0xff181725),
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Expanded(
               child: GridView.builder(
                 itemCount: list.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
@@ -106,9 +106,9 @@ class FarmProductListScreen extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => AddProductScreen()),
           );
-        },
-        child: Icon(Icons.add), // Icon for the FAB
-        backgroundColor: Colors.green, // Customize the FAB color
+        }, // Icon for the FAB
+        backgroundColor: Colors.green,
+        child: Icon(Icons.add), // Customize the FAB color
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat, // Positioned at bottom right
     );

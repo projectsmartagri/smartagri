@@ -63,7 +63,7 @@ final FirebaseStorage _storage = FirebaseStorage.instance;
       return downloadUrl;
     } catch (e) {
       print('Error uploading company license: $e');
-      throw e;
+      rethrow;
     }
   }
 

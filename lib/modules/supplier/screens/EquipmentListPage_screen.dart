@@ -5,7 +5,7 @@ import 'dart:convert'; // For converting JSON responses
 class EquipmentListPagescreen extends StatelessWidget {
   final String companyId;
 
-  EquipmentListPagescreen({required this.companyId});
+  const EquipmentListPagescreen({super.key, required this.companyId});
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +18,11 @@ class EquipmentListPagescreen extends StatelessWidget {
           future: fetchEquipmentForCompany(companyId), // Call to the API function
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator(); // Show loading indicator
+              return const CircularProgressIndicator(); // Show loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}'); // Show error
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No equipment available for this company.'); // Show no data message
+              return const Text('No equipment available for this company.'); // Show no data message
             } else {
               final equipmentList = snapshot.data!;
               return ListView.builder(

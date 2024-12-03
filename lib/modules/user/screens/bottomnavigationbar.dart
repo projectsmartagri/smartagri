@@ -39,7 +39,7 @@ class _BottomnavigationbarState extends State<Bottomnavigationbar> {
     });
     
     pages.addAll([
-      HomePage(),
+      const HomePage(),
       ExploreScreen(),
       // Searchscreen(),
       Mycartscreen(),

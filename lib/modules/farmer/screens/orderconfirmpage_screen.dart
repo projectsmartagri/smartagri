@@ -5,13 +5,13 @@ class OrderSuccessPage extends StatelessWidget {
   final String orderNumber;
 
   // Constructor to accept an order number
-  OrderSuccessPage({required this.orderNumber});
+  const OrderSuccessPage({super.key, required this.orderNumber});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Successful'),
+        title: const Text('Order Successful'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -20,15 +20,15 @@ class OrderSuccessPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Success Icon
-              Icon(
+              const Icon(
                 Icons.check_circle_outline,
                 color: Colors.green,
                 size: 100,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
           
               // Success Message
-              Text(
+              const Text(
                 'Order Placed Successfully!',
                 style: TextStyle(
                   fontSize: 24,
@@ -36,17 +36,17 @@ class OrderSuccessPage extends StatelessWidget {
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
           
               // Order Number Display
               Text(
                 'Order Number: $orderNumber',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 18,
                 ),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
           
               // View Order Button
               ElevatedButton(
@@ -59,10 +59,10 @@ class OrderSuccessPage extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text('View Order'),
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 16),
                 ),
+                child: Text('View Order'),
               ),
              
             ],
@@ -77,18 +77,18 @@ class OrderSuccessPage extends StatelessWidget {
 class OrderDetailsPage extends StatelessWidget {
   final String orderNumber;
 
-  OrderDetailsPage({required this.orderNumber});
+  const OrderDetailsPage({super.key, required this.orderNumber});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Details'),
+        title: const Text('Order Details'),
       ),
       body: Center(
         child: Text(
           'Details for Order Number: $orderNumber',
-          style: TextStyle(fontSize: 24),
+          style: const TextStyle(fontSize: 24),
         ),
       ),
     );

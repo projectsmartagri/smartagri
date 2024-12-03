@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smartagri/modules/user/screens/List_itemsScreen.dart';
-import 'package:smartagri/modules/user/screens/accountScreen.dart';
 import 'package:smartagri/modules/user/screens/favouriteScreen.dart';
-import 'package:smartagri/modules/user/screens/mycartScreen.dart';
-import 'package:smartagri/modules/user/screens/productdetailScreen.dart';
-
 
 
 
@@ -18,7 +14,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String _selectedCategory = 'All'; // Default selected category
-  int _selectedIndex = 0; // Default index for BottomNavigationBar
+  final int _selectedIndex = 0; // Default index for BottomNavigationBar
 
   final List<String> imgList = [
     'https://5.imimg.com/data5/SELLER/Default/2023/11/364648303/OR/VC/GX/186750549/jangeer-multicrop-thresher-500x500.jpeg',
@@ -170,7 +166,7 @@ class _HomePageState extends State<HomePage> {
               ),
               actions: [
                  IconButton(
-                  icon: Icon(Icons.favorite_border_outlined, color: const Color.fromARGB(255, 68, 69, 68)),
+                  icon: const Icon(Icons.favorite_border_outlined, color: Color.fromARGB(255, 68, 69, 68)),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -179,7 +175,7 @@ class _HomePageState extends State<HomePage> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.notifications, color: const Color.fromARGB(255, 68, 69, 68)),
+                  icon: const Icon(Icons.notifications, color: Color.fromARGB(255, 68, 69, 68)),
                   onPressed: () {
                     Navigator.push(
                       context,
@@ -301,11 +297,11 @@ class CategoryButton extends StatelessWidget {
   final VoidCallback onPressed;
 
   const CategoryButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.isSelected,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -313,7 +309,7 @@ class CategoryButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: isSelected ? const Color.fromARGB(255, 6, 106, 23) : Colors.grey[200],
         foregroundColor: isSelected ? Colors.white : const Color.fromARGB(255, 0, 0, 0),
-        shape: BeveledRectangleBorder(), // Rectangular buttons
+        shape: const BeveledRectangleBorder(), // Rectangular buttons
       ),
       onPressed: onPressed,
       child: Text(label),
@@ -337,9 +333,9 @@ class NotificationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notifications'),
+        title: const Text('Notifications'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('No new notifications'),
       ),
     );

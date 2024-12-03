@@ -43,7 +43,7 @@ class AuthViewModel extends ChangeNotifier {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Loginscreen()),
+        MaterialPageRoute(builder: (context) => const Loginscreen()),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,7 +101,7 @@ class AuthViewModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logout Successful')),
       );
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => Loginscreen(),), (route) => false,);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Loginscreen(),), (route) => false,);
 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

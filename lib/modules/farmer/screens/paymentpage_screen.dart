@@ -4,6 +4,8 @@ import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:smartagri/modules/farmer/screens/orderconfirmpage_screen.dart';
 
 class PaymentScreen extends StatefulWidget {
+  const PaymentScreen({super.key});
+
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
 }
@@ -42,7 +44,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Payment'),
+        title: const Text('Payment'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -53,7 +55,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               // Name on Card Field
               TextFormField(
                 controller: _nameOnCardController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Name on Card',
                   border: OutlineInputBorder(),
                 ),
@@ -65,12 +67,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Card Number Field
               TextFormField(
                 controller: _cardNumberController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Card Number',
                   border: OutlineInputBorder(),
                 ),
@@ -84,12 +86,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // Expiry Date Field (with MM/YY format)
               TextFormField(
                 controller: _expiryDateController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Expiry Date (MM/YY)',
                   border: OutlineInputBorder(),
                 ),
@@ -107,12 +109,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
               // CVV Field
               TextFormField(
                 controller: _cvvController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'CVV',
                   border: OutlineInputBorder(),
                 ),
@@ -127,15 +129,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 24),
+              const SizedBox(height: 24),
 
               // Submit Button
               ElevatedButton(
                 onPressed: _submitPayment,
-                child: Text('Submit Payment'),
                 style: ElevatedButton.styleFrom(
-                  padding: EdgeInsets.symmetric(vertical: 16, horizontal: 32),
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                 ),
+                child: Text('Submit Payment'),
               ),
             ],
           ),
@@ -147,13 +149,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
 // Order Confirm Page to show successful order message
 class OrderConfirmPage extends StatelessWidget {
+  const OrderConfirmPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order Confirmation'),
+        title: const Text('Order Confirmation'),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

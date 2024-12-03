@@ -39,7 +39,7 @@ class _LocationscreenState extends State<Locationscreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 70,
                 ),
                 Container(
@@ -47,30 +47,30 @@ class _LocationscreenState extends State<Locationscreen> {
 
                   width: wt / 1.83,
                   height: ht / 5.27,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(
                       'asset/images/location.png',
                     )),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 60,
                 ),
 
                 Text(
                   'Select Your Location',
                   style: TextStyle(
-                      color: Color(0xff181725),
+                      color: const Color(0xff181725),
                       fontWeight: FontWeight.w600,
                       fontSize: ht / 34.59),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
 
-                Text(
+                const Text(
                   'Switch on your location to stay in tune with \nwhats happening in your area',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -79,11 +79,11 @@ class _LocationscreenState extends State<Locationscreen> {
                   ),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 50,
                 ),
 
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Your Zone',
@@ -111,8 +111,8 @@ class _LocationscreenState extends State<Locationscreen> {
                   icon: const Icon(Icons.keyboard_arrow_down),
                   items: items.map((String items) {
                     return DropdownMenuItem(
-                      child: Text(items),
                       value: items,
+                      child: Text(items),
                     );
                   }).toList(),
 
@@ -127,15 +127,15 @@ class _LocationscreenState extends State<Locationscreen> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       dropdownError!,
-                      style: TextStyle(color: Colors.red, fontSize: 12),
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
 
-                SizedBox(
+                const SizedBox(
                   height: 18,
                 ),
 
-                Align(
+                const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     'Your Area',
@@ -145,13 +145,13 @@ class _LocationscreenState extends State<Locationscreen> {
 
                 DropdownButton(
                   isExpanded: true,
-                  hint: Text('Type of your area'),
+                  hint: const Text('Type of your area'),
                   value: selectedLoc,
                   icon: const Icon(Icons.keyboard_arrow_down),
                   items: loc.map((String loc) {
                     return DropdownMenuItem(
-                      child: Text(loc),
                       value: loc,
+                      child: Text(loc),
                     );
                   }).toList(),
                   onChanged: (String? value) {
@@ -166,12 +166,12 @@ class _LocationscreenState extends State<Locationscreen> {
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
                       dropdownErrorArea!,
-                      style: TextStyle(color: Colors.red, fontSize: 12),
+                      style: const TextStyle(color: Colors.red, fontSize: 12),
                     ),
                   ),
 
 
-                SizedBox(
+                const SizedBox(
                   height: 30,
                 ),
 
@@ -179,8 +179,8 @@ class _LocationscreenState extends State<Locationscreen> {
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12)),
-                      fixedSize: Size(364, 67),
-                      backgroundColor: Color(0xff53B175),
+                      fixedSize: const Size(364, 67),
+                      backgroundColor: const Color(0xff53B175),
                     ),
                     onPressed: () {
                      dropdownError=   validateDropdown(value: selectedValue);
@@ -202,7 +202,7 @@ class _LocationscreenState extends State<Locationscreen> {
 
                       // Navigator.push(context, MaterialPageRoute(builder: (context) => Loginscreen(),));
                     },
-                    child: Text(
+                    child: const Text(
                       'Submit',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ))

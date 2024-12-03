@@ -8,9 +8,9 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Settings'),
+        title: const Text('Settings'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
             Navigator.push(
@@ -21,10 +21,10 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: [
           ListTile(
-            title: Text('Account Settings'),
+            title: const Text('Account Settings'),
             onTap: () {
               Navigator.push(
                 context,
@@ -33,7 +33,7 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Notification Preferences'),
+            title: const Text('Notification Preferences'),
             onTap: () {
               Navigator.push(
                 context,
@@ -42,7 +42,7 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            title: Text('Privacy Settings'),
+            title: const Text('Privacy Settings'),
             onTap: () {
               Navigator.push(
                 context,
@@ -52,7 +52,7 @@ class SettingsScreen extends StatelessWidget {
           ),
         
           ListTile(
-            title: Text('Help & Support'),
+            title: const Text('Help & Support'),
             onTap: () {
               Navigator.push(
                 context,
@@ -82,16 +82,16 @@ class AccountSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Account Settings'),
+        title: const Text('Account Settings'),
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
         children: [
           // Company Profile Section
           ListTile(
-            title: Text('Company Profile'),
-            subtitle: Text('Update company name, logo, and other details'),
-            trailing: Icon(Icons.arrow_forward_ios),
+            title: const Text('Company Profile'),
+            subtitle: const Text('Update company name, logo, and other details'),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to Company Profile Settings
               Navigator.push(
@@ -100,13 +100,13 @@ class AccountSettingsScreen extends StatelessWidget {
               );
             },
           ),
-          Divider(),
+          const Divider(),
 
           // Contact Information Section
           ListTile(
-            title: Text('Contact Information'),
-            subtitle: Text('Update business address, phone number, and email'),
-            trailing: Icon(Icons.arrow_forward_ios),
+            title: const Text('Contact Information'),
+            subtitle: const Text('Update business address, phone number, and email'),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to Contact Information Settings
               Navigator.push(
@@ -115,13 +115,13 @@ class AccountSettingsScreen extends StatelessWidget {
               );
             },
           ),
-          Divider(),
+          const Divider(),
 
           // Account Preferences Section
           ListTile(
-            title: Text('Account Preferences'),
-            subtitle: Text('Set preferences for notifications and account privacy'),
-            trailing: Icon(Icons.arrow_forward_ios),
+            title: const Text('Account Preferences'),
+            subtitle: const Text('Set preferences for notifications and account privacy'),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to Account Preferences Settings
               Navigator.push(
@@ -130,13 +130,13 @@ class AccountSettingsScreen extends StatelessWidget {
               );
             },
           ),
-          Divider(),
+          const Divider(),
 
           // Billing Information Section
           ListTile(
-            title: Text('Billing Information'),
-            subtitle: Text('Manage payment methods and view transaction history'),
-            trailing: Icon(Icons.arrow_forward_ios),
+            title: const Text('Billing Information'),
+            subtitle: const Text('Manage payment methods and view transaction history'),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to Billing Information Settings
               Navigator.push(
@@ -145,13 +145,13 @@ class AccountSettingsScreen extends StatelessWidget {
               );
             },
           ),
-          Divider(),
+          const Divider(),
 
           // Security Settings Section
           ListTile(
-            title: Text('Security Settings'),
-            subtitle: Text('Change password and enable two-factor authentication'),
-            trailing: Icon(Icons.arrow_forward_ios),
+            title: const Text('Security Settings'),
+            subtitle: const Text('Change password and enable two-factor authentication'),
+            trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               // Navigate to Security Settings
               Navigator.push(
@@ -173,8 +173,8 @@ class CompanyProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Company Profile')),
-      body: Center(child: Text('Update company profile details here')),
+      appBar: AppBar(title: const Text('Company Profile')),
+      body: const Center(child: Text('Update company profile details here')),
     );
   }
 }
@@ -186,8 +186,8 @@ class ContactInformationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Contact Information')),
-      body: Center(child: Text('Update contact information here')),
+      appBar: AppBar(title: const Text('Contact Information')),
+      body: const Center(child: Text('Update contact information here')),
     );
   }
 }
@@ -199,8 +199,8 @@ class AccountPreferencesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Account Preferences')),
-      body: Center(child: Text('Manage account preferences here')),
+      appBar: AppBar(title: const Text('Account Preferences')),
+      body: const Center(child: Text('Manage account preferences here')),
     );
   }
 }
@@ -212,8 +212,8 @@ class BillingInformationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Billing Information')),
-      body: Center(child: Text('Manage billing information here')),
+      appBar: AppBar(title: const Text('Billing Information')),
+      body: const Center(child: Text('Manage billing information here')),
     );
   }
 }
@@ -225,8 +225,8 @@ class SecuritySettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Security Settings')),
-      body: Center(child: Text('Update security settings here')),
+      appBar: AppBar(title: const Text('Security Settings')),
+      body: const Center(child: Text('Update security settings here')),
     );
   }
 }
@@ -253,21 +253,21 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Notification Preferences'),
+        title: const Text('Notification Preferences'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Manage your notifications',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SwitchListTile(
-              title: Text('Rental Alerts'),
-              subtitle: Text('Get notifications when your equipment is rented.'),
+              title: const Text('Rental Alerts'),
+              subtitle: const Text('Get notifications when your equipment is rented.'),
               value: _rentalAlerts,
               onChanged: (bool value) {
                 setState(() {
@@ -276,8 +276,8 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
               },
             ),
             SwitchListTile(
-              title: Text('Supplier Updates'),
-              subtitle: Text('Receive updates from other suppliers.'),
+              title: const Text('Supplier Updates'),
+              subtitle: const Text('Receive updates from other suppliers.'),
               value: _supplierUpdates,
               onChanged: (bool value) {
                 setState(() {
@@ -286,8 +286,8 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
               },
             ),
             SwitchListTile(
-              title: Text('Machinery Availability Alerts'),
-              subtitle: Text('Get notified when new machinery becomes available.'),
+              title: const Text('Machinery Availability Alerts'),
+              subtitle: const Text('Get notified when new machinery becomes available.'),
               value: _machineryAvailability,
               onChanged: (bool value) {
                 setState(() {
@@ -295,17 +295,17 @@ class _NotificationPreferencesScreenState extends State<NotificationPreferencesS
                 });
               },
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Save notification preferences
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Preferences saved successfully!'),
                   ),
                 );
               },
-              child: Text('Save Preferences'),
+              child: const Text('Save Preferences'),
             ),
           ],
         ),
@@ -338,21 +338,21 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Privacy Settings'),
+        title: const Text('Privacy Settings'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Manage your privacy settings',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             SwitchListTile(
-              title: Text('Data Sharing'),
-              subtitle: Text('Allow sharing of your data with other suppliers.'),
+              title: const Text('Data Sharing'),
+              subtitle: const Text('Allow sharing of your data with other suppliers.'),
               value: _dataSharing,
               onChanged: (bool value) {
                 setState(() {
@@ -361,8 +361,8 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               },
             ),
             SwitchListTile(
-              title: Text('Location Tracking'),
-              subtitle: Text('Allow location tracking for better service and recommendations.'),
+              title: const Text('Location Tracking'),
+              subtitle: const Text('Allow location tracking for better service and recommendations.'),
               value: _locationTracking,
               onChanged: (bool value) {
                 setState(() {
@@ -371,8 +371,8 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
               },
             ),
             SwitchListTile(
-              title: Text('Rental History Visibility'),
-              subtitle: Text('Allow other suppliers to view your rental history.'),
+              title: const Text('Rental History Visibility'),
+              subtitle: const Text('Allow other suppliers to view your rental history.'),
               value: _rentalHistoryVisibility,
               onChanged: (bool value) {
                 setState(() {
@@ -380,17 +380,17 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
                 });
               },
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
                 // Save privacy settings
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
+                  const SnackBar(
                     content: Text('Privacy settings updated successfully!'),
                   ),
                 );
               },
-              child: Text('Save Settings'),
+              child: const Text('Save Settings'),
             ),
           ],
         ),
@@ -415,18 +415,18 @@ class HelpAndSupportScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Help & Support'),
+        title: const Text('Help & Support'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Frequently Asked Questions (FAQs)',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             _faqTile('How do I create an account?', 'You can create an account by clicking on the sign-up button on the homepage.'),
             _faqTile('How do I rent equipment?', 'To rent equipment, navigate to the equipment section and select the items you wish to rent.'),
             _faqTile('What payment methods are accepted?', 'We accept various payment methods including credit cards and bank transfers.'),
@@ -441,7 +441,7 @@ class HelpAndSupportScreen extends StatelessWidget {
     return ExpansionTile(
       title: Text(
         question,
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
       ),
       children: <Widget>[
         Padding(

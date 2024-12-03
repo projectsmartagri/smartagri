@@ -302,12 +302,12 @@ class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
                           ),
                           TextSpan(
                             text: 'Login',
-                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SupplierLoginScreen()),
+                                  MaterialPageRoute(builder: (context) => const SupplierLoginScreen()),
                                 );
                               },
                           ),

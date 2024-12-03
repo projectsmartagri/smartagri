@@ -53,21 +53,21 @@ class Beveragesscreen extends StatelessWidget {
       body:SafeArea(
         child: Column(
           children: [
-            SizedBox(height: 50,),
+            const SizedBox(height: 50,),
         
-            Text('Beverages',
+            const Text('Beverages',
             style: TextStyle(
               fontSize: 20,
               color: Color(0xff181725),
               fontWeight: FontWeight.bold
             ),),
         
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
         
             Expanded(
               child: GridView.builder(
                 itemCount: list.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     crossAxisSpacing: 8,
                     mainAxisSpacing: 8,

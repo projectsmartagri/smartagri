@@ -17,14 +17,14 @@ class HomeScreenCustomWidget extends StatelessWidget {
           children: [
             Text(
               text1,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Color(0xff181725),
                   fontWeight: FontWeight.w600,
                   fontSize: 24),
             ),
             Text(
               text2,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Color(0xff53B175),
                   fontSize: 16,
                   fontWeight: FontWeight.w600),
