@@ -1,5 +1,10 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/farmer/screens/EquipmentListCompanies.dart';
+import 'package:smartagri/modules/farmer/screens/FarmerCompanyEquipment.dart';
+import 'package:smartagri/modules/farmer/screens/FarmerOrderScreen.dart';
+import 'package:smartagri/modules/farmer/screens/FarmerProductScreen.dart';
+import 'package:smartagri/modules/farmer/screens/FarmerProfileScreen.dart';
 import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 import 'package:smartagri/modules/farmer/screens/farmerequipmentlist_screen.dart';
@@ -16,13 +21,17 @@ class HomepageScreen extends StatefulWidget {
 class _HomepageScreenState extends State<HomepageScreen> {
   int _selectedIndex = 0;
 
+<<<<<<< HEAD
   static final List<Widget> _pages = <Widget>[
     // Home Page with Cards
+=======
+  static List<Widget> _pages = <Widget>[
+    
+>>>>>>> refs/remotes/origin/main
     HomePageContent(),
-    // Cart Page
-    const Center(child: Text('order Page', style: TextStyle(fontSize: 24))),
-    // Profile Page
-    const Center(child: Text('Profile Page', style: TextStyle(fontSize: 24))),
+    FarmerOrderScreen (),
+    FarmerProductScreen(),
+   FarmerProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -45,8 +54,8 @@ class _HomepageScreenState extends State<HomepageScreen> {
     // Handle the notification action here
     print('Notification icon pressed');
   }
-
   @override
+<<<<<<< HEAD
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -109,10 +118,44 @@ class _HomepageScreenState extends State<HomepageScreen> {
           ],
         ),
       ),
+=======
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: _selectedIndex == 0
+        ? AppBar(
+            title: const Text(
+              'Smart Agri',
+              style: TextStyle(
+                fontFamily: 'Dancing Script',
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: _onSearchPressed,
+              ),
+              IconButton(
+                icon: Icon(Icons.notifications),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => FarmerNotificationScreen()),
+                  );
+                },
+              ),
+            ],
+          )
+        : null, // Hide the AppBar for other screens
+ 
+>>>>>>> refs/remotes/origin/main
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
+             
             icon: Icon(Icons.home),
             label: 'Home',
           ),
@@ -121,24 +164,68 @@ class _HomepageScreenState extends State<HomepageScreen> {
             label: 'order',
           ),
           BottomNavigationBarItem(
+            icon: Icon(Icons.production_quantity_limits),
+            label: 'My products',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: Colors.blue,
+         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
       
     );
   }
+  
+  FarmerNotificationScreen() {}
 }
 
+
+
+
 class HomePageContent extends StatelessWidget {
+  @override
+Widget build(BuildContext context) {
+  // List of image URLs for the CarouselSlider
+  List<String> carouselImages = [
+    'https://5.imimg.com/data5/SELLER/Default/2023/11/364648303/OR/VC/GX/186750549/jangeer-multicrop-thresher-500x500.jpeg',
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTL2wkfKp1i7WvvRbQkiLFmAyiNxctUXuWCQ&s',
+    'https://media.licdn.com/dms/image/v2/D5612AQG8JZ0pQy8Dog/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1709282970844?e=2147483647&v=beta&t=EldBFEM6BXbZurlbMZBQbBhsPcrn9Y9TO0JDvXjg92o',
+  ];
+     List<Map<String, dynamic>> companiesList = [
+      {
+        'name': 'COMPANY A',
+        'image':
+            'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?cs=srgb&dl=pexels-francesco-ungaro-281260.jpg&fm=jpg',
+        'id': '1'
+      },
+      {
+        'name': 'COMPANY B',
+        'image':
+            'https://img.freepik.com/free-photo/abstract-dark-blurred-background-smooth-gradient-texture-color-shiny-bright-website-pattern-banner-header-sidebar-graphic-art-image_1258-88597.jpg',
+        'id': '2'
+      },
+      {
+        'name': 'COMPANY C',
+        'image':
+            'https://t4.ftcdn.net/jpg/01/16/88/37/360_F_116883786_wuckft1sNw1ouQfJ6FuquZnxea3qBlxy.jpg',
+        'id': '3'
+      },
+      {
+        'name': 'COMPANY D',
+        'image':
+            'https://img.freepik.com/free-photo/abstract-blur-empty-green-gradient-studio-well-use-as-background-website-template-frame-business-report_1258-52616.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727740800&semt=ais_hybrid',
+        'id': '4'
+      },
+    ];
 
-
-   List<Map<String,dynamic>> list= [
-     {
+  // Example equipment list for the card view
+  List<Map<String, dynamic>> equipmentList = [
+    {
        'image' : 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
        'title' : 'Tractor',
        'subtitle' : '',
@@ -175,35 +262,19 @@ class HomePageContent extends StatelessWidget {
        'subtitle' : '',
        'price' : 48.00
      },
-   ];
 
-   List categorieslist=[
-    {
-      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMcKnkjU6Flrtc-Vjd0uzSmNv68h-duaITvw&s',
-      'title':'Vegetables'
-    },
-    {
-      'image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpX1Ut5eFtME_JjgpQhH89wDito-zZiVo4Kw&s',
-      'title':'Fruits'
-    },
-    {
-      'image':'https://as2.ftcdn.net/v2/jpg/03/97/86/81/1000_F_397868193_nUAOTup7Z8R4kijdaJ9BuCwVSi8LobpR.jpg',
-      'title':'Seeds'
-    },
-    {
-      'image':'https://img.freepik.com/premium-photo/legumes-white-isolated-background_982005-10433.jpg',
-      'title':'Legumes'
-    },
-    {
-      'image':'https://as1.ftcdn.net/v2/jpg/00/60/25/94/1000_F_60259460_5ABiMHI7kE3c7vRTS8KW0Nv50EnxYX6T.jpg',
-      'title':'Tubers'
-    },
-    {
-      'image':'https://thumbs.dreamstime.com/b/mixed-nuts-group-isolated-white-background-37777972.jpg',
-      'title':'Nuts'
-    },
+     
+  ];
 
+  return Padding(
+  padding: const EdgeInsets.symmetric(horizontal: 20),
+  child: SingleChildScrollView(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 30),
 
+<<<<<<< HEAD
    ];
 
   HomePageContent({super.key});
@@ -348,9 +419,167 @@ class HomePageContent extends StatelessWidget {
         
         
          
+=======
+        // CarouselSlider
+        CarouselSlider(
+          options: CarouselOptions(
+            height: 200.0,
+            autoPlay: true,
+            enlargeCenterPage: true,
+          ),
+          items: carouselImages.map((url) {
+            return Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.symmetric(horizontal: 15.0),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.amber,
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  url,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+
+        const SizedBox(height: 30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Text("Equipments",
+             style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff181725),
+                    fontWeight: FontWeight.bold),),
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>FarmEquipmentListScreen(),
+                  ),
+                );
+              },
+              child: Row(
+                children: const [
+                  Text("See all"),
+                  Icon(Icons.arrow_right),
+                ],
+              ),
+            ),
+>>>>>>> refs/remotes/origin/main
           ],
         ),
-      ),
-    );
-  }
+
+        // Equipment List
+       Center(
+              child: Wrap(
+                alignment: WrapAlignment.center,
+                spacing: 16.0,
+                runSpacing: 16.0,
+                children: equipmentList.map((e) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Equipmentlistcompanies(
+                            companyId: '1', // Pass the selected company ID
+                            companyName: 'Company A', // Pass the selected company name
+                          ),
+                        ),
+                      );
+                    },
+              child: Card(
+                color: Colors.white,
+                child: Column(
+                  children: [
+                    Image.network(
+                      e['image'],
+                      height: 130,
+                      width: 130,
+                    ),
+                    Text(e['title']),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+       ),
+
+        const SizedBox(height: 30),
+        const Text("Companies",
+         style: TextStyle(
+                    fontSize: 20,
+                    color: Color(0xff181725),
+                    fontWeight: FontWeight.bold),),
+        const SizedBox(height: 10),
+
+        // Companies List - Scrolls with entire page
+        Column(
+          children: companiesList.map((company) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Farmercompanyequipment(
+                      companyId: company['id'],
+                      companyName: company['name'],
+                    ),
+                  ),
+                );
+              },
+              child: Card(
+                margin: const EdgeInsets.all(8.0),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(8.0),
+                      child: Image.network(
+                        company['image'],
+                        height: 150,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    Container(
+                      height: 150,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      alignment: Alignment.center,
+                      child: Text(
+                        company['name'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
+    ),
+  ),
+);
+
 }
+
+}
+
+
+
+
+

@@ -1,65 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
-import 'package:smartagri/modules/farmer/widgets/list_cardwidgets.dart';
-import 'package:smartagri/modules/user/widgets/homescreenCustomwidget2.dart';
-
-
+import 'package:smartagri/modules/farmer/screens/EquipmentListCompanies.dart';
 
 class FarmEquipmentListScreen extends StatelessWidget {
-   FarmEquipmentListScreen({super.key});
+  FarmEquipmentListScreen({super.key});
 
-   List<Map<String,dynamic>> list= [
-     {
-       'image' : 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
-       'title' : 'Tractor',
-       'subtitle' : '',
-       'price' : 550.00
-     },
-     {
-       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpGp3hVwLQzIQH4k8RvTR00bW6mJswUoE1HQ&s',
-       'title' : 'Brushcutter',
-       'subtitle' : '',
-       'price' :280.00
-     },
-     
-     {
-       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDmtBPvo3FVULESCy3-dW8K7KdDvBpZNSyOA&s',
-       'title' : 'Waterpump',
-       'subtitle' : '',
-       'price' : 300.00
-     },
-     {
-       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzIH_gELrvINTYx83EEJMEzOVdXKJfxw540A&s',
-       'title' : 'Cultivator',
-       'subtitle' : '',
-       'price' : 420.00
-     },
-     {
-       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE8cdJVd9MPC6Hwlae6BtQWZmUQfq6dftDA&s',
-       'title' : 'Combine',
-       'subtitle' : '',
-       'price' : 840.00
-     },
-     {
-       'image' : 'https://rukminim2.flixcart.com/image/850/1000/kk8mcnk0/shovel-spade/1/e/d/digging-hoe-iron-steel-spade-for-gardening-shovel-tadso-lid-original-imafzmgty4zyny8x.jpeg?q=90&crop=false',
-       'title' : 'Spade',
-       'subtitle' : '',
-       'price' : 48.00
-     },
-     {
-       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLI17EqaqJ8cJR-yjmLsbrRVSQQS-pyU6IA&s',
-       'title' : 'sprayer',
-       'subtitle' : '',
-       'price' : 235.00
-     },
-     {
-       'image' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRZg7VaXJVb11wTMr2RWIiLhYaXqblnhHCZA&s',
-       'title' : 'rotavator',
-       'subtitle' : '',
-       'price' : 3236.00
-     }
-   ];
-
+  List<Map<String, dynamic>> list = [
+    {
+      'image': 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
+      'title': 'Tractor',
+    },
+    {
+      'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpGp3hVwLQzIQH4k8RvTR00bW6mJswUoE1HQ&s',
+      'title': 'Brushcutter',
+    },
+    {
+      'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDmtBPvo3FVULESCy3-dW8K7KdDvBpZNSyOA&s',
+      'title': 'Waterpump',
+    },
+    {
+      'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzIH_gELrvINTYx83EEJMEzOVdXKJfxw540A&s',
+      'title': 'Cultivator',
+    },
+    {
+      'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLE8cdJVd9MPC6Hwlae6BtQWZmUQfq6dftDA&s',
+      'title': 'Combine',
+    },
+    {
+      'image': 'https://rukminim2.flixcart.com/image/850/1000/kk8mcnk0/shovel-spade/1/e/d/digging-hoe-iron-steel-spade-for-gardening-shovel-tadso-lid-original-imafzmgty4zyny8x.jpeg?q=90&crop=false',
+      'title': 'Spade',
+    },
+    {
+      'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLI17EqaqJ8cJR-yjmLsbrRVSQQS-pyU6IA&s',
+      'title': 'Sprayer',
+    },
+    {
+      'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRZg7VaXJVb11wTMr2RWIiLhYaXqblnhHCZA&s',
+      'title': 'Rotavator',
+    }
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +45,7 @@ class FarmEquipmentListScreen extends StatelessWidget {
     final wt = MediaQuery.of(context).size.width;
 
     return Scaffold(
+<<<<<<< HEAD
       body:SafeArea(
         child: Column(
           children: [
@@ -112,8 +91,81 @@ class FarmEquipmentListScreen extends StatelessWidget {
                   },),
             )
           ],
+=======
+      appBar: AppBar(
+        title: Text('Equipments', style: TextStyle(
+                    fontSize: 22,
+                    color: Color(0xff181725),
+                    fontWeight: FontWeight.bold),),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView( // Wrap the entire body in a SingleChildScrollView
+          child: Column(
+            children: [
+            
+             
+              SizedBox(height: 30),
+              GridView.builder(
+                shrinkWrap: true, // Ensures the GridView doesn't take up infinite space
+                physics: NeverScrollableScrollPhysics(), // Disable scrolling for the GridView (scrolling will be handled by the parent SingleChildScrollView)
+                itemCount: list.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: .7,
+                ),
+                itemBuilder: (BuildContext context, int index) {
+                  return Card(
+                    elevation: 5,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigate to EquipmentListCompanies screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Equipmentlistcompanies(
+                              companyId: 'company_${index + 1}', // Dynamic ID
+                              companyName: list[index]['title'], // Using title as company name
+                            ),
+                          ),
+                        );
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(12.0),
+                            child: Image.network(
+                              list[index]['image'],
+                              width: 160,
+                              height: 160,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text(
+                            list[index]['title'],
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+>>>>>>> refs/remotes/origin/main
         ),
-      )
+      ),
     );
   }
 }

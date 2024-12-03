@@ -8,13 +8,13 @@ import 'package:smartagri/modules/user/widgets/custombuttonWidget.dart';
 
 
 class FarmEquipmentsDetails extends StatefulWidget {
-  FarmEquipmentsDetails({super.key, required this.image, required this.title, required this.subtitle,required this.price, required this.value});
+  FarmEquipmentsDetails( {super.key, required this.image, required this.title, required this.subtitle,required this.price, });
 
   final String image;
   final String title;
   final String subtitle;
   double price;
-  Map<String,dynamic> value;
+ 
 
   @override
   State<FarmEquipmentsDetails> createState() => _FarmEquipmentsDetailsState();
@@ -49,6 +49,15 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
     final wt = MediaQuery.of(context).size.width;
 
     return Scaffold(
+        appBar: AppBar(
+        //title: Text(widget.title),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Go back to the previous screen
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -103,7 +112,11 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     children: [
                       Text(widget.title,
                       style: TextStyle(
+<<<<<<< HEAD
                         color: const Color(0xff181725),
+=======
+                        color: Color.fromARGB(255, 14, 14, 14),
+>>>>>>> refs/remotes/origin/main
                         fontWeight: FontWeight.bold,
                         fontSize: ht/37.48
                       ),),
