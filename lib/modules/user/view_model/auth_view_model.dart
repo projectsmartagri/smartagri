@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smartagri/modules/user/screens/bottomnavigationbar.dart';
-import 'package:smartagri/modules/user/screens/loginScreen.dart';
+import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 
 
 import '../model/user_model.dart';
@@ -43,7 +43,7 @@ class AuthViewModel extends ChangeNotifier {
 
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Loginscreen()),
+        MaterialPageRoute(builder: (context) => UserLoginscreen()),
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,7 +101,7 @@ class AuthViewModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logout Successful')),
       );
-            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Loginscreen(),), (route) => false,);
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserLoginscreen(),), (route) => false,);
 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -1,60 +1,54 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/user/screens/signupScreen.dart';
+//import 'package:smartagri/modules/admin/screens/signupScreen.dart';
 
-class Loginscreen extends StatefulWidget {
-  const Loginscreen({super.key, String? zone, String? area});
+class Adminloginscreen extends StatefulWidget {
+  const Adminloginscreen({super.key, String? zone, String? area});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<Loginscreen> {
+class _LoginScreenState extends State<Adminloginscreen> {
   bool _obscurePassword = true;
-  
-  
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-            
-         // Image.asset(
-            //'asset/image/image.jpg',
-           // fit: BoxFit.cover,
-        //  ),
-          // Foreground Content
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
+      body: Container(
+        color: Color.fromARGB(255, 234, 246, 234), // Background color (light green)
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Foreground Content
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
                 child: Column(
-                  mainAxisSize: MainAxisSize.min, 
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    
-                    const Spacer(),
+                    // Decreased space between title and username/email field
+                    SizedBox(height: 240.0), // Reduced the space from 160.0 to 80.0
+
                     const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 60.0),
+                        padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
-                          "SMART AGRI",
+                          "Smart Agri",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(2, 112, 2, 0.424),
+                            color: Color.fromRGBO(4, 75, 4, 0.961),
                             fontFamily: 'dancing script',
-                            fontSize: 28,
+                            fontSize: 30,
                           ),
                         ),
                       ),
                     ),
-
+                    
+                    
                     // Field 1: Username/Email
                     TextFormField(
                       decoration: const InputDecoration(
@@ -69,7 +63,7 @@ class _LoginScreenState extends State<Loginscreen> {
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -92,7 +86,7 @@ class _LoginScreenState extends State<Loginscreen> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)
+                            borderRadius: BorderRadius.circular(10),
                           ),
                           backgroundColor: Colors.green,
                         ),
@@ -106,25 +100,25 @@ class _LoginScreenState extends State<Loginscreen> {
                     ),
                     
                     const SizedBox(height: 16.0),
-                    const Spacer(),
+                    Spacer(),
 
                     // Create Account Button
                     RichText(
                       text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                             text: 'Don\'t have an account? ',
-                            style: TextStyle(color: Color.fromARGB(255, 52, 51, 51)),
+                            style: TextStyle(color: const Color.fromARGB(255, 52, 51, 51)),
                           ),
                           TextSpan(
                             text: 'SIGN UP',
-                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const signupScreen()),
-                                );
+                              //  Navigator.push(
+                                 // context,
+                                  //MaterialPageRoute(builder: (context) => signupScreen()),
+                               // );
                               },
                           ),
                         ],
@@ -134,9 +128,8 @@ class _LoginScreenState extends State<Loginscreen> {
                 ),
               ),
             ),
-          ),
-          ]
-        
+          ],
+        ),
       ),
     );
   }
