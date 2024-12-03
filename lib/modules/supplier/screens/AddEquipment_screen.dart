@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
 
 class AddEquipmentscreen extends StatefulWidget {
+  const AddEquipmentscreen({super.key});
+
   @override
   _AddMachineryPageState createState() => _AddMachineryPageState();
 }
@@ -18,8 +20,8 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
 
   // Function to pick an image
   Future<void> _pickImage() async {
-    final ImagePicker _picker = ImagePicker();
-    _image = await _picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker picker = ImagePicker();
+    _image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {});
   }
 
@@ -28,7 +30,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
     if (_formKey.currentState!.validate()) {
       // Here you can handle the saving logic, e.g., sending data to the backend
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Machinery Added Successfully!')),
+        const SnackBar(content: Text('Machinery Added Successfully!')),
       );
       // Reset fields after saving
       _formKey.currentState!.reset();
@@ -42,7 +44,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Machinery'),
+        title: const Text('Add Machinery'),
         
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -50,7 +52,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
             Navigator.pop(context);
              Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SupplierHomeScreen()), // Navigate to HomeScreen
+              MaterialPageRoute(builder: (context) => const SupplierHomeScreen()), // Navigate to HomeScreen
             ); // Navigates back to the previous screen
           },
         ),
@@ -63,7 +65,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Machinery Name'),
+                decoration: const InputDecoration(labelText: 'Machinery Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter the machinery name';
@@ -75,7 +77,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
                 maxLines: 3,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -88,7 +90,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Rental Price'),
+                decoration: const InputDecoration(labelText: 'Rental Price'),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -102,7 +104,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
               ),
               DropdownButtonFormField<String>(
                 value: availability,
-                decoration: InputDecoration(labelText: 'Availability'),
+                decoration: const InputDecoration(labelText: 'Availability'),
                 items: <String>['Available', 'Not Available']
                     .map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
@@ -116,7 +118,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
                   });
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               GestureDetector(
                 onTap: _pickImage,
                 child: Container(
@@ -127,17 +129,17 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: _image == null
-                      ? Center(child: Text('Tap to upload an image'))
+                      ? const Center(child: Text('Tap to upload an image'))
                       : Image.file(
                           File(_image!.path),
                           fit: BoxFit.cover,
                         ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: _saveMachinery,
-                child: Text('Add Machinery'),
+                child: const Text('Add Machinery'),
               ),
             ],
           ),

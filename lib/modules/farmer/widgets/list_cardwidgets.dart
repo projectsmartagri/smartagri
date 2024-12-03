@@ -42,20 +42,20 @@ class ListCardWidgets extends StatelessWidget {
 
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                  side: BorderSide(
+                  side: const BorderSide(
                     color: Colors.black12,
                   ),
                   borderRadius: BorderRadius.circular(20.0), //<-- SEE HERE
                 ),
-                child: Container(
+                child: SizedBox(
                   width: 173.32,
                   height: 248.51,
                   child: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           height: 25.21,
                           width: 133.73,
                         ),
@@ -66,7 +66,7 @@ class ListCardWidgets extends StatelessWidget {
                           width: 99.89,
                           height: 79.43,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Align(
@@ -74,7 +74,7 @@ class ListCardWidgets extends StatelessWidget {
                           child: Text(
                             title,
                             // textAlign: TextAlign.center,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xff181725),
                                 fontSize: 16),
@@ -86,33 +86,33 @@ class ListCardWidgets extends StatelessWidget {
                             subtitle,
                             textAlign: TextAlign.start,
                             style:
-                                TextStyle(color: Color(0xff7C7C7C), fontSize: 14),
+                                const TextStyle(color: Color(0xff7C7C7C), fontSize: 14),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 15,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              '₹${price}' ,
-                              style: TextStyle(
+                              '₹$price' ,
+                              style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w600,
                                   color: Color(0xff181725)),
                             ),
-                            isCategories? SizedBox() : ElevatedButton(
+                            isCategories? const SizedBox() : ElevatedButton(
                                 style: ElevatedButton.styleFrom(
-                                  fixedSize: Size(47.67, 47.67),
-                                  backgroundColor: Color(0xff53B175),
+                                  fixedSize: const Size(47.67, 47.67),
+                                  backgroundColor: const Color(0xff53B175),
                                   shape: RoundedRectangleBorder(
                                     borderRadius:
                                         BorderRadius.circular(12), // <-- Radius
                                   ),
                                 ),
                                 onPressed:ontab,
-                                child: Icon(
+                                child: const Icon(
                                   Icons.add,
                                   size: 17,
                                   color: Colors.white,

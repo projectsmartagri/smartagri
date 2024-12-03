@@ -48,7 +48,7 @@ class UserListitemScreen extends StatelessWidget {
                               title: 'items',
                               subtitle: 'fresh product',
                               price: 45,
-                              value: {},
+                              value: const {},
                             ),
                           ),
                         );

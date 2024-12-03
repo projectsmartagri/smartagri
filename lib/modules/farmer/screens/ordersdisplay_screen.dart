@@ -9,11 +9,13 @@ class ListPage extends StatelessWidget {
     'Item 5',
   ];
 
+   ListPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('List of Items'),
+        title: const Text('List of Items'),
       ),
       body: ListView.builder(
         itemCount: items.length,
@@ -28,7 +30,7 @@ class ListPage extends StatelessWidget {
                   title: Text('You tapped on ${items[index]}'),
                   actions: [
                     TextButton(
-                      child: Text('OK'),
+                      child: const Text('OK'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       },
@@ -44,8 +46,4 @@ class ListPage extends StatelessWidget {
   }
 }
 
-void main() {
-  runApp(MaterialApp(
-    home: ListPage(),
-  ));
-}
+

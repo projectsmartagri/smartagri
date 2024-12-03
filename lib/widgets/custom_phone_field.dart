@@ -19,7 +19,7 @@ class CustomPhoneFormField extends StatelessWidget {
       controller: controller,
       validator: validator,
       onChanged: onChanged,
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         labelText: 'Phone Number',
         border: OutlineInputBorder(),
         contentPadding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),

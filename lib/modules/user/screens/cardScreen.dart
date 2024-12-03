@@ -13,30 +13,30 @@ class Cardscreen extends StatelessWidget {
         child: Card(
           color: Colors.white,
           shape: RoundedRectangleBorder(
-          side: BorderSide(
+          side: const BorderSide(
             color: Colors.black12,
           ),
           borderRadius: BorderRadius.circular(20.0), //<-- SEE HERE
         ),
-          child: Container(
+          child: SizedBox(
             width: wt/2.37,
             height: ht/3.62,
             child:    Padding(
-              padding: EdgeInsets.symmetric(horizontal:12),
+              padding: const EdgeInsets.symmetric(horizontal:12),
 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 25.21,width: 133.73,),
+                  const SizedBox(height: 25.21,width: 133.73,),
 
                   Image.asset('asset/images/banana.png',
                   width: wt/4.19,
                   height: ht/11.32,
                   ),
 
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
 
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text('Organic Bananas',
                     // textAlign: TextAlign.center,
@@ -47,7 +47,7 @@ class Cardscreen extends StatelessWidget {
                     ),),
                   ),
 
-                  Align(
+                  const Align(
                     alignment: Alignment.centerLeft,
                     child: Text('7pcs, Priceg',
                     textAlign: TextAlign.start,
@@ -57,12 +57,12 @@ class Cardscreen extends StatelessWidget {
                     ),),
                   ),
 
-                  SizedBox(height: 15,),
+                  const SizedBox(height: 15,),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('\$4.99',
+                      const Text('\$4.99',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w600,
@@ -71,8 +71,8 @@ class Cardscreen extends StatelessWidget {
 
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          fixedSize: Size(47.67, 47.67),
-                          backgroundColor: Color(0xff53B175),
+                          fixedSize: const Size(47.67, 47.67),
+                          backgroundColor: const Color(0xff53B175),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12), // <-- Radius
                           ),
@@ -80,7 +80,7 @@ class Cardscreen extends StatelessWidget {
                           onPressed: (){
 
                           },
-                          child: Icon(Icons.add,
+                          child: const Icon(Icons.add,
                           size: 17,
                           color: Colors.white,))
                     ],

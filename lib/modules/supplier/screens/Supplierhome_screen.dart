@@ -133,10 +133,10 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: _toggleDrawer,
         ),
-        title: Text(
+        title: const Text(
           'Smart Agri',
           style: TextStyle(
             fontFamily: 'Dancing Script',
@@ -145,7 +145,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               Navigator.push(
                 context,
@@ -166,13 +166,13 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 4, 156, 40),
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 4, 156, 40),
                     ),
                     child: Container(), // Empty container instead of text
                   ),
                   ListTile(
-                    title: Text('Home'),
+                    title: const Text('Home'),
                     onTap: () {
                       Navigator.pop(context); 
                       Navigator.push(
@@ -182,7 +182,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                     },
                   ),
                   ListTile(
-                    title: Text('Booking Details'),
+                    title: const Text('Booking Details'),
                     onTap: () {
                       Navigator.pop(context);
                        Navigator.push(
@@ -192,7 +192,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                     },
                   ),
                   ListTile(
-                    title: Text('Other Companies'),
+                    title: const Text('Other Companies'),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -202,7 +202,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                     },
                   ),
                   ListTile(
-                    title: Text('Profile'),
+                    title: const Text('Profile'),
                     onTap: () {
                       Navigator.pop(context);
                      Navigator.push(
@@ -213,7 +213,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ),
                     ListTile(
                    // leading: Icon(Icons.settings),
-                    title: Text('Settings'),
+                    title: const Text('Settings'),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -224,7 +224,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ),
                    const Divider(), // Divider before LOG OUT
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       'LOG OUT',
                       style: TextStyle(
                         color: Colors.red, // Change color to red for emphasis
@@ -275,7 +275,7 @@ Padding(
   child: Row(
     mainAxisAlignment: MainAxisAlignment.spaceBetween, // This will space the title and Add button apart
     children: [
-      Text(
+      const Text(
         'ALL EQUIPMENTS',
         style: TextStyle(
           fontSize: 20,
@@ -290,7 +290,7 @@ Padding(
             MaterialPageRoute(builder: (context) => AddEquipmentscreen()), // Navigate to AddEquipmentScreen
           );
         },
-        child: Row(
+        child: const Row(
           children: [
             Text(
               'Add',
@@ -315,7 +315,7 @@ Padding(
 
 ListView.builder(
   shrinkWrap: true,
-  physics: NeverScrollableScrollPhysics(),
+  physics: const NeverScrollableScrollPhysics(),
   itemCount: equipmentList.length,
   itemBuilder: (context, index) {
     return GestureDetector(
@@ -333,7 +333,7 @@ ListView.builder(
         );
       },
       child: Container(
-        margin: EdgeInsets.all(8.0),
+        margin: const EdgeInsets.all(8.0),
         child: Card(
           elevation: 3.0,
           child: Padding(
@@ -350,7 +350,7 @@ ListView.builder(
                     fit: BoxFit.cover,
                   ),
                 ),
-                SizedBox(width: 16), // Add space between image and text
+                const SizedBox(width: 16), // Add space between image and text
                 // Equipment Name and Rent Rate
                 Expanded(
                   child: Column(
@@ -358,12 +358,12 @@ ListView.builder(
                     children: [
                       Text(
                         equipmentList[index]['name']!,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Text(
                         'Rent Rate: ${equipmentList[index]['rentRate']}',
                         style: TextStyle(
@@ -388,8 +388,8 @@ ListView.builder(
                   const SizedBox(height: 20),
 
                   // Heading for Available for Rent Section
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -405,11 +405,11 @@ ListView.builder(
                   // List of Cards for Available Equipments
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: availableForRentList.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
                         child: Card(
                           elevation: 3.0,
                           child: Padding(
@@ -426,7 +426,7 @@ ListView.builder(
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                SizedBox(width: 16), // Add space between image and text
+                                const SizedBox(width: 16), // Add space between image and text
                                 // Equipment Name and Rent Rate
                                 Expanded(
                                   child: Column(
@@ -434,12 +434,12 @@ ListView.builder(
                                     children: [
                                       Text(
                                         availableForRentList[index]['name']!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 5),
+                                      const SizedBox(height: 5),
                                       Text(
                                         'Rent Rate: ${availableForRentList[index]['rentRate']}',
                                         style: TextStyle(
@@ -459,8 +459,8 @@ ListView.builder(
                   ),
 
                   // Heading for Not Available for Rent Section
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -476,11 +476,11 @@ ListView.builder(
                   // List of Cards for Not Available Equipments
                   ListView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: notAvailableList.length,
                     itemBuilder: (context, index) {
                       return Container(
-                        margin: EdgeInsets.all(8.0),
+                        margin: const EdgeInsets.all(8.0),
                         child: Card(
                           elevation: 3.0,
                           child: Padding(
@@ -497,7 +497,7 @@ ListView.builder(
                                     fit: BoxFit.cover,
                                   ),
                                 ),
-                                SizedBox(width: 16), // Add space between image and text
+                                const SizedBox(width: 16), // Add space between image and text
                                 // Equipment Name, Rent Rate, and Availability Status
                                 Expanded(
                                   child: Column(
@@ -505,12 +505,12 @@ ListView.builder(
                                     children: [
                                       Text(
                                         notAvailableList[index]['name']!,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      SizedBox(height: 5),
+                                      const SizedBox(height: 5),
                                       Text(
                                         'Rent Rate: ${notAvailableList[index]['rentRate']}',
                                         style: TextStyle(
@@ -518,10 +518,10 @@ ListView.builder(
                                           color: Colors.grey[600],
                                         ),
                                       ),
-                                      SizedBox(height: 5),
+                                      const SizedBox(height: 5),
                                       Text(
                                         'Status: ${notAvailableList[index]['availabilityStatus']}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 14,
                                           color: Colors.red, // Highlight status in red
                                         ),
@@ -554,7 +554,7 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Notifications')));
+    return Scaffold(appBar: AppBar(title: const Text('Notifications')));
   }
 }
 

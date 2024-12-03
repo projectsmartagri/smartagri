@@ -12,6 +12,8 @@ class AddProductScreen extends StatelessWidget {
   int _productQuantity = 0;
   String _productCategory = '';
 
+  AddProductScreen({super.key});
+
   // Image picker function
   Future<void> _pickImage() async {
     final image = await _picker.pickImage(source: ImageSource.gallery);
@@ -38,7 +40,7 @@ class AddProductScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Product'),
+        title: const Text('Add Product'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -47,7 +49,7 @@ class AddProductScreen extends StatelessWidget {
           child: ListView(
             children: [
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Product Name',
                   border: OutlineInputBorder(),
                 ),
@@ -61,9 +63,9 @@ class AddProductScreen extends StatelessWidget {
                   _productName = value!;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Product Description',
                   border: OutlineInputBorder(),
                 ),
@@ -77,9 +79,9 @@ class AddProductScreen extends StatelessWidget {
                   _productDescription = value!;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Product Price',
                   border: OutlineInputBorder(),
                 ),
@@ -94,9 +96,9 @@ class AddProductScreen extends StatelessWidget {
                   _productPrice = double.parse(value!);
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Product Quantity',
                   border: OutlineInputBorder(),
                 ),
@@ -111,9 +113,9 @@ class AddProductScreen extends StatelessWidget {
                   _productQuantity = int.parse(value!);
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextFormField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Product Category',
                   border: OutlineInputBorder(),
                 ),
@@ -127,24 +129,24 @@ class AddProductScreen extends StatelessWidget {
                   _productCategory = value!;
                 },
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               ElevatedButton.icon(
                 onPressed: _pickImage,
-                icon: Icon(Icons.image),
-                label: Text('Upload Image'),
+                icon: const Icon(Icons.image),
+                label: const Text('Upload Image'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green, 
-                  shape:RoundedRectangleBorder() // Change the button color to green
+                  shape:const RoundedRectangleBorder() // Change the button color to green
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  shape: RoundedRectangleBorder() // Change the button color to green
+                  shape: const RoundedRectangleBorder() // Change the button color to green
                 ),
+                child: Text('Submit'),
               ),
             ],
           ),

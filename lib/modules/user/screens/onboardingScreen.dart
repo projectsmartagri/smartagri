@@ -14,7 +14,7 @@ class Onboardingscreen extends StatelessWidget {
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image:  AssetImage('asset/images/8140 1.png'),
             fit: BoxFit.cover,
@@ -25,7 +25,7 @@ class Onboardingscreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Image.asset('asset/images/carrot.png'),
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
               
               Text('Welcome \n to our store',
               textAlign: TextAlign.center,
@@ -36,7 +36,7 @@ class Onboardingscreen extends StatelessWidget {
                 color: Colors.white
               ),),
               
-              Text('Get your groceries in as fast as one hour',
+              const Text('Get your groceries in as fast as one hour',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.w400,
@@ -45,10 +45,10 @@ class Onboardingscreen extends StatelessWidget {
                 fontFamily: 'Gilroy'
               ),),
 
-              SizedBox(height: 40,),
+              const SizedBox(height: 40,),
 
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
                 height: 67,
                 width: MediaQuery.of(context).size.width,
                 child: ElevatedButton(
@@ -57,15 +57,15 @@ class Onboardingscreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)
                     ),
-                    fixedSize: Size(353, 67),
-                    backgroundColor: Color(0xff53B175),
+                    fixedSize: const Size(353, 67),
+                    backgroundColor: const Color(0xff53B175),
                   ),
                     onPressed: (){
 
-                    Navigator.push(context,  MaterialPageRoute(builder: (context) => Singinscreen(),));
+                    Navigator.push(context,  MaterialPageRoute(builder: (context) => const Singinscreen(),));
                     },
 
-                    child: Text('Get Started',
+                    child: const Text('Get Started',
                     style: TextStyle(
                       fontFamily: 'Gilroy',
                       color: Colors.white,fontSize: 18
@@ -73,7 +73,7 @@ class Onboardingscreen extends StatelessWidget {
                 ),
               ),
 
-              SizedBox(height: 90,)
+              const SizedBox(height: 90,)
             ],
           ),
 

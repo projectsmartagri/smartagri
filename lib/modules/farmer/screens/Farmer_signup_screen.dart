@@ -191,14 +191,14 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
                           : const Text('No image selected'),
                      Row(
                       children: [
-                        Text("upload id"),
+                        const Text("upload id"),
                          const SizedBox(height: 16.0),
-                         SizedBox(width: 10,),
+                         const SizedBox(width: 10,),
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                         fixedSize: Size(200, 50) ,
+                         fixedSize: const Size(200, 50) ,
                          
-                         shape: RoundedRectangleBorder()
+                         shape: const RoundedRectangleBorder()
                         ),
                         onPressed: _pickImage,
                         icon: const Icon(Icons.image),

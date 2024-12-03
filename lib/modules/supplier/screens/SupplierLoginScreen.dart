@@ -49,7 +49,7 @@ class _SupplierLoginScreenState extends State<SupplierLoginScreen> {
 
 
      if(isLoggin){
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SupplierHomeScreen(),));
+       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SupplierHomeScreen(),));
      }
 
     } catch (e) {
@@ -78,7 +78,7 @@ class _SupplierLoginScreenState extends State<SupplierLoginScreen> {
             fit: BoxFit.cover,
           ),
           // Foreground Content
-          Container(
+          SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Padding(

@@ -6,7 +6,7 @@ import 'homeScreen.dart';
 import 'mycartScreen.dart';
 
 class Favouritescreen extends StatelessWidget {
-  Favouritescreen({super.key});
+  const Favouritescreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +94,9 @@ class Favouritescreen extends StatelessWidget {
             CustomButtonWidget(
               text: 'Add All To Cart',
               action: () {
-                favList.forEach((favList) {
+                for (var favList in favList) {
                   addToCart(values: favList);
-                });
+                }
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Mycartscreen()),

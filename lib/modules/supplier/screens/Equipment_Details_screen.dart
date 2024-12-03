@@ -7,24 +7,24 @@ class EquipmentDetailsscreen extends StatelessWidget {
   final String rentRate;
 
   const EquipmentDetailsscreen({
-    Key? key,
+    super.key,
     required this.name,
     required this.imageUrl,
     required this.rentRate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Details'),
+        title: const Text('Details'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context); 
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => SupplierHomeScreen()), // Navigate to HomeScreen
+              MaterialPageRoute(builder: (context) => const SupplierHomeScreen()), // Navigate to HomeScreen
             );// Navigate back to the previous screen
           },
         ),
@@ -34,12 +34,12 @@ class EquipmentDetailsscreen extends StatelessWidget {
         child: Column(
           children: [
             Image.network(imageUrl, height: 200, fit: BoxFit.cover),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             Text(
               name,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               'Rent Rate: $rentRate',
               style: TextStyle(fontSize: 20, color: Colors.grey[600]),

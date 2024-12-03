@@ -10,7 +10,7 @@ class CustomTextField extends StatelessWidget {
   final Widget? suffixIcon;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.labelText,
     this.obscureText = false,
@@ -18,7 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType = TextInputType.text,
     this.onSuffixIconPressed,
     this.suffixIcon,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,7 @@ class CustomTextField extends StatelessWidget {
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
-        border: OutlineInputBorder(),
+        border: const OutlineInputBorder(),
         suffixIcon: suffixIcon,
       ),
       obscureText: obscureText,

@@ -16,7 +16,7 @@ class HomepageScreen extends StatefulWidget {
 class _HomepageScreenState extends State<HomepageScreen> {
   int _selectedIndex = 0;
 
-  static List<Widget> _pages = <Widget>[
+  static final List<Widget> _pages = <Widget>[
     // Home Page with Cards
     HomePageContent(),
     // Cart Page
@@ -81,7 +81,7 @@ class _HomepageScreenState extends State<HomepageScreen> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -94,13 +94,13 @@ class _HomepageScreenState extends State<HomepageScreen> {
               ),
             ),
             ListTile(
-              title: Text('settings'),
+              title: const Text('settings'),
               onTap: () {
                 // Handle item 1 tap
               },
             ),
             ListTile(
-              title: Text('payment'),
+              title: const Text('payment'),
               onTap: () {
                 // Handle item 2 tap
               },
@@ -206,6 +206,8 @@ class HomePageContent extends StatelessWidget {
 
    ];
 
+  HomePageContent({super.key});
+
 
 
 
@@ -217,7 +219,7 @@ class HomePageContent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 30,),
+            const SizedBox(height: 30,),
         
         
             CarouselSlider(
@@ -226,7 +228,7 @@ class HomePageContent extends StatelessWidget {
         
             Container(
             width: MediaQuery.of(context).size.width,
-            margin: EdgeInsets.symmetric(horizontal: 15.0),
+            margin: const EdgeInsets.symmetric(horizontal: 15.0),
             
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
@@ -241,7 +243,7 @@ class HomePageContent extends StatelessWidget {
           ]
           
         ),
-        SizedBox(height: 30,),
+        const SizedBox(height: 30,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -249,7 +251,7 @@ class HomePageContent extends StatelessWidget {
               TextButton(onPressed: () {
                 Navigator.push(context,MaterialPageRoute(builder:(context) => FarmEquipmentListScreen(),));
               },
-               child:Row(
+               child:const Row(
                  children: [
                    Text("see all "),
                    Icon(Icons.arrow_right,),
@@ -293,7 +295,7 @@ class HomePageContent extends StatelessWidget {
           
         
         
-          SizedBox(height: 30,),
+          const SizedBox(height: 30,),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -301,7 +303,7 @@ class HomePageContent extends StatelessWidget {
               TextButton(onPressed: () {
                 Navigator.push(context,MaterialPageRoute(builder: (context) => FarmProductListScreen(),) );
               },
-               child:Row(
+               child:const Row(
                  children: [
                    Text("see all "),
                    Icon(Icons.arrow_right,),

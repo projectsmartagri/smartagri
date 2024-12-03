@@ -16,13 +16,13 @@ class CustomButtonWidget extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12)
           ),
-            backgroundColor: Color(0xff53B175),
-            fixedSize: Size(364,67)
+            backgroundColor: const Color(0xff53B175),
+            fixedSize: const Size(364,67)
         ),
         onPressed: action,
         child: Center(
           child: Text(text,
-            style: TextStyle(color: Colors.white,fontSize: 18),),
+            style: const TextStyle(color: Colors.white,fontSize: 18),),
         )
     );
   }

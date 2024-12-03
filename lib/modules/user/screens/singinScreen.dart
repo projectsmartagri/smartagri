@@ -115,8 +115,8 @@ class _SinginscreenState extends State<Singinscreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () async {
-                            final ImagePicker _picker = ImagePicker();
-                            XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+                            final ImagePicker picker = ImagePicker();
+                            XFile? image = await picker.pickImage(source: ImageSource.gallery);
                             if (image != null) {
                               setState(() {
                                 _profileImage = image;

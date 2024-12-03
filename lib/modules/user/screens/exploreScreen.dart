@@ -11,42 +11,42 @@ class ExploreScreen extends StatelessWidget {
     {
       'image' : 'asset/images/fruits_veg.png',
       'text' : 'Fruits and \nVegetables',
-      'color' : Color(0xffF2F3F2)
+      'color' : const Color(0xffF2F3F2)
     },
     {
       'image': 'asset/images/cookingOil.png',
       'text': 'Cooking Oil \nand Ghee',
-      'color' : Color(0xffF8A44CB2)
+      'color' : const Color(0xfff8a44cb2)
     },
     {
     'image' : 'asset/images/meat_fish.png',
     'text' : 'Meat & Fish',
-      'color' : Color(0xffF7A593)
+      'color' : const Color(0xffF7A593)
     },
     {
       'image' : 'asset/images/bakery_snacks.png',
       'text' : 'Bakery & Snacks',
-      'color' : Color(0xffD3B0E0)
+      'color' : const Color(0xffD3B0E0)
     },
     {
       'image' : 'asset/images/Dairy_eggs.png',
       'text' : 'Dairy & Eggs',
-      'color' : Color(0xffFDE598)
+      'color' : const Color(0xffFDE598)
     },
     {
       'image' : 'asset/images/beverages.png',
       'text' : 'Beverages',
-      'color' : Color(0xffB7DFF5)
+      'color' : const Color(0xffB7DFF5)
     },
     {
       'image' : 'asset/images/bakery_snacks.png',
       'text' : 'Bakery & Snacks',
-      'color' : Color(0xffD3B0E0)
+      'color' : const Color(0xffD3B0E0)
     },
     {
       'image' : 'asset/images/cookingOil.png',
       'text' : 'Cooking Oil \nand Ghee',
-      'color': Color(0xffF8A44CB2)
+      'color': const Color(0xfff8a44cb2)
     }
   ];
 
@@ -74,10 +74,10 @@ class ExploreScreen extends StatelessWidget {
           child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-          SizedBox(
+          const SizedBox(
             height: 40,
           ),
-          Text('Find Products',
+          const Text('Find Products',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20
@@ -88,8 +88,8 @@ class ExploreScreen extends StatelessWidget {
             child: TextField(
               decoration: InputDecoration(
                 filled: true,
-                fillColor: Color(0xffF2F3F2),
-                prefixIcon: Icon(Icons.search),
+                fillColor: const Color(0xffF2F3F2),
+                prefixIcon: const Icon(Icons.search),
                 hintText: 'Search Store',
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(18),
@@ -100,7 +100,7 @@ class ExploreScreen extends StatelessWidget {
           Expanded(
             child: GridView.builder(
 
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     // mainAxisSpacing: 8,
                     // crossAxisSpacing: 8
@@ -118,7 +118,7 @@ class ExploreScreen extends StatelessWidget {
                         height: ht/17.99,
                         // color: Color(0xff53B1751A ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),
                           color: list[index]['color'],
                         ),
                         child: Center(
@@ -127,11 +127,11 @@ class ExploreScreen extends StatelessWidget {
                             children: [
                               Image.asset(list[index]['image']),
 
-                              SizedBox(height: 20),
+                              const SizedBox(height: 20),
 
                               Text(list[index]['text'],
                                 textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.black ,
+                                style: const TextStyle(color: Colors.black ,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16),)
 

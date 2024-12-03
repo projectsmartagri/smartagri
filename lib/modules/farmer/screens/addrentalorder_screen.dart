@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smartagri/modules/farmer/screens/paymentpage_screen.dart';
 
 class DateFormScreen extends StatefulWidget {
+  const DateFormScreen({super.key});
+
   @override
   _DateFormScreenState createState() => _DateFormScreenState();
 }
@@ -64,7 +66,7 @@ class _DateFormScreenState extends State<DateFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Date Form'),
+        title: const Text('Date Form'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -73,7 +75,7 @@ class _DateFormScreenState extends State<DateFormScreen> {
           child: Column(
             children: [
               TextFormField(
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your name';
@@ -85,7 +87,7 @@ class _DateFormScreenState extends State<DateFormScreen> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Address'),
+                decoration: const InputDecoration(labelText: 'Address'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter your address';
@@ -104,7 +106,7 @@ class _DateFormScreenState extends State<DateFormScreen> {
                       child: AbsorbPointer(
                         child: TextFormField(
                           controller: _fromDateController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'From Date',
                             hintText: 'Select Date',
                           ),
@@ -112,14 +114,14 @@ class _DateFormScreenState extends State<DateFormScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 16),
+                  const SizedBox(width: 16),
                   Expanded(
                     child: GestureDetector(
                       onTap: () => _selectDate(context, false),
                       child: AbsorbPointer(
                         child: TextFormField(
                           controller: _toDateController,
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             labelText: 'To Date',
                             hintText: 'Select Date',
                           ),
@@ -129,14 +131,14 @@ class _DateFormScreenState extends State<DateFormScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
-                child: Text('Submit'),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromARGB(255, 105, 199, 108),
                   shape: const RoundedRectangleBorder(),
                 ),
+                child: Text('Submit'),
               ),
             ],
           ),
