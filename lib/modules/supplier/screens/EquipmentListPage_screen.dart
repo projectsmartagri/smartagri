@@ -6,20 +6,10 @@ class EquipmentListPagescreen extends StatelessWidget {
   final String companyId;
   final String companyName;
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  const EquipmentListPagescreen({super.key, required this.companyId});
-=======
->>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
   EquipmentListPagescreen({
     required this.companyId,
     required this.companyName,
   });
-<<<<<<< HEAD
-=======
->>>>>>> refs/remotes/origin/main
->>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
 
   @override
   Widget build(BuildContext context) {
@@ -38,27 +28,11 @@ class EquipmentListPagescreen extends StatelessWidget {
           future: fetchEquipmentForCompany(companyId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-<<<<<<< HEAD
               return const CircularProgressIndicator(); // Loading indicator
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}'); // Error message
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
               return const Text('No equipment available.'); // No data message
-=======
-<<<<<<< HEAD
-              return const CircularProgressIndicator(); // Show loading indicator
-=======
-              return const CircularProgressIndicator(); // Loading indicator
->>>>>>> refs/remotes/origin/main
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}'); // Error message
-            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-<<<<<<< HEAD
-              return const Text('No equipment available for this company.'); // Show no data message
-=======
-              return const Text('No equipment available.'); // No data message
->>>>>>> refs/remotes/origin/main
->>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
             } else {
               final equipmentList = snapshot.data!;
               return ListView.builder(

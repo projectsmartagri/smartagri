@@ -31,7 +31,6 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
     });
   }
 
-  @override
   void initState() {
 
       
@@ -64,7 +63,7 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
             Container(
               width: wt/0.99,
               height: ht/2.42,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: Color(0xffF2F3F2)
               ),
         
@@ -83,8 +82,8 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     enableInfiniteScroll: true,
                     reverse: false,
                     autoPlay: true,
-                    autoPlayInterval: const Duration(seconds: 3),
-                    autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                    autoPlayInterval: Duration(seconds: 3),
+                    autoPlayAnimationDuration: Duration(milliseconds: 800),
                     autoPlayCurve: Curves.fastOutSlowIn,
                     enlargeCenterPage: true,
                     enlargeFactor: 0.3,
@@ -112,19 +111,7 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     children: [
                       Text(widget.title,
                       style: TextStyle(
-<<<<<<< HEAD
-
-                        color: const Color(0xff181725),
-
-                       
-
-=======
-<<<<<<< HEAD
-                        color: const Color(0xff181725),
-=======
                         color: Color.fromARGB(255, 14, 14, 14),
->>>>>>> refs/remotes/origin/main
->>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                         fontWeight: FontWeight.bold,
                         fontSize: ht/37.48
                       ),),
@@ -140,7 +127,7 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                   Row(
                     children: [
                       Text(widget.subtitle,
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Color(0xff7C7C7C),
                         fontSize: 16,
                         fontWeight: FontWeight.w600
@@ -148,24 +135,24 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     ],
                   ),
         
-                  const SizedBox(height: 25,),
+                  SizedBox(height: 25,),
         
                   Row(
                     children: [
                       // Image.asset('asset/images/-.png'),
         
                      
-                      const SizedBox(width: 15,),
+                      SizedBox(width: 15,),
         
-                      const Text('per hour'),
+                      Text('per hour'),
         
-                      const SizedBox(width: 15,),
+                      SizedBox(width: 15,),
         
                       // Image.asset('asset/images/+.png',),
         
                       
                     
-                      const Spacer(),
+                      Spacer(),
 
                         Text(
                          '₹${widget.price.toStringAsFixed(2)}',
@@ -180,15 +167,15 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     ],
                   ),
         
-                  const SizedBox(height: 25,),
+                  SizedBox(height: 25,),
         
-                  const Divider(
+                  Divider(
                     height: 8,
                   ),
         
-                  const SizedBox(height: 10,),
+                  SizedBox(height: 10,),
         
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text('Product Detail',
@@ -203,28 +190,28 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     ],
                   ),
         
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8),
         
-                  const Text('used for ploughing fields',
+                  Text('used for ploughing fields',
                   style: TextStyle(
                     color: Color(0xff7C7C7C),
                     fontSize: 13
                   ),),
         
-                  const SizedBox(height: 10,),
+                  SizedBox(height: 10,),
         
                   
-                  const SizedBox(height: 12),
+                  SizedBox(height: 12),
         
                  
         
-                  const Divider(
+                  Divider(
                     height: 8,
                   ),
         
-                  const SizedBox(height: 10,),
+                  SizedBox(height: 10,),
         
-                  const Row(
+                  Row(
                     children: [
                       Text('Review',
                       style: TextStyle(
@@ -261,7 +248,7 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     ],
                   ),
         
-                  const SizedBox(height: 25,),
+                  SizedBox(height: 25,),
         
                   CustomButtonWidget(
                     text: 'Order',

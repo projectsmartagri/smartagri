@@ -43,15 +43,7 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-<<<<<<< HEAD
           icon: const Icon(Icons.arrow_back),
-=======
-<<<<<<< HEAD
-          icon: const Icon(Icons.arrow_back), // Back button
-=======
-          icon: const Icon(Icons.arrow_back),
->>>>>>> refs/remotes/origin/main
->>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
           onPressed: () {
             Navigator.pop(context);
             Navigator.push(
@@ -62,15 +54,7 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
           },
         ),
         title: const Text(
-<<<<<<< HEAD
           'Profile',
-=======
-<<<<<<< HEAD
-          'Profile', // Title of the screen
-=======
-          'Profile',
->>>>>>> refs/remotes/origin/main
->>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20,
