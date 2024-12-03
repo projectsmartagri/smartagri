@@ -101,10 +101,10 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: _toggleDrawer,
         ),
-        title: Text(
+        title: const Text(
           'Smart Agri',
           style: TextStyle(
              color: Color.fromRGBO(4, 75, 4, 0.961),
@@ -114,7 +114,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications),
+            icon: const Icon(Icons.notifications),
             onPressed: () {
               Navigator.push(
                 context,
@@ -136,12 +136,13 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                 padding: EdgeInsets.zero,
                 children: <Widget>[
                   DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 4, 156, 40),
+                    decoration: const BoxDecoration(
+                      color: Color.fromARGB(255, 4, 156, 40),
                     ),
                     child: Container(), // Empty container instead of text
                   ),
                   ListTile(
+<<<<<<< HEAD
                     title: Text('Home'),
                     onTap: () {
                       Navigator.pop(context);
@@ -166,6 +167,42 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ),
                   ListTile(
                     title: Text('Other Companies'),
+=======
+                    title: const Text('Home'),
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+<<<<<<< HEAD
+                            builder: (context) => const OtherCompaniesScreen()),
+=======
+                            builder: (context) => const SupplierHomeScreen()),
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
+                      ); // Close the drawer
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Booking Details'),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+<<<<<<< HEAD
+                                const SupplierProfileScreen()),
+=======
+                                const SupplierBookingDetailsScreen()),
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
+                      ); // Close the drawer
+                    },
+                  ),
+                  ListTile(
+<<<<<<< HEAD
+=======
+                    title: const Text('Other Companies'),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -176,7 +213,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                     },
                   ),
                   ListTile(
-                    title: Text('Profile'),
+                    title: const Text('Profile'),
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -187,9 +224,16 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                       ); // Close the drawer
                     },
                   ),
+<<<<<<< HEAD
+                    ListTile(
+                   // leading: Icon(Icons.settings),
+                    title: const Text('Settings'),
+=======
                   ListTile(
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                     // leading: Icon(Icons.settings),
                     title: Text('Settings'),
+>>>>>>> refs/remotes/origin/main
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(
@@ -201,7 +245,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ),
                   const Divider(), // Divider before LOG OUT
                   ListTile(
-                    title: Text(
+                    title: const Text(
                       'LOG OUT',
                       style: TextStyle(
                         color: Colors.red, // Change color to red for emphasis
@@ -256,6 +300,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                             ))
                         .toList(),
                   ),
+<<<<<<< HEAD
                   // Indicators
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -279,6 +324,138 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                                 _currentIndex == entry.key ? 0.9 : 0.4)),
                           ),
                         ),
+=======
+<<<<<<< HEAD
+                                    // Heading for Equipments
+                   // Heading for Equipments with Add Equipment Button
+                   // Heading for Equipments with Add Equipment Button and Title
+Padding(
+  padding: const EdgeInsets.all(8.0),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween, // This will space the title and Add button apart
+    children: [
+      const Text(
+        'ALL EQUIPMENTS',
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+     GestureDetector(
+        onTap: () {
+          // Define what happens when the button or text is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddEquipmentscreen()), // Navigate to AddEquipmentScreen
+          );
+        },
+        child: const Row(
+          children: [
+            Text(
+              'Add',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.green,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Icon(
+              Icons.add,
+              color: Colors.green,
+              size: 24,
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+),
+          // Inside the SupplierHomeScreen class, replace the ListView.builder for ALL EQUIPMENTS
+
+ListView.builder(
+  shrinkWrap: true,
+  physics: const NeverScrollableScrollPhysics(),
+  itemCount: equipmentList.length,
+  itemBuilder: (context, index) {
+    return GestureDetector(
+      onTap: () {
+        // Navigate to EquipmentDetailsScreen
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>EquipmentDetailsscreen(
+              name: equipmentList[index]['name']!,
+              imageUrl: equipmentList[index]['imageUrl']!,
+              rentRate: equipmentList[index]['rentRate']!,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.all(8.0),
+        child: Card(
+          elevation: 3.0,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                // Equipment Image on the left
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8.0),
+                  child: Image.network(
+                    equipmentList[index]['imageUrl']!,
+                    height: 100,
+                    width: 100,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(width: 16), // Add space between image and text
+                // Equipment Name and Rent Rate
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        equipmentList[index]['name']!,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Rent Rate: ${equipmentList[index]['rentRate']}',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+=======
+                  // Indicators
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: imgList.asMap().entries.map((entry) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _currentIndex = entry.key; // Update index on tap
+                          });
+                          // Navigate to the respective page
+                          // You can uncomment this if needed
+                          // CarouselSlider.of(context).animateToPage(entry.key);
+                        },
+                        child: Container(
+                          width: 8.0,
+                          height: 8.0,
+                          margin: EdgeInsets.symmetric(horizontal: 4.0),
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: (Colors.black.withOpacity(
+                                _currentIndex == entry.key ? 0.9 : 0.4)),
+                          ),
+                        ),
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                       );
                     }).toList(),
                   ),
@@ -428,12 +605,16 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                      
                       }
                     },
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                   ),
                   const SizedBox(height: 20),
 
                   // Heading for Available for Rent Section
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -447,6 +628,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ),
 
                   // List of Cards for Available Equipments
+<<<<<<< HEAD
                   StreamBuilder(
                     
                     stream: FirebaseFirestore.instance.collection('machinary').where('availability',isEqualTo: "Available").where('userid',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
@@ -539,12 +721,166 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                                     ),
                                   ),
                                 ),
+=======
+<<<<<<< HEAD
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: availableForRentList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 3.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                // Equipment Image on the left
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(
+                                    availableForRentList[index]['imageUrl']!,
+                                    height: 100,
+                                    width: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(width: 16), // Add space between image and text
+                                // Equipment Name and Rent Rate
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        availableForRentList[index]['name']!,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        'Rent Rate: ${availableForRentList[index]['rentRate']}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+=======
+                  StreamBuilder(
+                    
+                    stream: FirebaseFirestore.instance.collection('machinary').where('availability',isEqualTo: "Available").where('userid',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
+                  
+                   builder:(context, snapshot) {
+                    if(snapshot.connectionState == ConnectionState.waiting){
+                      return CircularProgressIndicator();
+                    }else if(snapshot.hasError){
+                      return Text('no valid data');
+                      
+                    }
+                    else{
+                         var dataDoc = snapshot.data!.docs;
+                          return  dataDoc.length==0 ? 
+                        Text('no items')
+                        : ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: dataDoc.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                // Navigate to EquipmentDetailsScreen
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        SupplierEquipmentDetailsScreen(
+                                          id: dataDoc[index].id,
+                                      name: dataDoc[index]['name']!,
+                                      imageUrl: dataDoc[index]['image']!,
+                                      rentRate:
+                                          dataDoc[index]['price'].toString(),
+                                      description: dataDoc[index]
+                                          ['description']!,
+                                      quantity:  int.parse(dataDoc[index]
+                                          ['Quantity']!),
+                                      farmersOrders: [],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(8.0),
+                                child: Card(
+                                  elevation: 3.0,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        // Equipment Image on the left
+                                        ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                          child: Image.network(
+                                            dataDoc[index]['image']!!,
+                                            height: 100,
+                                            width: 100,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            width:
+                                                16), // Add space between image and text
+                                        // Equipment Name and Rent Rate
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                dataDoc[index]['name']!,
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(height: 5),
+                                              Text(
+                                                'Rent Rate: ${dataDoc[index]['price'].toString()!}',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.grey[600],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                               ),
                             );
                           },
                         );
                      
                     }
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
 
 
                     
@@ -553,8 +889,8 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   }, ),
                
                   // Heading for Not Available for Rent Section
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -674,6 +1010,73 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   }, ),
 
                   // List of Cards for Not Available Equipments
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: notAvailableList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: const EdgeInsets.all(8.0),
+                        child: Card(
+                          elevation: 3.0,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                // Equipment Image on the left
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  child: Image.network(
+                                    notAvailableList[index]['imageUrl']!,
+                                    height: 100,
+                                    width: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                const SizedBox(width: 16), // Add space between image and text
+                                // Equipment Name, Rent Rate, and Availability Status
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        notAvailableList[index]['name']!,
+                                        style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        'Rent Rate: ${notAvailableList[index]['rentRate']}',
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey[600],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        'Status: ${notAvailableList[index]['availabilityStatus']}',
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.red, // Highlight status in red
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+=======
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                   // ListView.builder(
                   //   shrinkWrap: true,
                   //   physics: NeverScrollableScrollPhysics(),
@@ -742,6 +1145,10 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   // ),
                 
                 
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                 ],
               ),
             ),
@@ -758,6 +1165,6 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Notifications')));
+    return Scaffold(appBar: AppBar(title: const Text('Notifications')));
   }
 }

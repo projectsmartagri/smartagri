@@ -43,7 +43,15 @@ class AuthViewModel extends ChangeNotifier {
 
       Navigator.push(
         context,
+<<<<<<< HEAD
         MaterialPageRoute(builder: (context) => UserLoginscreen()),
+=======
+<<<<<<< HEAD
+        MaterialPageRoute(builder: (context) => const Loginscreen()),
+=======
+        MaterialPageRoute(builder: (context) => UserLoginscreen()),
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
       );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -101,7 +109,15 @@ class AuthViewModel extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Logout Successful')),
       );
+<<<<<<< HEAD
             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserLoginscreen(),), (route) => false,);
+=======
+<<<<<<< HEAD
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Loginscreen(),), (route) => false,);
+=======
+            Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => UserLoginscreen(),), (route) => false,);
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

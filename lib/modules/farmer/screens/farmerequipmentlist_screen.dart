@@ -45,6 +45,7 @@ class FarmEquipmentListScreen extends StatelessWidget {
     final wt = MediaQuery.of(context).size.width;
 
     return Scaffold(
+<<<<<<< HEAD
       appBar: AppBar(
         title: Text('Equipments', style: TextStyle(
                     fontSize: 22,
@@ -62,6 +63,72 @@ class FarmEquipmentListScreen extends StatelessWidget {
                 shrinkWrap: true, // Ensures the GridView doesn't take up infinite space
                 physics: NeverScrollableScrollPhysics(), // Disable scrolling for the GridView (scrolling will be handled by the parent SingleChildScrollView)
                 itemCount: list.length,
+=======
+<<<<<<< HEAD
+      body:SafeArea(
+        child: Column(
+          children: [
+            const SizedBox(height: 50,),
+        
+            const Text('Equipments',
+            style: TextStyle(
+              fontSize: 20,
+              color: Color(0xff181725),
+              fontWeight: FontWeight.bold
+            ),),
+        
+            const SizedBox(height: 30,),
+        
+            Expanded(
+              child: GridView.builder(
+                itemCount: list.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 8,
+                    childAspectRatio: .7,
+
+                  ),
+                  itemBuilder: (Buildcontext, int index) {
+                   return  ListCardWidgets(
+                     val: list[index],
+                     ontab: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => FarmEquipmentsDetails(
+                        image:  list[index]['image'],
+                        price: list[index]['price'],
+                        title:list[index]['title'],
+                        subtitle: list[index]['subtitle'],
+                        value:  list[index],
+                      ),));
+
+                     },
+                      image: list[index]['image'],
+                      title: list[index]['title'],
+                      subtitle: list[index]['subtitle'],
+                     price: list[index]['price'].toString(),
+                    );
+                  },),
+            )
+          ],
+=======
+      appBar: AppBar(
+        title: Text('Equipments', style: TextStyle(
+                    fontSize: 22,
+                    color: Color(0xff181725),
+                    fontWeight: FontWeight.bold),),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView( // Wrap the entire body in a SingleChildScrollView
+          child: Column(
+            children: [
+            
+             
+              SizedBox(height: 30),
+              GridView.builder(
+                shrinkWrap: true, // Ensures the GridView doesn't take up infinite space
+                physics: NeverScrollableScrollPhysics(), // Disable scrolling for the GridView (scrolling will be handled by the parent SingleChildScrollView)
+                itemCount: list.length,
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   crossAxisSpacing: 8,
@@ -116,6 +183,10 @@ class FarmEquipmentListScreen extends StatelessWidget {
               ),
             ],
           ),
+<<<<<<< HEAD
+=======
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
         ),
       ),
     );

@@ -112,11 +112,19 @@ class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
                     children: [
                       Text(widget.title,
                       style: TextStyle(
+<<<<<<< HEAD
 
                         color: const Color(0xff181725),
 
                        
 
+=======
+<<<<<<< HEAD
+                        color: const Color(0xff181725),
+=======
+                        color: Color.fromARGB(255, 14, 14, 14),
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                         fontWeight: FontWeight.bold,
                         fontSize: ht/37.48
                       ),),

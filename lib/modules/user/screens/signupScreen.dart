@@ -169,7 +169,7 @@ class _SupplierSignupScreenState extends State<signupScreen> {
                 ),
               ),
                const SizedBox(height: 16.0),
-                    Spacer(),
+                    const Spacer(),
 
                     // Create Account Button
                     RichText(
@@ -182,12 +182,20 @@ class _SupplierSignupScreenState extends State<signupScreen> {
                           ),
                           TextSpan(
                             text: 'Login',
-                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.push(
                                   context,
+<<<<<<< HEAD
                                   MaterialPageRoute(builder: (context) => UserLoginscreen()),
+=======
+<<<<<<< HEAD
+                                  MaterialPageRoute(builder: (context) => const Loginscreen()),
+=======
+                                  MaterialPageRoute(builder: (context) => UserLoginscreen()),
+>>>>>>> refs/remotes/origin/main
+>>>>>>> 75d869e1041501d5ac67dce18a81e74942b56367
                                 );
                               },
                           ),
