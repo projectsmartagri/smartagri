@@ -7,9 +7,9 @@ import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierEquipment_Details_screen.dart';
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
 import 'package:smartagri/modules/supplier/screens/Settings_screen.dart';
-import 'package:smartagri/modules/supplier/screens/SupplierLoginScreen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierProfile_Screen.dart';
 import 'package:smartagri/modules/supplier/screens/Supplier_bookingdetails_screen.dart';
+import 'package:smartagri/modules/supplier/screens/custom_supplier_screen.dart';
 
 class SupplierHomeScreen extends StatefulWidget {
   const SupplierHomeScreen({super.key});
@@ -99,15 +99,115 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
     ];
 
     return Scaffold(
+      drawer:CustomDrawer()  // Drawer
+          // Drawer(
+          //   child: ListView(
+          //     padding: EdgeInsets.zero,
+          //     children: <Widget>[
+          //       DrawerHeader(
+          //         decoration: const BoxDecoration(
+          //           color: Color.fromARGB(255, 4, 156, 40),
+          //         ),
+          //         child: Container(), // Empty container instead of text
+          //       ),
+          //       ListTile(
+          //         title: const Text('Home'),
+          //         onTap: () {
+          //           Navigator.pop(context);
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) => const SupplierHomeScreen()),
+          //           ); // Close the drawer
+          //         },
+          //       ),
+          //       ListTile(
+          //         title: const Text('Booking Details'),
+          //         onTap: () {
+          //           Navigator.pop(context);
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) =>
+          //                     const SupplierBookingDetailsScreen()),
+          //           ); // Close the drawer
+          //         },
+          //       ),
+          //       ListTile(
+          //         title: const Text('Other Companies'),
+          //         onTap: () {
+          //           Navigator.pop(context);
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) => const OtherCompaniesScreen()),
+          //           ); // Close the drawer
+          //         },
+          //       ),
+          //       ListTile(
+          //         title: const Text('Profile'),
+          //         onTap: () {
+          //           Navigator.pop(context);
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(
+          //                 builder: (context) =>
+          //                      SupplierProfileScreen()),
+          //           ); // Close the drawer
+          //         },
+          //       ),
+               
+          //       const Divider(), // Divider before LOG OUT
+          //       ListTile(
+          //         title: const Text(
+          //           'LOG OUT',
+          //           style: TextStyle(
+          //             color: Colors.red, // Change color to red for emphasis
+          //           ),
+          //         ),
+          //         onTap: () {
+          //           // Handle log out logic here
+          //           Navigator.pop(context);
+          //           Navigator.push(
+          //             context,
+          //             MaterialPageRoute(builder: (context) => ChooseScreen()),
+          //           );
+          //         },
+          //       ),
+          //     ],
+          //   ),
+          
+          
+          // ),
+,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add,color: Colors.white,),
+        backgroundColor: Colors.green,
+      
+        onPressed: () {
+          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    AddEquipmentscreen()), // Navigate to AddEquipmentScreen
+                          );
+        },
+      ),
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: _toggleDrawer,
+        leading:  Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer(); // Open drawer using the Builder context
+              },
+            );
+          },
         ),
         title: const Text(
           'Smart Agri',
           style: TextStyle(
-             color: Color.fromRGBO(4, 75, 4, 0.961),
+            color: Color.fromRGBO(4, 75, 4, 0.961),
             fontFamily: 'Dancing Script',
             fontSize: 24,
           ),
@@ -115,260 +215,49 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const NotificationScreen()),
-              );
-            },
+            onPressed: () {},
           ),
         ],
       ),
       body: Row(
         children: [
-          // Drawer
-          AnimatedContainer(
-            width: _drawerWidth,
-            duration: const Duration(milliseconds: 300),
-            child: Drawer(
-              child: ListView(
-                padding: EdgeInsets.zero,
-                children: <Widget>[
-                  DrawerHeader(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 4, 156, 40),
-                    ),
-                    child: Container(), // Empty container instead of text
-                  ),
-                  ListTile(
-                    title: const Text('Home'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SupplierHomeScreen()),
-                      ); // Close the drawer
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Booking Details'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const SupplierBookingDetailsScreen()),
-                      ); // Close the drawer
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Other Companies'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const OtherCompaniesScreen()),
-                      ); // Close the drawer
-                    },
-                  ),
-                  ListTile(
-                    title: const Text('Profile'),
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const SupplierProfileScreen()),
-                      ); // Close the drawer
-                    },
-                  ),
-<<<<<<< HEAD
-                    ListTile(
-                   // leading: Icon(Icons.settings),
-                    title: const Text('Settings'),
-=======
-                  ListTile(
-                    // leading: Icon(Icons.settings),
-                    title: Text('Settings'),
->>>>>>> refs/remotes/origin/main
-                    onTap: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const SettingsScreen()),
-                      );
-                    },
-                  ),
-                  const Divider(), // Divider before LOG OUT
-                  ListTile(
-                    title: const Text(
-                      'LOG OUT',
-                      style: TextStyle(
-                        color: Colors.red, // Change color to red for emphasis
-                      ),
-                    ),
-                    onTap: () {
-                      // Handle log out logic here
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ChooseScreen()),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
+         
           // Main content area
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  CarouselSlider(
-                    options: CarouselOptions(
-                      height: 300,
-                      autoPlay: true,
-                      enlargeCenterPage: true, // Enlarge the center item
-                      aspectRatio: 2.0, // Aspect ratio to stretch the images
-                      onPageChanged: (index, reason) {
-                        setState(() {
-                          _currentIndex = index; // Update current index
-                        });
-                      },
-                    ),
-                    items: imgList
-                        .map((item) => Container(
-                              width: MediaQuery.of(context)
-                                  .size
-                                  .width, // Set width to full
+                  // CarouselSlider(
+                  //   options: CarouselOptions(
+                  //     height: 300,
+                  //     autoPlay: true,
+                  //     enlargeCenterPage: true, // Enlarge the center item
+                  //     aspectRatio: 2.0, // Aspect ratio to stretch the images
+                  //     onPageChanged: (index, reason) {
+                  //       setState(() {
+                  //         _currentIndex = index; // Update current index
+                  //       });
+                  //     },
+                  //   ),
+                  //   items: imgList
+                  //       .map((item) => Container(
+                  //             width: MediaQuery.of(context)
+                  //                 .size
+                  //                 .width, // Set width to full
 
-                              child: Center(
-                                child: Image.network(
-                                  item,
-                                  fit: BoxFit
-                                      .cover, // Optional: Use BoxFit to cover the container
-                                  height: 300, // Height of the image
-                                  width: double.infinity,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                  ),
-<<<<<<< HEAD
-                                    // Heading for Equipments
-                   // Heading for Equipments with Add Equipment Button
-                   // Heading for Equipments with Add Equipment Button and Title
-Padding(
-  padding: const EdgeInsets.all(8.0),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween, // This will space the title and Add button apart
-    children: [
-      const Text(
-        'ALL EQUIPMENTS',
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-     GestureDetector(
-        onTap: () {
-          // Define what happens when the button or text is pressed
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddEquipmentscreen()), // Navigate to AddEquipmentScreen
-          );
-        },
-        child: const Row(
-          children: [
-            Text(
-              'Add',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.green,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Icon(
-              Icons.add,
-              color: Colors.green,
-              size: 24,
-            ),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
-          // Inside the SupplierHomeScreen class, replace the ListView.builder for ALL EQUIPMENTS
+                  //             child: Center(
+                  //               child: Image.network(
+                  //                 item,
+                  //                 fit: BoxFit
+                  //                     .cover, // Optional: Use BoxFit to cover the container
+                  //                 height: 300, // Height of the image
+                  //                 width: double.infinity,
+                  //               ),
+                  //             ),
+                  //           ))
+                  //       .toList(),
+                  // ),
 
-ListView.builder(
-  shrinkWrap: true,
-  physics: const NeverScrollableScrollPhysics(),
-  itemCount: equipmentList.length,
-  itemBuilder: (context, index) {
-    return GestureDetector(
-      onTap: () {
-        // Navigate to EquipmentDetailsScreen
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>EquipmentDetailsscreen(
-              name: equipmentList[index]['name']!,
-              imageUrl: equipmentList[index]['imageUrl']!,
-              rentRate: equipmentList[index]['rentRate']!,
-            ),
-          ),
-        );
-      },
-      child: Container(
-        margin: const EdgeInsets.all(8.0),
-        child: Card(
-          elevation: 3.0,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                // Equipment Image on the left
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image.network(
-                    equipmentList[index]['imageUrl']!,
-                    height: 100,
-                    width: 100,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(width: 16), // Add space between image and text
-                // Equipment Name and Rent Rate
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        equipmentList[index]['name']!,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        'Rent Rate: ${equipmentList[index]['rentRate']}',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
-=======
                   // Indicators
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -378,9 +267,6 @@ ListView.builder(
                           setState(() {
                             _currentIndex = entry.key; // Update index on tap
                           });
-                          // Navigate to the respective page
-                          // You can uncomment this if needed
-                          // CarouselSlider.of(context).animateToPage(entry.key);
                         },
                         child: Container(
                           width: 8.0,
@@ -395,334 +281,187 @@ ListView.builder(
                       );
                     }).toList(),
                   ),
-                  // Heading for Equipments
-                  // Heading for Equipments with Add Equipment Button
-                  // Heading for Equipments with Add Equipment Button and Title
+
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment
                           .spaceBetween, // This will space the title and Add button apart
-                      children: [
-                        Text(
-                          'ALL EQUIPMENTS',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            // Define what happens when the button or text is pressed
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      AddEquipmentscreen()), // Navigate to AddEquipmentScreen
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              Text(
-                                'Add',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              Icon(
-                                Icons.add,
-                                color: Colors.green,
-                                size: 24,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                      children: [],
                     ),
                   ),
-                  // Inside the SupplierHomeScreen class, replace the ListView.builder for ALL EQUIPMENTS
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('machinary').where('userid',isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
-                      } else if (snapshot.hasError) {
-                        return Text('Something went wrong');
-                      } else {
-                        var dataDoc = snapshot.data!.docs;
-                          return  dataDoc.length==0 ? 
-                        Text('no items')
-                        : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: dataDoc.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                // Navigate to EquipmentDetailsScreen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SupplierEquipmentDetailsScreen(
-                                          id: dataDoc[index].id,
-                                      name: dataDoc[index]['name']!,
-                                      imageUrl: dataDoc[index]['image']!,
-                                      rentRate:
-                                          dataDoc[index]['price'].toString(),
-                                      description: dataDoc[index]
-                                          ['description']!,
-                                      quantity:  int.parse(dataDoc[index]
-                                          ['Quantity']!),
-                                      farmersOrders: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(8.0),
-                                child: Card(
-                                  elevation: 3.0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        // Equipment Image on the left
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: Image.network(
-                                            dataDoc[index]['image']!!,
-                                            height: 100,
-                                            width: 100,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                            width:
-                                                16), // Add space between image and text
-                                        // Equipment Name and Rent Rate
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                dataDoc[index]['name']!,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                'Rent Rate: ${dataDoc[index]['price'].toString()!}',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey[600],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                     
-                     
-                      }
-                    },
->>>>>>> refs/remotes/origin/main
-                  ),
+
                   const SizedBox(height: 20),
 
                   // Heading for Available for Rent Section
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'AVAILABLE FOR RENT',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  // List of Cards for Available Equipments
-<<<<<<< HEAD
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: availableForRentList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.all(8.0),
-                        child: Card(
-                          elevation: 3.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                // Equipment Image on the left
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    availableForRentList[index]['imageUrl']!,
-                                    height: 100,
-                                    width: 100,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(width: 16), // Add space between image and text
-                                // Equipment Name and Rent Rate
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        availableForRentList[index]['name']!,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        'Rent Rate: ${availableForRentList[index]['rentRate']}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
+                  Row(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            'AVAILABLE FOR RENT',
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-=======
-                  StreamBuilder(
-                    
-                    stream: FirebaseFirestore.instance.collection('machinary').where('availability',isEqualTo: "Available").where('userid',isEqualTo: FirebaseAuth.instance.currentUser!.uid).snapshots(),
-                  
-                   builder:(context, snapshot) {
-                    if(snapshot.connectionState == ConnectionState.waiting){
-                      return CircularProgressIndicator();
-                    }else if(snapshot.hasError){
-                      return Text('no valid data');
+                      ),
                       
-                    }
-                    else{
-                         var dataDoc = snapshot.data!.docs;
-                          return  dataDoc.length==0 ? 
-                        Text('no items')
-                        : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: dataDoc.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                // Navigate to EquipmentDetailsScreen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SupplierEquipmentDetailsScreen(
-                                          id: dataDoc[index].id,
-                                      name: dataDoc[index]['name']!,
-                                      imageUrl: dataDoc[index]['image']!,
-                                      rentRate:
-                                          dataDoc[index]['price'].toString(),
-                                      description: dataDoc[index]
-                                          ['description']!,
-                                      quantity:  int.parse(dataDoc[index]
-                                          ['Quantity']!),
-                                      farmersOrders: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(8.0),
-                                child: Card(
-                                  elevation: 3.0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        // Equipment Image on the left
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: Image.network(
-                                            dataDoc[index]['image']!!,
-                                            height: 100,
-                                            width: 100,
-                                            fit: BoxFit.cover,
+                    ],
+                  ),
+
+                  // List of Cards for Available Equipments
+
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('machinary')
+                        .where('userid',
+                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            'Something went wrong',
+                            style: TextStyle(color: Colors.red, fontSize: 16),
+                          ),
+                        );
+                      } else {
+                        var dataDoc = snapshot.data!.docs;
+                        return dataDoc.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No items available',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey),
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: dataDoc.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SupplierEquipmentDetailsScreen(
+                                            id: dataDoc[index].id,
+                                            name: dataDoc[index]['name']!,
+                                            imageUrl: dataDoc[index]['image']!,
+                                            rentRate: dataDoc[index]['price']
+                                                .toString(),
+                                            description: dataDoc[index]
+                                                ['description']!,
+                                            quantity: int.parse(
+                                                dataDoc[index]['Quantity']!),
+                                            farmersOrders: [],
                                           ),
                                         ),
-                                        SizedBox(
-                                            width:
-                                                16), // Add space between image and text
-                                        // Equipment Name and Rent Rate
-                                        Expanded(
-                                          child: Column(
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 15),
+                                      child: Card(
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                        elevation: 8.0,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.teal,
+                                                Colors.blueAccent
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(20.0),
+                                          ),
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: Row(
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(
-                                                dataDoc[index]['name']!,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
+                                              // Equipment Image
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(15.0),
+                                                child: Image.network(
+                                                  dataDoc[index]['image']!,
+                                                  height: 120,
+                                                  width: 120,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                'Rent Rate: ${dataDoc[index]['price'].toString()!}',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey[600],
+                                              SizedBox(width: 15),
+                                              // Equipment Details
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      dataDoc[index]['name']!,
+                                                      style: TextStyle(
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 10),
+                                                    Row(
+                                                      children: [
+                                                        Icon(Icons.attach_money,
+                                                            color: Colors
+                                                                .yellowAccent,
+                                                            size: 18),
+                                                        SizedBox(width: 5),
+                                                        Text(
+                                                          'Rent Rate: ₹${dataDoc[index]['price'].toString()}',
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Colors
+                                                                .yellowAccent,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    SizedBox(height: 8),
+                                                    Text(
+                                                      'Available Quantity: ${dataDoc[index]['Quantity']}',
+                                                      style: TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.white70,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                     
-                    }
->>>>>>> refs/remotes/origin/main
+                                  );
+                                },
+                              );
+                      }
+                    },
+                  ),
 
-
-                    
-
-
-                  }, ),
-               
                   // Heading for Not Available for Rent Section
                   const Padding(
                     padding: EdgeInsets.all(8.0),
@@ -738,246 +477,145 @@ ListView.builder(
                     ),
                   ),
 
-                   StreamBuilder(
-                    
-                    stream: FirebaseFirestore.instance.collection('machinary').where('availability',isEqualTo: "Not Available").snapshots(),
-                  
-                   builder:(context, snapshot) {
-                    if(snapshot.connectionState == ConnectionState.waiting){
-                      return CircularProgressIndicator();
-                    }else if(snapshot.hasError){
-                      return Text('no valid data');
-                      
-                    }
-                    else{
-                         var dataDoc = snapshot.data!.docs;
-                        
-                        return  dataDoc.length==0 ? 
-                        Text('no items')
-                       : ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: dataDoc.length,
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                // Navigate to EquipmentDetailsScreen
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        SupplierEquipmentDetailsScreen(
-                                          id: dataDoc[index].id,
-                                      name: dataDoc[index]['name']!,
-                                      imageUrl: dataDoc[index]['image']!,
-                                      rentRate:
-                                          dataDoc[index]['price'].toString(),
-                                      description: dataDoc[index]
-                                          ['description']!,
-                                      quantity:  int.parse(dataDoc[index]
-                                          ['Quantity']!),
-                                      farmersOrders: [],
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                margin: EdgeInsets.all(8.0),
-                                child: Card(
-                                  elevation: 3.0,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Row(
-                                      children: [
-                                        // Equipment Image on the left
-                                        ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(8.0),
-                                          child: Image.network(
-                                            dataDoc[index]['image']!!,
-                                            height: 100,
-                                            width: 100,
-                                            fit: BoxFit.cover,
+                  StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection('machinary')
+                        .where('availability', isEqualTo: "Not Available").where('userid',
+                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(
+                          child: Text(
+                            'No valid data',
+                            style: TextStyle(fontSize: 16, color: Colors.red),
+                          ),
+                        );
+                      } else {
+                        var dataDoc = snapshot.data!.docs;
+
+                        return dataDoc.isEmpty
+                            ? Center(
+                                child: Text(
+                                  'No items',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.grey),
+                                ),
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: dataDoc.length,
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              SupplierEquipmentDetailsScreen(
+                                            id: dataDoc[index].id,
+                                            name: dataDoc[index]['name']!,
+                                            imageUrl: dataDoc[index]['image']!,
+                                            rentRate: dataDoc[index]['price']
+                                                .toString(),
+                                            description: dataDoc[index]
+                                                ['description']!,
+                                            quantity: int.parse(
+                                                dataDoc[index]['Quantity']!),
+                                            farmersOrders: [],
                                           ),
                                         ),
-                                        SizedBox(
-                                            width:
-                                                16), // Add space between image and text
-                                        // Equipment Name and Rent Rate
-                                        Expanded(
-                                          child: Column(
+                                      );
+                                    },
+                                    child: Container(
+                                      margin: EdgeInsets.symmetric(
+                                          vertical: 10, horizontal: 15),
+                                      child: Card(
+                                        elevation: 6.0,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15.0),
+                                        ),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Colors.purpleAccent,
+                                                Colors.blue
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            borderRadius:
+                                                BorderRadius.circular(15.0),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black12,
+                                                blurRadius: 8.0,
+                                                offset: Offset(2, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          padding: const EdgeInsets.all(12.0),
+                                          child: Row(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                                CrossAxisAlignment.center,
                                             children: [
-                                              Text(
-                                                dataDoc[index]['name']!,
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
+                                              // Equipment Image
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.0),
+                                                child: Image.network(
+                                                  dataDoc[index]['image']!,
+                                                  height: 100,
+                                                  width: 100,
+                                                  fit: BoxFit.cover,
                                                 ),
                                               ),
-                                              SizedBox(height: 5),
-                                              Text(
-                                                'Rent Rate: ${dataDoc[index]['price'].toString()!}',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.grey[600],
+                                              SizedBox(
+                                                  width:
+                                                      16), // Space between image and text
+                                              // Equipment Details
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      dataDoc[index]['name']!,
+                                                      style: TextStyle(
+                                                        fontSize: 20,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    SizedBox(height: 5),
+                                                    Text(
+                                                      'Rent Rate: ₹${dataDoc[index]['price'].toString()}',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color:
+                                                            Colors.yellowAccent,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
                                           ),
                                         ),
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                        );
-                     
-                    }
-
-
-                    
-
-
-                  }, ),
-
-                  // List of Cards for Not Available Equipments
-<<<<<<< HEAD
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: notAvailableList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        margin: const EdgeInsets.all(8.0),
-                        child: Card(
-                          elevation: 3.0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                // Equipment Image on the left
-                                ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    notAvailableList[index]['imageUrl']!,
-                                    height: 100,
-                                    width: 100,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                                const SizedBox(width: 16), // Add space between image and text
-                                // Equipment Name, Rent Rate, and Availability Status
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        notAvailableList[index]['name']!,
-                                        style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        'Rent Rate: ${notAvailableList[index]['rentRate']}',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.grey[600],
-                                        ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      Text(
-                                        'Status: ${notAvailableList[index]['availabilityStatus']}',
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.red, // Highlight status in red
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
+                                  );
+                                },
+                              );
+                      }
                     },
-                  ),
-=======
-                  // ListView.builder(
-                  //   shrinkWrap: true,
-                  //   physics: NeverScrollableScrollPhysics(),
-                  //   itemCount: notAvailableList.length,
-                  //   itemBuilder: (context, index) {
-                  //     return Container(
-                  //       margin: EdgeInsets.all(8.0),
-                  //       child: Card(
-                  //         elevation: 3.0,
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.all(8.0),
-                  //           child: Row(
-                  //             children: [
-                  //               // Equipment Image on the left
-                  //               ClipRRect(
-                  //                 borderRadius: BorderRadius.circular(8.0),
-                  //                 child: Image.network(
-                  //                   notAvailableList[index]['imageUrl']!,
-                  //                   height: 100,
-                  //                   width: 100,
-                  //                   fit: BoxFit.cover,
-                  //                 ),
-                  //               ),
-                  //               SizedBox(
-                  //                   width:
-                  //                       16), // Add space between image and text
-                  //               // Equipment Name, Rent Rate, and Availability Status
-                  //               Expanded(
-                  //                 child: Column(
-                  //                   crossAxisAlignment:
-                  //                       CrossAxisAlignment.start,
-                  //                   children: [
-                  //                     Text(
-                  //                       notAvailableList[index]['name']!,
-                  //                       style: TextStyle(
-                  //                         fontSize: 18,
-                  //                         fontWeight: FontWeight.bold,
-                  //                       ),
-                  //                     ),
-                  //                     SizedBox(height: 5),
-                  //                     Text(
-                  //                       'Rent Rate: ${notAvailableList[index]['rentRate']}',
-                  //                       style: TextStyle(
-                  //                         fontSize: 16,
-                  //                         color: Colors.grey[600],
-                  //                       ),
-                  //                     ),
-                  //                     SizedBox(height: 5),
-                  //                     Text(
-                  //                       'Status: ${notAvailableList[index]['availabilityStatus']}',
-                  //                       style: TextStyle(
-                  //                         fontSize: 14,
-                  //                         color: Colors
-                  //                             .red, // Highlight status in red
-                  //                       ),
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                
-                
->>>>>>> refs/remotes/origin/main
+                  )
                 ],
               ),
             ),
@@ -985,15 +623,5 @@ ListView.builder(
         ],
       ),
     );
-  }
-}
-
-// Placeholder classes for Navigation (you may replace these with your actual implementations)
-class NotificationScreen extends StatelessWidget {
-  const NotificationScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: const Text('Notifications')));
   }
 }

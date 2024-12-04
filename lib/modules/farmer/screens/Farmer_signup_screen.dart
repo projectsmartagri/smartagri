@@ -51,20 +51,20 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
         isLoading = true;
       });
 
-      await auth.registerSupplier(
-        name: _namecontroller.text, 
-        email: _emailcontroller.text, 
-        password: _passwordController.text, 
-        phone: _phonenocontroller.text, 
-        address: '',
-        companyLicenseFile: File(_image!.path));
+      // await auth.registerSupplier(
+      //   name: _namecontroller.text, 
+      //   email: _emailcontroller.text, 
+      //   password: _passwordController.text, 
+      //   phone: _phonenocontroller.text, 
+      //   address: '',
+      //   companyLicenseFile: File(_image!.path));
 
-        Navigator.pop(context);
+      //   Navigator.pop(context);
 
 
-        setState(() {
-        isLoading = false;
-      });
+      //   setState(() {
+      //   isLoading = false;
+      // });
 
 
       

@@ -45,53 +45,6 @@ class FarmEquipmentListScreen extends StatelessWidget {
     final wt = MediaQuery.of(context).size.width;
 
     return Scaffold(
-<<<<<<< HEAD
-      body:SafeArea(
-        child: Column(
-          children: [
-            const SizedBox(height: 50,),
-        
-            const Text('Equipments',
-            style: TextStyle(
-              fontSize: 20,
-              color: Color(0xff181725),
-              fontWeight: FontWeight.bold
-            ),),
-        
-            const SizedBox(height: 30,),
-        
-            Expanded(
-              child: GridView.builder(
-                itemCount: list.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 8,
-                    childAspectRatio: .7,
-
-                  ),
-                  itemBuilder: (Buildcontext, int index) {
-                   return  ListCardWidgets(
-                     val: list[index],
-                     ontab: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => FarmEquipmentsDetails(
-                        image:  list[index]['image'],
-                        price: list[index]['price'],
-                        title:list[index]['title'],
-                        subtitle: list[index]['subtitle'],
-                        value:  list[index],
-                      ),));
-
-                     },
-                      image: list[index]['image'],
-                      title: list[index]['title'],
-                      subtitle: list[index]['subtitle'],
-                     price: list[index]['price'].toString(),
-                    );
-                  },),
-            )
-          ],
-=======
       appBar: AppBar(
         title: Text('Equipments', style: TextStyle(
                     fontSize: 22,
@@ -163,7 +116,6 @@ class FarmEquipmentListScreen extends StatelessWidget {
               ),
             ],
           ),
->>>>>>> refs/remotes/origin/main
         ),
       ),
     );

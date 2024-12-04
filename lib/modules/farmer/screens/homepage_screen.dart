@@ -5,11 +5,7 @@ import 'package:smartagri/modules/farmer/screens/FarmerCompanyEquipment.dart';
 import 'package:smartagri/modules/farmer/screens/FarmerOrderScreen.dart';
 import 'package:smartagri/modules/farmer/screens/FarmerProductScreen.dart';
 import 'package:smartagri/modules/farmer/screens/FarmerProfileScreen.dart';
-import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
-import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 import 'package:smartagri/modules/farmer/screens/farmerequipmentlist_screen.dart';
-import 'package:smartagri/modules/farmer/screens/farmproductlist_screen.dart';
-import 'package:smartagri/modules/user/screens/beveragesScreen.dart';
 
 class HomepageScreen extends StatefulWidget {
   const HomepageScreen({super.key});
@@ -21,17 +17,12 @@ class HomepageScreen extends StatefulWidget {
 class _HomepageScreenState extends State<HomepageScreen> {
   int _selectedIndex = 0;
 
-<<<<<<< HEAD
-  static final List<Widget> _pages = <Widget>[
-    // Home Page with Cards
-=======
   static List<Widget> _pages = <Widget>[
     
->>>>>>> refs/remotes/origin/main
     HomePageContent(),
-    FarmerOrderScreen (),
-    FarmerProductScreen(),
-   FarmerProfileScreen(),
+       FarmerOrderScreen (),
+      FarmerProductScreen(),
+     FarmerProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -55,70 +46,6 @@ class _HomepageScreenState extends State<HomepageScreen> {
     print('Notification icon pressed');
   }
   @override
-<<<<<<< HEAD
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Smart Agri',
-          style: TextStyle(
-            fontFamily: 'Dancing Script', // Change to your desired font family
-            fontSize: 20,         // Change to your desired font size
-            fontWeight: FontWeight.bold, // Change to your desired font weight
-          ),
-        ),
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          onPressed: () {
-            // Open the drawer
-            
-          },
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.search),
-            onPressed: _onSearchPressed,
-          ),
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: _onNotificationPressed,
-          ),
-        ],
-      ),
-      drawer: Drawer(
-        // Add your drawer content here
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-              child: Text(
-                'Drawer Header',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                ),
-              ),
-            ),
-            ListTile(
-              title: const Text('settings'),
-              onTap: () {
-                // Handle item 1 tap
-              },
-            ),
-            ListTile(
-              title: const Text('payment'),
-              onTap: () {
-                // Handle item 2 tap
-              },
-            ),
-            // Add more items here
-          ],
-        ),
-      ),
-=======
 Widget build(BuildContext context) {
   return Scaffold(
     appBar: _selectedIndex == 0
@@ -137,7 +64,7 @@ Widget build(BuildContext context) {
                 onPressed: _onSearchPressed,
               ),
               IconButton(
-                icon: Icon(Icons.notifications),
+                icon: const Icon(Icons.notifications),
                 onPressed: () {
                   Navigator.push(
                     context,
@@ -150,7 +77,6 @@ Widget build(BuildContext context) {
           )
         : null, // Hide the AppBar for other screens
  
->>>>>>> refs/remotes/origin/main
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
@@ -274,152 +200,6 @@ Widget build(BuildContext context) {
       children: [
         const SizedBox(height: 30),
 
-<<<<<<< HEAD
-   ];
-
-  HomePageContent({super.key});
-
-
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 30,),
-        
-        
-            CarouselSlider(
-          options: CarouselOptions(height: 150.0),
-          items: [
-        
-            Container(
-            width: MediaQuery.of(context).size.width,
-            margin: const EdgeInsets.symmetric(horizontal: 15.0),
-            
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.amber
-            ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Image.network('https://t3.ftcdn.net/jpg/06/58/31/10/360_F_658311073_jv0oobaa7DOjWlya5LeEx2Wq64iRLyhB.jpg',fit: BoxFit.cover,))
-            
-            ,)
-          
-          ]
-          
-        ),
-        const SizedBox(height: 30,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              const Text("Equipments"),
-              TextButton(onPressed: () {
-                Navigator.push(context,MaterialPageRoute(builder:(context) => FarmEquipmentListScreen(),));
-              },
-               child:const Row(
-                 children: [
-                   Text("see all "),
-                   Icon(Icons.arrow_right,),
-        
-        
-                 ],
-               )
-              )
-            ],),
-            SizedBox(
-              
-              width: double.maxFinite,
-              child:Wrap(
-                alignment: WrapAlignment.center,
-                
-                children: list.map((e) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) =>FarmEquipmentsDetails(image: e['image'], title: e['title'], subtitle: e['subtitle'], price: e['price'], value: e),) );
-                    },
-                    child: Card(
-                      color: Colors.white,
-                    child: Column(
-                    children: [
-                      Image.network(e['image'],height: 100,width: 100,),
-                      Text(e['title']),
-                                    
-                    ],
-                                    ),
-                    ),
-                  );
-                },).toList()
-                 
-                 
-                
-                
-                
-                
-              )
-            ),
-          
-        
-        
-          const SizedBox(height: 30,),
-          Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-              const Text("Products"),
-              TextButton(onPressed: () {
-                Navigator.push(context,MaterialPageRoute(builder: (context) => FarmProductListScreen(),) );
-              },
-               child:const Row(
-                 children: [
-                   Text("see all "),
-                   Icon(Icons.arrow_right,),
-        
-        
-                 ],
-               )
-              )
-            ],),
-                 SizedBox(
-              
-              width: double.maxFinite,
-              child:Wrap(
-                alignment: WrapAlignment.center,
-                
-                children: categorieslist.map((e) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => AddProductScreen(),));
-                    },
-                    child: Card(
-                      color: Colors.white,
-                    child: Column(
-                    children: [
-                      Image.network(e['image'],height: 100,width: 100,),
-                      Text(e['title']),
-                                    
-                    ],
-                                    ),
-                    ),
-                  );
-                },).toList()
-                 
-                 
-                
-                
-                
-                
-              )
-            ),
-          
-        
-        
-         
-=======
         // CarouselSlider
         CarouselSlider(
           options: CarouselOptions(
@@ -464,14 +244,13 @@ Widget build(BuildContext context) {
                   ),
                 );
               },
-              child: Row(
-                children: const [
+              child: const Row(
+                children: [
                   Text("See all"),
                   Icon(Icons.arrow_right),
                 ],
               ),
             ),
->>>>>>> refs/remotes/origin/main
           ],
         ),
 
@@ -487,7 +266,7 @@ Widget build(BuildContext context) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Equipmentlistcompanies(
+                          builder: (context) => const Equipmentlistcompanies(
                             companyId: '1', // Pass the selected company ID
                             companyName: 'Company A', // Pass the selected company name
                           ),

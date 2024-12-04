@@ -39,15 +39,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
-<<<<<<< HEAD
-                        padding: EdgeInsets.only(bottom: 60.0),
-                        child: Text(
-                          "SMART AGRI",
-=======
                         padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           "Smart Agri",
->>>>>>> refs/remotes/origin/main
                           style: TextStyle(
                             fontWeight:FontWeight.bold,
                              color: Color.fromRGBO(4, 75, 4, 1),

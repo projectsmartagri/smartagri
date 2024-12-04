@@ -187,11 +187,7 @@ class _SupplierSignupScreenState extends State<signupScreen> {
                               ..onTap = () {
                                 Navigator.push(
                                   context,
-<<<<<<< HEAD
-                                  MaterialPageRoute(builder: (context) => const Loginscreen()),
-=======
                                   MaterialPageRoute(builder: (context) => UserLoginscreen()),
->>>>>>> refs/remotes/origin/main
                                 );
                               },
                           ),

@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart'; // Import HomeScreen
-import 'package:smartagri/modules/supplier/screens/EquipmentListPage_screen.dart'; // Import EquipmentListPage (adjust path)
+import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
+import 'package:smartagri/modules/supplier/screens/EquipmentListPage_screen.dart';
 
 class OtherCompaniesScreen extends StatelessWidget {
   const OtherCompaniesScreen({super.key});
@@ -9,14 +11,15 @@ class OtherCompaniesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Other Companies'),
+        title: const Text(
+          'Select Companies',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
-            Navigator.push(
+            Navigator.pop(
               context,
-              MaterialPageRoute(builder: (context) =>const SupplierHomeScreen()), // Navigate to HomeScreen
             );
           },
         ),
@@ -26,40 +29,40 @@ class OtherCompaniesScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Select Companies',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
             const SizedBox(height: 16), // Space between title and list
             Expanded(
-              child: ListView(
-                children: [
-                  _buildCompanyCard(
-                    context,
-                    'Mahindra',
-                    'https://images.pexels.com/photos/281260/pexels-photo-281260.jpeg?cs=srgb&dl=pexels-francesco-ungaro-281260.jpg&fm=jpg', // Mahindra Logo
-                    '1', // Mahindra company ID
-                  ),
-                  _buildCompanyCard(
-                    context,
-                    'Kubota',
-                    'https://img.freepik.com/free-photo/abstract-dark-blurred-background-smooth-gradient-texture-color-shiny-bright-website-pattern-banner-header-sidebar-graphic-art-image_1258-88597.jpg', // Kubota Logo
-                    '2', // Kubota company ID
-                  ),
-                  _buildCompanyCard(
-                    context,
-                    'New Holland',
-                    'https://t4.ftcdn.net/jpg/01/16/88/37/360_F_116883786_wuckft1sNw1ouQfJ6FuquZnxea3qBlxy.jpg', // New Holland Logo
-                    '3', // New Holland company ID
-                  ),
-                  _buildCompanyCard(
-                    context,
-                    'Swaraj',
-                    'https://img.freepik.com/free-photo/abstract-blur-empty-green-gradient-studio-well-use-as-background-website-template-frame-business-report_1258-52616.jpg?size=338&ext=jpg&ga=GA1.1.2008272138.1727740800&semt=ais_hybrid', // Swaraj Logo
-                    '4', // Swaraj company ID
-                  ),
-                  // Add more company cards here...
-                ],
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('suppliers')
+                    .where(FieldPath.documentId, isNotEqualTo: FirebaseAuth.instance.currentUser!.uid).where('isApproved' , isEqualTo: true) // Filter out the logged-in supplier
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot.hasError) {
+                    return const Center(child: Text('Error loading companies.'));
+                  }
+
+                  final companies = snapshot.data!.docs;
+
+                  if (companies.isEmpty) {
+                    return const Center(child: Text('No other companies found.'));
+                  }
+
+                  return ListView.builder(
+                    itemCount: companies.length,
+                    itemBuilder: (context, index) {
+                      final company = companies[index];
+                      return _buildCompanyCard(
+                        context,
+                        company['name'], // Dynamic name from Firebase
+                        company['logo'], // Dynamic logo URL from Firebase
+                        company.id, // Firebase document ID as companyId
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ],
@@ -68,15 +71,16 @@ class OtherCompaniesScreen extends StatelessWidget {
     );
   }
 
-  // Updated _buildCompanyCard method to include onTap with navigation
-  Widget _buildCompanyCard(BuildContext context, String companyName, String imagePath, String companyId) {
+  Widget _buildCompanyCard(BuildContext context, String companyName, String logoUrl, String companyId) {
     return GestureDetector(
       onTap: () {
-        // Navigate to the Equipment List Page when a company is tapped
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => EquipmentListPagescreen (companyId: companyId, companyName: '',), // Pass companyId to EquipmentListPage
+            builder: (context) => EquipmentDetailScreen(
+              companyId: companyId,
+              companyName: companyName,
+            ),
           ),
         );
       },
@@ -88,7 +92,7 @@ class OtherCompaniesScreen extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
-                imagePath,
+                logoUrl,
                 height: 150,
                 width: double.infinity,
                 fit: BoxFit.cover,
@@ -98,14 +102,14 @@ class OtherCompaniesScreen extends StatelessWidget {
             Container(
               height: 150,
               decoration: BoxDecoration(
-                color: Colors.black.withOpacity(0.5), // Black overlay with transparency
+                color: Colors.black.withOpacity(0.5),
                 borderRadius: BorderRadius.circular(8.0),
               ),
               alignment: Alignment.center,
               child: Text(
                 companyName,
                 style: const TextStyle(
-                  fontSize: 29, // Increased font size for better visibility
+                  fontSize: 24, // Increased font size for better visibility
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                 ),

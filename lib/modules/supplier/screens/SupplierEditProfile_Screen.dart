@@ -24,6 +24,8 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
   String? _backgroundImageUrl;  // To store the URL of the background image
   String? _licenseImageUrl;     // To store the URL of the license image
 
+  bool _isLoading = false; // To track loading state
+
   @override
   void initState() {
     super.initState();
@@ -41,6 +43,10 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
 
   // Fetch supplier data from Firestore
   Future<void> fetchSupplierData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final id = FirebaseAuth.instance.currentUser!.uid;
       DocumentSnapshot supplierDoc = await FirebaseFirestore.instance
@@ -66,6 +72,10 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
       }
     } catch (e) {
       print('Error fetching supplier data: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -135,6 +145,10 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
 
   // Method to save the edited company details
   Future<void> saveEditedData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
       final id = FirebaseAuth.instance.currentUser!.uid;
       final supplierRef = FirebaseFirestore.instance.collection('suppliers').doc(id);
@@ -154,9 +168,12 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile updated successfully!')),
       );
-
     } catch (e) {
       print('Error saving edited data: $e');
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
@@ -164,114 +181,136 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile'),
+        title: const Text('Edit Profile',style: TextStyle(color: Colors.white),),
+        backgroundColor: Colors.green[700], // Agricultural theme color
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            // Displaying the background image using Image.network for URL from Firebase
-            ClipOval(
-              child: _backgroundImage != null
-                  ? Image.file(
-                      _backgroundImage!,
-                      height: 150,
-                      width: 150,
-                      fit: BoxFit.cover,
-                    )
-                  : _backgroundImageUrl != null
-                      ? Image.network(
-                          _backgroundImageUrl!,
-                          height: 150,
-                          width: 150,
+      body: _isLoading
+          ? const Center(child: CircularProgressIndicator()) // Loading indicator
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  // Displaying the background image using Image.network for URL from Firebase
+                  ClipOval(
+                    child: _backgroundImage != null
+                        ? Image.file(
+                            _backgroundImage!,
+                            height: 150,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          )
+                        : _backgroundImageUrl != null
+                            ? Image.network(
+                                _backgroundImageUrl!,
+                                height: 150,
+                                width: 150,
+                                fit: BoxFit.cover,
+                              )
+                            : CircleAvatar(
+                                radius: 75,
+                                backgroundColor: Colors.green[100], // Agricultural theme color
+                                child:  Icon(
+                                  Icons.agriculture,
+                                  color: Colors.green[700],
+                                  size: 50,
+                                ),
+                              ),
+                  ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _pickImage(false),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[700], // Agricultural theme color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      minimumSize: Size(double.infinity, 50), // Full width
+                    ),
+                    child: const Text(
+                      'Change Logo',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildTextField(_companyNameController, 'Company Name'),
+                  _buildTextField(_emailController, 'Email'),
+                  _buildTextField(_phoneController, 'Phone Number'),
+                  _buildTextField(_addressController, 'Address'),
+                  const SizedBox(height: 16),
+                  const Text(
+                    'Company License',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  _licenseImage != null
+                      ? Image.file(
+                          File(_licenseImage!),
+                          height: 200,
                           fit: BoxFit.cover,
                         )
-                      : CircleAvatar(
-                          radius: 75,
-                          backgroundColor: Colors.grey[300],
-                          child: const Icon(
-                            Icons.person,
-                            color: Colors.grey,
-                            size: 50,
-                          ),
-                        ),
-            ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () => _pickImage(false),
-              child: const Text('Change Logo'),
-            ),
-            const SizedBox(height: 20),
-            TextField(
-              controller: _companyNameController,
-              decoration: const InputDecoration(
-                labelText: 'Company Name',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _phoneController,
-              decoration: const InputDecoration(
-                labelText: 'Phone Number',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _addressController,
-              decoration: const InputDecoration(
-                labelText: 'Address',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Company License',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            _licenseImage != null
-                ? Image.file(
-                    File(_licenseImage!),
-                    height: 200,
-                    fit: BoxFit.cover,
-                  )
-                : _licenseImageUrl != null
-                    ? Image.network(
-                        _licenseImageUrl!,
-                        height: 200,
-                        fit: BoxFit.cover,
-                      )
-                    : Container(
-                        height: 200,
-                        width: double.infinity,
-                        color: const Color.fromARGB(192, 194, 197, 195),
-                        child: const Icon(
-                          Icons.add_photo_alternate,
-                          color: Color.fromARGB(255, 249, 247, 247),
-                          size: 50,
-                        ),
+                      : _licenseImageUrl != null
+                          ? Image.network(
+                              _licenseImageUrl!,
+                              height: 200,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              height: 200,
+                              width: double.infinity,
+                              color: Colors.green[100], // Agricultural theme color
+                              child: const Icon(
+                                Icons.add_photo_alternate,
+                                color: Colors.white,
+                                size: 50,
+                              ),
+                            ),
+                  const SizedBox(height: 8),
+                  ElevatedButton(
+                    onPressed: () => _pickImage(true),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[700], // Agricultural theme color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
-            const SizedBox(height: 8),
-            ElevatedButton(
-              onPressed: () => _pickImage(true),
-              child: const Text('Change License Image'),
+                      minimumSize: Size(double.infinity, 50), // Full width
+                    ),
+                    child: const Text(
+                      'Change License Image',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: saveEditedData, // Save the edited data
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[700], // Agricultural theme color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      minimumSize: Size(double.infinity, 50), // Full width
+                    ),
+                    child: const Text(
+                      'Save Changes',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: saveEditedData, // Save the edited data
-              child: const Text('Save Changes'),
-            ),
-          ],
+    );
+  }
+
+  Widget _buildTextField(TextEditingController controller, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: TextField(
+        controller: controller,
+        decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.green[700]!),
+          ),
         ),
       ),
     );

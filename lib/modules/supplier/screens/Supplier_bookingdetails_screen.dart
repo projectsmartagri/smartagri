@@ -6,136 +6,209 @@ class SupplierBookingDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sample data for bookings and returns, now including payment details
+    // Sample data for bookings and completed items
     final List<Map<String, String>> bookings = [
       {
         'farmerName': 'Farmer John',
         'product': 'Tractor',
         'date': '2024-10-01',
-        'paymentStatus': 'Paid', // Payment status for Farmer John
-        'amount': '20000', // Payment amount for Farmer John
+        'paymentStatus': 'Paid',
+        'amount': '20000',
       },
       {
         'farmerName': 'Farmer Alice',
         'product': 'Plough',
         'date': '2024-10-02',
-        'paymentStatus': 'Pending', // Payment status for Farmer Alice
-        'amount': '15000', // Payment amount for Farmer Alice
+        'paymentStatus': 'Pending',
+        'amount': '15000',
       },
     ];
 
-    final List<Map<String, String>> returns = [
+    final List<Map<String, String>> completed = [
       {
         'farmerName': 'Farmer John',
         'product': 'Tractor',
         'date': '2024-10-10',
-        'paymentStatus': 'Paid', // Payment status for return
-        'amount': '20000', // Payment amount for return
+        'paymentStatus': 'Paid',
+        'amount': '20000',
       },
       {
         'farmerName': 'Farmer Alice',
         'product': 'Plough',
         'date': '2024-10-12',
-        'paymentStatus': 'Pending', // Payment status for return
-        'amount': '15000', // Payment amount for return
+        'paymentStatus': 'Pending',
+        'amount': '15000',
       },
     ];
+
+    // Filter completed items to show only those where paymentStatus is 'Paid'
+    final List<Map<String, String>> completedPaid = completed
+        .where((item) => item['paymentStatus'] == 'Paid')
+        .toList();
+
+    double totalBookingAmount = bookings.fold(0, (sum, item) => sum + double.parse(item['amount']!));
+    double totalCompletedAmount = completedPaid.fold(0, (sum, item) => sum + double.parse(item['amount']!));
 
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back), // Back button
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context);
             Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const SupplierHomeScreen()),
-            ); // Navigate back when pressed
+            );
           },
         ),
         title: const Text(
-          'Booking Details', // Title of the screen
+          'Booking Details',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 20,
+            fontSize: 22,
+            color: Colors.white,
           ),
         ),
+        backgroundColor: Colors.green[700],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Bookings',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: ListView.builder(
-                itemCount: bookings.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      title: Text('Farmer: ${bookings[index]['farmerName']}'),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Product: ${bookings[index]['product']}'),
-                          Text('Date: ${bookings[index]['date']}'),
-                          Text(
-                            'Payment Status: ${bookings[index]['paymentStatus']}',
-                            style: TextStyle(
-                              color: bookings[index]['paymentStatus'] == 'Paid' ? Colors.green : Colors.red,
-                            ),
-                          ),
-                          Text(
-                            'Amount: ₹${bookings[index]['amount']}', // Format amount in Indian Rupees
-                          ),
-                        ],
+      body: SingleChildScrollView( // Make the body scrollable
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.green[300]!),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Bookings',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[800],
                       ),
                     ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 16),
-            const Text(
-              'Returns',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Expanded(
-              child: ListView.builder(
-                itemCount: returns.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      title: Text('Farmer: ${returns[index]['farmerName']}'),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Product: ${returns[index]['product']}'),
-                          Text('Return Date: ${returns[index]['date']}'),
-                          Text(
-                            'Payment Status: ${returns[index]['paymentStatus']}',
-                            style: TextStyle(
-                              color: returns[index]['paymentStatus'] == 'Paid' ? Colors.green : Colors.red,
-                            ),
-                          ),
-                          Text(
-                            'Amount: ₹${returns[index]['amount']}', // Format amount in Indian Rupees
-                          ),
+                    const SizedBox(height: 8),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: const [
+                          DataColumn(label: Text('Farmer')),
+                          DataColumn(label: Text('Product')),
+                          DataColumn(label: Text('Date')),
+                          DataColumn(label: Text('Payment Status')),
+                          DataColumn(label: Text('Amount')),
                         ],
+                        rows: bookings.map((booking) {
+                          return DataRow(
+                            cells: [
+                              DataCell(Text(booking['farmerName']!)),
+                              DataCell(Text(booking['product']!)),
+                              DataCell(Text(booking['date']!)),
+                              DataCell(
+                                Text(
+                                  booking['paymentStatus']!,
+                                  style: TextStyle(
+                                    color: booking['paymentStatus'] == 'Paid' ? Colors.green : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              DataCell(Text('₹${booking['amount']}')),
+                            ],
+                          );
+                        }).toList(),
                       ),
                     ),
-                  );
-                },
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Text(
+                          'Total:',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Spacer(),
+                        Text('₹$totalBookingAmount',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18),)
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.green[50],
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.green[300]!),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Completed',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[800],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: DataTable(
+                        columns: const [
+                          DataColumn(label: Text('Farmer')),
+                          DataColumn(label: Text('Product')),
+                          DataColumn(label: Text('Return Date')),
+                          DataColumn(label: Text('Payment Status')),
+                          DataColumn(label: Text('Amount')),
+                        ],
+                        rows: completedPaid.map((completedData) {
+                          return DataRow(
+                            cells: [
+                              DataCell(Text(completedData['farmerName']!)),
+                              DataCell(Text(completedData['product']!)),
+                              DataCell(Text(completedData['date']!)),
+                              DataCell(
+                                Text(
+                                  completedData['paymentStatus']!,
+                                  style: TextStyle(
+                                    color: completedData['paymentStatus'] == 'Paid' ? Colors.green : Colors.red,
+                                  ),
+                                ),
+                              ),
+                              DataCell(Text('₹${completedData['amount']}')),
+                            ],
+                          );
+                        }).toList(),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      children: [
+                        Text(
+                          'Total:',
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        Spacer(),
+                        Text('₹$totalCompletedAmount',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

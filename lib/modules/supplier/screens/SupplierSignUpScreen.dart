@@ -1,325 +1,358 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smartagri/modules/supplier/screens/SupplierLoginScreen.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:smartagri/modules/supplier/services/Supplier_auth%20_services.dart';
 
 class SupplierSignupScreen extends StatefulWidget {
-  const SupplierSignupScreen({super.key});
+  const SupplierSignupScreen({Key? key}) : super(key: key);
 
   @override
-  _SupplierSupplierSignupScreenState createState() => _SupplierSupplierSignupScreenState();
+  _SupplierSignupScreenState createState() => _SupplierSignupScreenState();
 }
 
-class _SupplierSupplierSignupScreenState extends State<SupplierSignupScreen> {
+class _SupplierSignupScreenState extends State<SupplierSignupScreen> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneNoController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
-  final TextEditingController _namecontroller = TextEditingController();
-  final TextEditingController _emailcontroller = TextEditingController();
-  final TextEditingController _phonenocontroller = TextEditingController();
-  final TextEditingController _addresscontroller = TextEditingController();
-
-
+  final TextEditingController _addressController = TextEditingController();
 
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
+  bool isLoading = false;
+
+  XFile? _companyLogo;
   XFile? _companyDocument;
-  final auth =  SupplierAuthServices();
+  String? _companyLogoUrl;
 
+  final auth = SupplierAuthServices();
 
-  // Function to pick image/document
+  // Pick Document
   Future<void> _pickDocument() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     setState(() {
       _companyDocument = pickedFile;
     });
   }
 
-  bool isLoading = false;
+  // Pick Company Logo
+  Future<void> _pickCompanyLogo() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _companyLogo = pickedFile;
+    });
+  }
 
+  // Upload Logo to Firebase
+  Future<String?> _uploadCompanyLogo() async {
+    if (_companyLogo == null) return null;
+    final storageRef = FirebaseStorage.instance
+        .ref()
+        .child('company_logos/${DateTime.now().millisecondsSinceEpoch}.jpg');
+    await storageRef.putFile(File(_companyLogo!.path));
+    return await storageRef.getDownloadURL();
+  }
 
+  // Signup Handler
+  Future<void> signupHandler() async {
+    try {
 
-  void signuphandler() async{
- 
-    try{
       setState(() {
         isLoading = true;
       });
+      
+      if (_companyLogo != null) {
+        _companyLogoUrl = await _uploadCompanyLogo();
+      }
+
+      
 
       await auth.registerSupplier(
-        name: _namecontroller.text, 
-        email: _emailcontroller.text, 
-        password: _passwordController.text, 
-        phone: _phonenocontroller.text, 
-        address: _addresscontroller.text,
-        companyLicenseFile: File(_companyDocument!.path));
+        name: _nameController.text,
+        email: _emailController.text,
+        password: _passwordController.text,
+        phone: _phoneNoController.text,
+        address: _addressController.text,
+        companyLicenseFile: File(_companyDocument!.path),
+        companyLogoUrl: _companyLogoUrl!,
+      );
 
-        Navigator.pop(context);
+      Navigator.pop(context);
 
-
-        setState(() {
-        isLoading = false;
-      });
-
-
-      
-
-    }on FirebaseAuthException catch (e) {
-      // Handle Firebase authentication errors
       setState(() {
         isLoading = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message??'somthing went wrong')));
-      
-    } 
-    
-    
-    
-    
-    catch(e){
+    } catch (e) {
       setState(() {
         isLoading = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.toString())));
-
-
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.toString())),
+      );
     }
-
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     /* appBar: AppBar(
-        title: const Text('SIGN UP'),
-        backgroundColor: Colors.green,
-      ),*/
-      body:isLoading ?  const Center(
-        child: CircularProgressIndicator(),
-      )  : Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              const Text(
-                'SIGN UP',
-                style: TextStyle(color: Color.fromARGB(255, 2, 69, 8),fontSize: 24, fontWeight: FontWeight.bold ),
-                textAlign: TextAlign.center,
+      body: Stack(
+        children: [
+          // Background Gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.green, Colors.teal],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
-              const SizedBox(height: 15),
-
-              // Company Name Field
-              TextFormField(
-                controller: _namecontroller,
-
-                decoration: const InputDecoration(
-                  labelText: 'Company Name',
-                  border: OutlineInputBorder(),
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter company name';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-
-              // Email Field
-              TextFormField(
-                controller: _emailcontroller,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty || !value.contains('@')) {
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-
-              // Phone Number Field
-              TextFormField(
-                controller: _phonenocontroller,
-                decoration: const InputDecoration(
-                  labelText: 'Phone Number',
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a phone number';
-                  }
-                  return null;
-                },
-              ),
-
-              const SizedBox(height: 16.0),
-
-              // Phone Number Field
-              TextFormField(
-                controller: _addresscontroller,
-                minLines: 6,
-                maxLines: 20,
-                decoration: const InputDecoration(
-                  labelText: 'Address',
-                  border: OutlineInputBorder(),
-                ),
-                
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter address';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-
-              // Password Field
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscurePassword = !_obscurePassword;
-                      });
-                    },
+            ),
+          ),
+          // Form Content
+          Center(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                ),
-                obscureText: _obscurePassword,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
-
-              // Confirm Password Field
-              TextFormField(
-                controller: _confirmPasswordController,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: IconButton(
-                    icon: Icon(
-                      _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        _obscureConfirmPassword = !_obscureConfirmPassword;
-                      });
-                    },
-                  ),
-                ),
-                obscureText: _obscureConfirmPassword,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please confirm your password';
-                  }
-                  if (value != _passwordController.text) {
-                    return 'Passwords do not match';
-                  }
-                  return null;
-                },
-              ),
-             
-             
-             
-              const SizedBox(height: 16.0),
-
-              // Upload Company Document Button
-              Row(
-                children: [
-                  ElevatedButton.icon(
-                    onPressed: _pickDocument,
-                    icon: const Icon(Icons.upload_file),
-                    label: const Text('Upload Company Document'),
-                    style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                  ),
-                  const SizedBox(width: 10),
-                  // Display document name after selection
-                  _companyDocument != null
-                      ? Text(_companyDocument!.name)
-                      : const Text(''),
-                ],
-              ),
-              const SizedBox(height: 20),
-
-              // Sign Up Button
-              SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    backgroundColor: Colors.green,
-                  ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-
-                      signuphandler();
-
-
-                     
-                    }
-                  },
-                  child: const Text(
-                    'SIGN UP',
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-
-               RichText(
-                      textAlign:TextAlign.center,
-                      text: TextSpan(
+                  elevation: 8,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          const TextSpan(
-                            text: 'Already have an account? ',
-                            style: TextStyle(color: Color.fromARGB(255, 11, 10, 10)),
+                          // Title
+                          const Text(
+                            'Supplier Sign Up',
+                            style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.green,
+                            ),
                           ),
-                          TextSpan(
-                            text: 'Login',
-                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const SupplierLoginScreen()),
-                                );
-                              },
+                          const SizedBox(height: 16),
+                          // Name Field
+                          TextFormField(
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                              labelText: 'Company Name',
+                              prefixIcon: const Icon(Icons.business),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) =>
+                                value!.isEmpty ? 'Please enter company name' : null,
                           ),
+                          const SizedBox(height: 16),
+                          // Email Field
+                          TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              prefixIcon: const Icon(Icons.email),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your email';
+                              } else if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          // Phone Number Field
+                          TextFormField(
+                            controller: _phoneNoController,
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              labelText: 'Phone Number',
+                              prefixIcon: const Icon(Icons.phone),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) =>
+                                value!.isEmpty ? 'Please enter your phone number' : null,
+                          ),
+                          const SizedBox(height: 16),
+                          // Password Field
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: _obscurePassword,
+                            decoration: InputDecoration(
+                              labelText: 'Password',
+                              prefixIcon: const Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscurePassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              } else if (value.length < 6) {
+                                return 'Password must be at least 6 characters long';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          // Confirm Password Field
+                          TextFormField(
+                            controller: _confirmPasswordController,
+                            obscureText: _obscureConfirmPassword,
+                            decoration: InputDecoration(
+                              labelText: 'Confirm Password',
+                              prefixIcon: const Icon(Icons.lock),
+                              suffixIcon: IconButton(
+                                icon: Icon(_obscureConfirmPassword
+                                    ? Icons.visibility
+                                    : Icons.visibility_off),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureConfirmPassword = !_obscureConfirmPassword;
+                                  });
+                                },
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please confirm your password';
+                              } else if (value != _passwordController.text) {
+                                return 'Passwords do not match';
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 16),
+                          // Address Field
+                          TextFormField(
+                            controller: _addressController,
+                            maxLines: 2,
+                            decoration: InputDecoration(
+                              labelText: 'Address',
+                              prefixIcon: const Icon(Icons.location_on),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            validator: (value) =>
+                                value!.isEmpty ? 'Please enter your address' : null,
+                          ),
+                          const SizedBox(height: 16),
+                          // Company Logo
+                          Wrap(
+                            children: [
+                              _companyLogo == null
+                                  ? const Text('No Logo Selected')
+                                  : Image.file(
+                                      File(_companyLogo!.path),
+                                      
+                                      
+                                      fit: BoxFit.cover,
+                                    ),
+                              const SizedBox(width: 10),
+                              ElevatedButton.icon(
+                                onPressed: _pickCompanyLogo,
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: Size(double.maxFinite, 50),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  backgroundColor: Colors.green
+                                ),
+                                icon: const Icon(Icons.image),
+                                label: const Text('Upload Logo'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          // Company License Document
+                          Wrap(
+                            children: [
+                               _companyDocument == null
+                                  ? SizedBox()
+                                  : Image.file(
+                                      File(_companyDocument!.path),
+                                      
+                                      fit: BoxFit.cover,
+                                    ),
+                              const SizedBox(width: 10),
+                              ElevatedButton.icon(
+                                onPressed: _pickDocument,
+                                
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: Size(double.maxFinite, 50),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  backgroundColor: Colors.green
+                                ),
+                                icon: const Icon(Icons.file_present),
+                                label: const Text('Upload Document'),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16),
+                          // Sign Up Button
+                          isLoading
+                              ? const CircularProgressIndicator()
+                              : SizedBox(
+                                  width: double.infinity,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      if (_formKey.currentState!.validate()) {
+                                        signupHandler();
+                                      }
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Sign Up',
+                                      style: TextStyle(fontSize: 18,color: Colors.white),
+                                    ),
+                                  ),
+                                ),
                         ],
                       ),
                     ),
-            ],
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 }
+
+
+

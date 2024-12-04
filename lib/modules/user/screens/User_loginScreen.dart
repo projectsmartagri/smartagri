@@ -17,21 +17,6 @@ class _LoginScreenState extends State<UserLoginscreen> {
     return Scaffold(
       extendBody: true,
       extendBodyBehindAppBar: true,
-<<<<<<< HEAD:lib/modules/user/screens/loginScreen.dart
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-            
-         // Image.asset(
-            //'asset/image/image.jpg',
-           // fit: BoxFit.cover,
-        //  ),
-          // Foreground Content
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-=======
       body: Container(
         color: Color.fromARGB(255, 242, 244, 242), // Background color (light green)
         child: Stack(
@@ -39,22 +24,11 @@ class _LoginScreenState extends State<UserLoginscreen> {
           children: [
             // Foreground Content
             Padding(
->>>>>>> refs/remotes/origin/main:lib/modules/user/screens/User_loginScreen.dart
               padding: const EdgeInsets.all(16.0),
               child: Form(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-<<<<<<< HEAD:lib/modules/user/screens/loginScreen.dart
-                    
-                    const Spacer(),
-                    const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 60.0),
-                        child: Text(
-                          "SMART AGRI",
-=======
                     // Decreased space between title and username/email field
                     SizedBox(height: 240.0), // Reduced the space from 160.0 to 80.0
 
@@ -64,7 +38,6 @@ class _LoginScreenState extends State<UserLoginscreen> {
                         padding: EdgeInsets.only(bottom: 20.0),
                         child: Text(
                           "Smart Agri",
->>>>>>> refs/remotes/origin/main:lib/modules/user/screens/User_loginScreen.dart
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                              color: Color.fromRGBO(4, 75, 4, 0.961),
@@ -126,13 +99,8 @@ class _LoginScreenState extends State<UserLoginscreen> {
                       ),
                     ),
                     
-<<<<<<< HEAD:lib/modules/user/screens/loginScreen.dart
-                    const SizedBox(height: 16.0),
-                    const Spacer(),
-=======
                     const SizedBox(height:16.0),
                     Spacer(),
->>>>>>> refs/remotes/origin/main:lib/modules/user/screens/User_loginScreen.dart
 
                     // Create Account Button
                     RichText(

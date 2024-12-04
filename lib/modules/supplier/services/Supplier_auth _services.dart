@@ -15,6 +15,7 @@ class SupplierAuthServices {
     required String password,
     required String phone,
     required String address,
+    required String companyLogoUrl,
     required File companyLicenseFile, // Image file for the company license
   }) async {
     try {
@@ -41,6 +42,7 @@ class SupplierAuthServices {
         'phone': phone,
         'address':address,
         'companyLicenseUrl': companyLicenseUrl, // URL of the uploaded company license
+        'logo':companyLogoUrl,
         'isApproved': false, // Default value for new suppliers
         'createdAt': FieldValue.serverTimestamp(),
       });

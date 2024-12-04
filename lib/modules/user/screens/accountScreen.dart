@@ -186,11 +186,7 @@ class _AccountscreenState extends State<Accountscreen> {
                   // backgroundColor: Color(0xff53B175),
                   fixedSize: const Size(364, 67)),
               onPressed: () {
-<<<<<<< HEAD
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const Loginscreen(),), (route) => false,);
-=======
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>UserLoginscreen(),), (route) => false,);
->>>>>>> refs/remotes/origin/main
               },
               child: Row(
                 children: [

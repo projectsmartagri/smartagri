@@ -16,35 +16,47 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   String machineryName = '';
   String description = '';
   double rentalPrice = 0.0;
-   int quantity = 0;
+  int quantity = 0;
   String availability = 'Available';
   XFile? _image;
-  bool loading=false;
+  bool loading = false;
 
-  // Function to pick an image
   Future<void> _pickImage() async {
     final ImagePicker picker = ImagePicker();
     _image = await picker.pickImage(source: ImageSource.gallery);
     setState(() {});
   }
 
-  // Function to save machinery details
-  void _saveMachinery() async{
+  void _saveMachinery() async {
     if (_formKey.currentState!.validate()) {
-      
-    setState(() {
-      loading=true;
-    });
-     await SupplierMachineryService().addMachinary(machineryName, description, rentalPrice,availability,quantity as File,File(_image!.path));
+      if (_image == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please upload an image!')),
+        );
+        return;
+      }
+
+      setState(() {
+        loading = true;
+      });
+
+      await SupplierMachineryService().addMachinary(
+        machineryName,
+        description,
+        rentalPrice,
+        availability,
+        quantity,
+        File(_image!.path),
+      );
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Machinery Added Successfully!')),
       );
-      // Reset fields after saving
+
       _formKey.currentState!.reset();
       setState(() {
-        loading=false;
-        _image = null; // Reset image selection
+        loading = false;
+        _image = null;
       });
     }
   }
@@ -53,70 +65,98 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-<<<<<<< HEAD
-        title: const Text('Add Machinery'),
-        
-=======
-        title: Text('Add Machinery'),
->>>>>>> refs/remotes/origin/main
+        backgroundColor: const Color(0xFF4CAF50),
+        title: const Text('Add Machinery',style: TextStyle(color: Colors.white,),),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: () {
             Navigator.pop(context);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SupplierHomeScreen()), // Navigate to HomeScreen
-            ); // Navigates back to the previous screen
+              MaterialPageRoute(builder: (context) => const SupplierHomeScreen()),
+            );
           },
         ),
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Machinery Name Field
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Machinery Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the machinery name';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  machineryName = value;
-                },
+                decoration: InputDecoration(
+                  labelText: 'Machinery Name',
+                  labelStyle: const TextStyle(color: Color(0xFF4CAF50)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                  ),
+                ),
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter the machinery name'
+                    : null,
+                onChanged: (value) => machineryName = value,
               ),
+              const SizedBox(height: 16),
+
+              // Description Field
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Description'),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: const TextStyle(color: Color(0xFF4CAF50)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                  ),
+                ),
                 maxLines: 3,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a description';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  description = value;
-                },
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter a description'
+                    : null,
+                onChanged: (value) => description = value,
               ),
+              const SizedBox(height: 16),
+
+              // Rental Price Field
               TextFormField(
-                decoration: const InputDecoration(labelText: 'Rental Price'),
+                decoration: InputDecoration(
+                  labelText: 'Rental Price',
+                  labelStyle: const TextStyle(color: Color(0xFF4CAF50)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                  ),
+                ),
                 keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the rental price';
-                  }
-                  return null;
-                },
-                onChanged: (value) {
-                  rentalPrice = double.tryParse(value) ?? 0.0;
-                },
+                validator: (value) => value == null || value.isEmpty
+                    ? 'Please enter the rental price'
+                    : null,
+                onChanged: (value) =>
+                    rentalPrice = double.tryParse(value) ?? 0.0,
               ),
-               TextFormField(
-                decoration: InputDecoration(labelText: 'Quantity'),
+              const SizedBox(height: 16),
+
+              // Quantity Field
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Quantity',
+                  labelStyle: const TextStyle(color: Color(0xFF4CAF50)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: BorderSide(color: Color(0xFF4CAF50)),
+                  ),
+                ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -127,63 +167,82 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
                   }
                   return null;
                 },
-                onChanged: (value) {
-                  quantity = int.tryParse(value) ?? 0;
-                },
+                onChanged: (value) => quantity = int.tryParse(value) ?? 0,
               ),
+              const SizedBox(height: 16),
+
+              // Availability Dropdown
               DropdownButtonFormField<String>(
                 value: availability,
-                decoration: const InputDecoration(labelText: 'Availability'),
+                decoration: InputDecoration(
+                  labelText: 'Availability',
+                  labelStyle: const TextStyle(color: Color(0xFF4CAF50)),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
                 items: <String>['Available', 'Not Available']
-                    .map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+                    .map<DropdownMenuItem<String>>(
+                        (String value) => DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            ))
+                    .toList(),
                 onChanged: (String? newValue) {
-                  setState(() {
-                    availability = newValue!;
-                  });
+                  setState(() => availability = newValue!);
                 },
               ),
               const SizedBox(height: 16),
+
+              // Image Picker
               GestureDetector(
                 onTap: _pickImage,
                 child: Container(
                   height: 150,
                   width: double.infinity,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                    borderRadius: BorderRadius.circular(8),
+                    color: const Color(0xFFF1F8E9),
+                    border: Border.all(color: const Color(0xFF4CAF50)),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                   child: _image == null
-                      ? const Center(child: Text('Tap to upload an image'))
-                      : Image.file(
-                          File(_image!.path),
-                          fit: BoxFit.cover,
+                      ? const Center(
+                          child: Icon(
+                            Icons.add_a_photo,
+                            color: Color(0xFF8D6E63),
+                            size: 50,
+                          ),
+                        )
+                      : ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            File(_image!.path),
+                            fit: BoxFit.cover,
+                          ),
                         ),
                 ),
               ),
-<<<<<<< HEAD
               const SizedBox(height: 16),
-              ElevatedButton(
-                onPressed: _saveMachinery,
-                child: const Text('Add Machinery'),
-=======
-              SizedBox(height: 16),
+
+              // Submit Button
               SizedBox(
-                width: double.infinity, // Full-width button
+                width: double.infinity,
                 child: ElevatedButton(
                   onPressed: _saveMachinery,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 71, 177, 74), // Green color for the button
-                    minimumSize: Size(double.infinity, 50), // Set height
+                    backgroundColor: const Color(0xFF4CAF50),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    textStyle: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  child:loading? CircularProgressIndicator()
-                  :Text('Add Machinery'),
+                  child: loading
+                      ? const CircularProgressIndicator(
+                          color: Colors.white,
+                        )
+                      : const Text('Add Machinery',style: TextStyle(color: Colors.white,),),
                 ),
->>>>>>> refs/remotes/origin/main
               ),
             ],
           ),

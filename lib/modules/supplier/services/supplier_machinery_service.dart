@@ -10,7 +10,7 @@ class SupplierMachineryService {
    final  FirebaseAuth  _auth = FirebaseAuth.instance;
 
 
-   Future<void> addMachinary(String name,String desc,double price,String avail,File image, File file) async
+   Future<void> addMachinary(String name,String desc,double price,String avail,int quantity, File file) async
    {
     try
     {
@@ -22,7 +22,7 @@ class SupplierMachineryService {
       
      if(uid!=null){
 
-       String url=await  uploadfile(name: 'machinery', uid: uid, file: image);
+       String url=await  uploadfile(name: 'machinery', uid: uid, file: file);
 
 
        await _firestore.collection('machinary').add({
@@ -32,10 +32,7 @@ class SupplierMachineryService {
         'price':price,
         'availability':avail,
         'image':url,
-        
-
-         
-
+        'Quantity':quantity 
       });
 
       
