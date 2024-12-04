@@ -34,11 +34,7 @@ Future<void> main() async {
           scaffoldBackgroundColor: Colors.white
          
         ),
-<<<<<<< HEAD
-        home: const SupplierHomeScreen()),
-=======
         home: HomepageScreen()),
->>>>>>> refs/remotes/origin/main
     ) ,);
 }
 

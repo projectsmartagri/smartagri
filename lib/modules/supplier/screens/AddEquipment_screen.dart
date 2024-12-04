@@ -5,8 +5,6 @@ import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
 import 'package:smartagri/modules/supplier/services/supplier_machinery_service.dart';
 
 class AddEquipmentscreen extends StatefulWidget {
-  const AddEquipmentscreen({super.key});
-
   @override
   _AddMachineryPageState createState() => _AddMachineryPageState();
 }
@@ -22,8 +20,8 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   bool loading = false;
 
   Future<void> _pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    _image = await picker.pickImage(source: ImageSource.gallery);
+    final ImagePicker _picker = ImagePicker();
+    _image = await _picker.pickImage(source: ImageSource.gallery);
     setState(() {});
   }
 
@@ -50,7 +48,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
       );
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Machinery Added Successfully!')),
+        SnackBar(content: Text('Machinery Added Successfully!')),
       );
 
       _formKey.currentState!.reset();

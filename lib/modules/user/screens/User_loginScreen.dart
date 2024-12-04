@@ -63,7 +63,7 @@ class _LoginScreenState extends State<UserLoginscreen> {
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -106,18 +106,18 @@ class _LoginScreenState extends State<UserLoginscreen> {
                     RichText(
                       text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                             text: 'Don\'t have an account? ',
-                            style: TextStyle(color: Color.fromARGB(255, 52, 51, 51)),
+                            style: TextStyle(color: const Color.fromARGB(255, 52, 51, 51)),
                           ),
                           TextSpan(
                             text: 'SIGN UP',
-                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => const signupScreen()),
+                                  MaterialPageRoute(builder: (context) => signupScreen()),
                                 );
                               },
                           ),

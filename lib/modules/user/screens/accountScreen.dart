@@ -9,7 +9,7 @@ import '../view_model/auth_view_model.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Accountscreen extends StatefulWidget {
-  const Accountscreen({super.key});
+  Accountscreen({super.key});
 
   @override
   State<Accountscreen> createState() => _AccountscreenState();
@@ -95,7 +95,7 @@ class _AccountscreenState extends State<Accountscreen> {
 
 
 
-                                            }, child: const Text('Gallery')),
+                                            }, child: Text('Gallery')),
                                         ElevatedButton(
                                             onPressed: () async {
 
@@ -103,7 +103,7 @@ class _AccountscreenState extends State<Accountscreen> {
                                               pickImage(source: ImageSource.camera);
 
 
-                                            }, child: const Text('Camera'))
+                                            }, child: Text('Camera'))
                                       ],
                                     ),
                                   );
@@ -111,20 +111,20 @@ class _AccountscreenState extends State<Accountscreen> {
 
 
                           },
+                          child: Icon(Icons.add,size: 18, color: Colors.white),
                           style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(10),
+                            shape: CircleBorder(),
+                            padding: EdgeInsets.all(10),
                             backgroundColor: Colors.blue, // <-- Button color
                             foregroundColor: Colors.red, // <-- Splash color
                           ),
-                          child: Icon(Icons.add,size: 18, color: Colors.white),
                         )
                     )
 
         ],
       ),
 
-                const SizedBox(
+                SizedBox(
                   width: 50,
                 ),
                 Expanded(
@@ -135,11 +135,11 @@ class _AccountscreenState extends State<Accountscreen> {
                         user?.name ?? 'Afsar Hossen',
                         maxLines: 1,
                         style:
-                            const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                       ),
                       Text(
                          user?.email ??   'Imshuvo97@gmail.com',
-                        style: const TextStyle(color: Color(0xff7C7C7C), fontSize: 16),
+                        style: TextStyle(color: Color(0xff7C7C7C), fontSize: 16),
                       ),
                     ],
                   ),
@@ -147,12 +147,12 @@ class _AccountscreenState extends State<Accountscreen> {
               ],
             ),
           ),
-          const Divider(
+          Divider(
             height: 5,
           ),
           Expanded(
             child: ListView.separated(
-              separatorBuilder: (context, index) => const Divider(
+              separatorBuilder: (context, index) => Divider(
                 height: 5,
               ),
               itemCount: list.length,
@@ -162,35 +162,35 @@ class _AccountscreenState extends State<Accountscreen> {
                   child: Row(
                     children: [
                       Image.asset(list[index]['image']),
-                      const SizedBox(
+                      SizedBox(
                          width: 15,
                       ),
                       Text(
                         list[index]['text'],
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w600),
                       ),
-                      const Spacer(),
-                      const Icon(Icons.arrow_forward_ios_rounded)
+                      Spacer(),
+                      Icon(Icons.arrow_forward_ios_rounded)
                     ],
                   ),
                 );
               },
             ),
           ),
-          const Divider(
+          Divider(
             height: 5,
           ),
           ElevatedButton(
               style: ElevatedButton.styleFrom(
                   // backgroundColor: Color(0xff53B175),
-                  fixedSize: const Size(364, 67)),
+                  fixedSize: Size(364, 67)),
               onPressed: () {
                 Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) =>UserLoginscreen(),), (route) => false,);
               },
               child: Row(
                 children: [
-                  const Icon(Icons.logout,
+                  Icon(Icons.logout,
                   color: Colors.green,),
 
                   Center(
@@ -198,7 +198,7 @@ class _AccountscreenState extends State<Accountscreen> {
                       onTap: () {
                         authViewModel.logout(context);
                       },
-                      child: const Text(
+                      child: Text(
                         'Log Out',
                         textAlign: TextAlign.center,
                         style: TextStyle(color: Colors.green),

@@ -204,7 +204,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
             );
           },
         ),
-        title: const Text(
+        title: Text(
           'Smart Agri',
           style: TextStyle(
             color: Color.fromRGBO(4, 75, 4, 0.961),
@@ -463,8 +463,8 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ),
 
                   // Heading for Not Available for Rent Section
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(

@@ -26,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
             fit: BoxFit.cover,
           ),
           // Foreground Content
-          SizedBox(
+          Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             child: Padding(
@@ -66,7 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        border: const OutlineInputBorder(),
+                        border: OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -103,19 +103,19 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     
                     const SizedBox(height: 16.0),
-                    const Spacer(),
+                    Spacer(),
 
                     // Create Account Button
                     RichText(
                       text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                             text: 'Don\'t have an account? ',
                             style: TextStyle(color: Colors.white),
                           ),
                           TextSpan(
                             text: 'SIGN UP',
-                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 // Navigator.push(
