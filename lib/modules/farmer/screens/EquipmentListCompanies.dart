@@ -109,18 +109,18 @@ class Equipmentlistcompanies extends StatelessWidget {
                             backgroundColor: Colors.green,
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                               builder: (context) =>FarmEquipmentsDetails(
-                                 image: '',
-                      title: 'title',
-                      subtitle: '',
-                      price: 0, // Replace with actual price if needed
+                      //       Navigator.push(
+                      //         context,
+                      //         MaterialPageRoute(
+                      //          builder: (context) =>FarmEquipmentsDetails(
+                      //            image: '',
+                      // title: 'title',
+                      // subtitle: '',
+                      // price: 0, // Replace with actual price if needed
                      
-                               ),
-                              ),
-                           );
+                      //          ),
+                      //         ),
+                      //      );
                           },
                           child: const Text(
                             'Book Now',

@@ -1,275 +1,390 @@
-
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
-import 'package:smartagri/modules/farmer/screens/addrentalorder_screen.dart';
-import 'package:smartagri/modules/user/widgets/custombuttonWidget.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+class EquipmentDetailsScreen extends StatefulWidget {
+  final Map<String, dynamic> machinery;
+  final String id;
 
-
-class FarmEquipmentsDetails extends StatefulWidget {
-  FarmEquipmentsDetails( {super.key, required this.image, required this.title, required this.subtitle,required this.price, });
-
-  final String image;
-  final String title;
-  final String subtitle;
-  double price;
- 
+  const EquipmentDetailsScreen({super.key, required this.machinery, required this.id});
 
   @override
-  State<FarmEquipmentsDetails> createState() => _FarmEquipmentsDetailsState();
+  _EquipmentDetailsScreenState createState() => _EquipmentDetailsScreenState();
 }
 
-class _FarmEquipmentsDetailsState extends State<FarmEquipmentsDetails> {
-  int itemCount=0;
-  bool isFavorite = false; // Track if the product is in favorites
-
-  void _toggleFavorite() {
-    setState(() {
-      isFavorite = !isFavorite;
-
-    });
-  }
-
-  void initState() {
-
-      
-
-      print(isFavorite);
-
-    super.initState();
-
-  }
-
+class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
+  late Razorpay _razorpay;
 
   @override
-  Widget build(BuildContext context) {
-    final ht = MediaQuery.of(context).size.height;
-    final wt = MediaQuery.of(context).size.width;
+  void initState() {
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+  }
 
-    return Scaffold(
-        appBar: AppBar(
-        //title: Text(widget.title),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // Go back to the previous screen
-          },
+  @override
+  void dispose() {
+    super.dispose();
+    _razorpay.clear();
+  }
+
+  // Function to initialize Razorpay payment
+  void _openCheckout(double amount) async {
+    var options = {
+      'key': 'YOUR_RAZORPAY_KEY', // Replace with your Razorpay key
+      'amount': (amount * 100).toInt(), // Convert amount to paise
+      'name': 'Machinery Booking',
+      'description': 'Payment for machinery rental',
+      'prefill': {
+        'contact': '1234567890', // Add user phone number here if available
+        'email': 'user@example.com', // Add user email here if available
+      },
+      'external': {
+        'wallets': ['paypal'],
+      },
+    };
+
+    try {
+      _razorpay.open(options);
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  // Handle successful payment
+  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+    print('Payment Success: ${response.paymentId}');
+    _processOrder(response.paymentId!);
+  }
+
+  // Handle failed payment
+  void _handlePaymentError(PaymentFailureResponse response) {
+    print('Payment Failed: ${response.code} - ${response.message}');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Payment failed: ${response.message}')),
+    );
+  }
+
+  // Handle payment cancellation
+  void _handlePaymentCancel(dynamic response) {
+    print('Payment Cancelled: ${response.paymentId}');
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Payment cancelled')),
+    );
+  }
+
+  // Process the order after successful payment
+  Future<void> _processOrder(String paymentId) async {
+    try {
+      int rentalDays = await _showDaysDialog(context);
+
+      if (rentalDays == 0) {
+        return;
+      }
+
+      num totalAmount = rentalDays * widget.machinery['price'];
+      DateTime currentDate = DateTime.now();
+      DateTime endDate = currentDate.add(Duration(days: rentalDays));
+
+      // Show loading dialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(
+          child: CircularProgressIndicator(),
         ),
+      );
+
+      String? userId = FirebaseAuth.instance.currentUser?.uid;
+
+      if (userId == null) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please log in to proceed.')),
+        );
+        return;
+      }
+
+      // Save order data to Firestore
+      final orderData = {
+        'machineryId': widget.id,
+        'supplierId': widget.machinery['userid'],
+        'uid': userId,
+        'bookedAt': FieldValue.serverTimestamp(),
+        'paymentStatus': true, // Set payment status to true after payment
+        'rentalDays': rentalDays,
+        'totalAmount': totalAmount,
+        'startDate': currentDate,
+        'endDate': endDate,
+        'paymentId': paymentId, // Store Razorpay payment ID
+      };
+
+      await FirebaseFirestore.instance.collection('orders').add(orderData);
+
+      // Close loading dialog
+      Navigator.pop(context);
+
+      // Show success popup
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Icon(
+            Icons.check_circle,
+            color: Colors.green,
+            size: 40,
+          ),
+          content: Text(
+            'Successfully booked ${widget.machinery['name']} for $rentalDays days. '
+            'Total: ₹$totalAmount\nStart Date: ${currentDate.toLocal()}\nEnd Date: ${endDate.toLocal()}',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to book. Error: $e')),
+      );
+    }
+  }
+
+  // Dialog to select rental days
+  Future<int> _showDaysDialog(BuildContext context) async {
+    int selectedDays = 0;
+    return await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Select Rental Days'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Price per day: ₹${widget.machinery['price']}',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Enter number of days',
+                ),
+                onChanged: (value) {
+                  selectedDays = int.tryParse(value) ?? 0;
+                },
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(selectedDays);
+                
+                
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    ) ?? 0;
+  }
+
+   @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          'Equipment Details',
+          style: TextStyle(
+            fontFamily: 'PlayfairDisplay',
+            fontSize: 24,
+            fontWeight: FontWeight.w700,
+            color: Colors.white,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.green[800],
+        elevation: 6,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              width: wt/0.99,
-              height: ht/2.42,
-              decoration: BoxDecoration(
-                color: Color(0xffF2F3F2)
-              ),
-        
-              // child: Image.asset(image,
-              // alignment: Alignment.center,),
-        
-              child: CarouselSlider(
-                  items: [
-                    Image.network(widget.image)
-                  ],
-                  options: CarouselOptions(
-                    height: 400,
-                    aspectRatio: 16/9,
-                    viewportFraction: 0.8,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 3),
-                    autoPlayAnimationDuration: Duration(milliseconds: 800),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    enlargeCenterPage: true,
-                    enlargeFactor: 0.3,
-                    onPageChanged: (index, reason) {
-        
-                    },
-                    scrollDirection: Axis.horizontal,
-                  )
+            // Machinery Image
+            Card(
+              margin: const EdgeInsets.all(20),
+              color: Colors.white,
+              elevation: 8,
+              child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    widget.machinery['image'],
+                    height: 250,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
             ),
-        
-        
-        
-        
-        
-        
-        
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-        
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(widget.title,
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 14, 14, 14),
-                        fontWeight: FontWeight.bold,
-                        fontSize: ht/37.48
-                      ),),
-        
-                     
-                   
-                   
-                    ],
-                  ),
-        
-        
-        
-                  Row(
-                    children: [
-                      Text(widget.subtitle,
-                      style: TextStyle(
-                        color: Color(0xff7C7C7C),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600
-                      ),)
-                    ],
-                  ),
-        
-                  SizedBox(height: 25,),
-        
-                  Row(
-                    children: [
-                      // Image.asset('asset/images/-.png'),
-        
-                     
-                      SizedBox(width: 15,),
-        
-                      Text('per hour'),
-        
-                      SizedBox(width: 15,),
-        
-                      // Image.asset('asset/images/+.png',),
-        
-                      
-                    
-                      Spacer(),
 
-                        Text(
-                         '₹${widget.price.toStringAsFixed(2)}',
-                         textAlign: TextAlign.right,
-                           style: TextStyle(
-                             fontSize: ht/37.48,
-                             fontWeight: FontWeight.bold
-                           ),),
-        
-        
-                     
-                    ],
-                  ),
-        
-                  SizedBox(height: 25,),
-        
-                  Divider(
-                    height: 8,
-                  ),
-        
-                  SizedBox(height: 10,),
-        
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Product Detail',
-                      // textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: Color(0xff181725),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16
-                      ),),
-        
-                      Icon(Icons.keyboard_arrow_down_sharp)
-                    ],
-                  ),
-        
-                  SizedBox(height: 8),
-        
-                  Text('used for ploughing fields',
-                  style: TextStyle(
-                    color: Color(0xff7C7C7C),
-                    fontSize: 13
-                  ),),
-        
-                  SizedBox(height: 10,),
-        
-                  
-                  SizedBox(height: 12),
-        
-                 
-        
-                  Divider(
-                    height: 8,
-                  ),
-        
-                  SizedBox(height: 10,),
-        
-                  Row(
-                    children: [
-                      Text('Review',
-                      style: TextStyle(
-                        color: Color(0xff181725),
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16
-                      ),),
-        
-                      Spacer(),
-        
-                      Row(
-                        children: [
-                          Icon(Icons.star,
-                          color: Color(0xffF3603F),),
-        
-                          Icon(Icons.star,
-                            color: Color(0xffF3603F),),
-        
-                          Icon(Icons.star,
-                            color: Color(0xffF3603F),),
-        
-                          Icon(Icons.star,
-                            color: Color(0xffF3603F),),
-        
-                          Icon(Icons.star,
-                            color: Color(0xffF3603F),),
-        
-                        ],
-                      ),
-        
-                      SizedBox(width: 10,),
-        
-                      Icon(Icons.arrow_forward_ios_sharp)
-                    ],
-                  ),
-        
-                  SizedBox(height: 25,),
-        
-                  CustomButtonWidget(
-                    text: 'Order',
-      
-                    action: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => DateFormScreen(),));
-        
-                    },
+            const SizedBox(height: 16),
+
+            // Machinery Name and Price Section
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.grey.shade300,
+                ),
+                borderRadius: BorderRadius.circular(15),
+                color: Colors.white,
+                boxShadow: const [
+                  BoxShadow(
+                    color: Colors.black26,
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
-            )
-        
-        
-        
-        
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 8),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Name',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        widget.machinery['name'],
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                  Text(
+                    widget.machinery['description'],
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey.shade500,
+                      height: 1.5,
+                    ),
+                  ),
+                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                  Row(
+                    children: [
+                      Text(
+                        'Rent/day',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green[700],
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '₹${widget.machinery['price']}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                  // Availability Section
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        widget.machinery['availability'] == "Available"
+                            ? Icons.check_circle
+                            : Icons.cancel,
+                        color: widget.machinery['availability'] == "Available"
+                            ? Colors.green
+                            : Colors.red,
+                        size: 30,
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        widget.machinery['availability'] == "Available"
+                            ? 'Available'
+                            : 'Not Available',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: widget.machinery['availability'] == "Available"
+                              ? Colors.green
+                              : Colors.red,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Book Now Button
+            if (widget.machinery['availability'] == "Available")
+              Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green[700],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          elevation: 8,
+                        ),
+                        child: const Text(
+                          'Book Now',
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
-
-
     );
   }
+
+
+
 }

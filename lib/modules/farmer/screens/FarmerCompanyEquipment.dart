@@ -108,17 +108,17 @@ class Farmercompanyequipment extends StatelessWidget {
                                child:  ElevatedButton(
                                   onPressed: () {
                                     // Navigate to a booking screen or any other action
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => FarmEquipmentsDetails(
-                                          image: '',
-                                           title: '', 
-                                           subtitle: '', 
-                                           price: 0,
-                                        ),
-                                      ),
-                                    );
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //     builder: (context) => FarmEquipmentsDetails(
+                                    //       image: '',
+                                    //        title: '', 
+                                    //        subtitle: '', 
+                                    //        price: 0,
+                                    //     ),
+                                    //   ),
+                                    // );
                                   },
                                    child: Text('Book Now',style: TextStyle(
                                       color: Colors.white, // Change text color to white
