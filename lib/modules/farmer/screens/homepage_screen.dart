@@ -7,14 +7,14 @@ import 'package:smartagri/modules/farmer/screens/FarmerProductScreen.dart';
 import 'package:smartagri/modules/farmer/screens/FarmerProfileScreen.dart';
 import 'package:smartagri/modules/farmer/screens/farmerequipmentlist_screen.dart';
 
-class HomepageScreen extends StatefulWidget {
-  const HomepageScreen({super.key});
+class FarmerHomeScreen extends StatefulWidget {
+  const FarmerHomeScreen({super.key});
 
   @override
-  _HomepageScreenState createState() => _HomepageScreenState();
+  _FarmerHomeScreenState createState() => _FarmerHomeScreenState();
 }
 
-class _HomepageScreenState extends State<HomepageScreen> {
+class _FarmerHomeScreenState extends State<FarmerHomeScreen> {
   int _selectedIndex = 0;
 
   static List<Widget> _pages = <Widget>[
