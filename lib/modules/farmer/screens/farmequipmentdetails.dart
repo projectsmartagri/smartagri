@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:smartagri/modules/farmer/screens/homepage_screen.dart';
 
 class EquipmentDetailsScreen extends StatefulWidget {
   final Map<String, dynamic> machinery;
@@ -20,7 +21,7 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
   void initState() {
     super.initState();
     _razorpay = Razorpay();
-    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
+    // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
   }
 
@@ -31,32 +32,50 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
   }
 
   // Function to initialize Razorpay payment
-  void _openCheckout(double amount) async {
-    var options = {
-      'key': 'YOUR_RAZORPAY_KEY', // Replace with your Razorpay key
-      'amount': (amount * 100).toInt(), // Convert amount to paise
-      'name': 'Machinery Booking',
-      'description': 'Payment for machinery rental',
-      'prefill': {
-        'contact': '1234567890', // Add user phone number here if available
-        'email': 'user@example.com', // Add user email here if available
-      },
-      'external': {
-        'wallets': ['paypal'],
-      },
-    };
 
-    try {
-      _razorpay.open(options);
-    } catch (e) {
-      print('Error: $e');
-    }
+  void _openCheckout(double amount, [Function(String paymentId)? onSuccess]) async {
+  var options = {
+    'key': 'rzp_test_QLvdqmBfoYL2Eu', // Replace with your Razorpay key
+    'amount': (amount * 100).toInt(), // Convert amount to paise
+    'name': 'Machinery Booking',
+    'description': 'Payment for machinery rental',
+    'prefill': {
+      'contact': '1234567890', // Add user phone number here if available
+      'email': 'user@example.com', // Add user email here if available
+    },
+  };
+
+  try {
+    _razorpay.open(options);
+   
+      _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, (response) {
+
+
+        if(onSuccess == null){
+          _handlePaymentSuccess(response);
+        }else{
+          onSuccess(response.paymentId);
+        }
+      });
+      
+  
+    
+  } catch (e) {
+    print('Error: $e');
   }
+}
+
+
+
+
+
+
+
 
   // Handle successful payment
   void _handlePaymentSuccess(PaymentSuccessResponse response) {
     print('Payment Success: ${response.paymentId}');
-    _processOrder(response.paymentId!);
+    _processOrder(paymentId:response.paymentId!);
   }
 
   // Handle failed payment
@@ -76,27 +95,9 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
   }
 
   // Process the order after successful payment
-  Future<void> _processOrder(String paymentId) async {
+  Future<void> _processOrder({required String paymentId}) async {
     try {
-      int rentalDays = await _showDaysDialog(context);
-
-      if (rentalDays == 0) {
-        return;
-      }
-
-      num totalAmount = rentalDays * widget.machinery['price'];
-      DateTime currentDate = DateTime.now();
-      DateTime endDate = currentDate.add(Duration(days: rentalDays));
-
-      // Show loading dialog
-      showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      );
-
+     
       String? userId = FirebaseAuth.instance.currentUser?.uid;
 
       if (userId == null) {
@@ -133,16 +134,17 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
           title: const Icon(
             Icons.check_circle,
             color: Colors.green,
-            size: 40,
+            size: 60,
           ),
           content: Text(
             'Successfully booked ${widget.machinery['name']} for $rentalDays days. '
-            'Total: ₹$totalAmount\nStart Date: ${currentDate.toLocal()}\nEnd Date: ${endDate.toLocal()}',
+            'Total: ₹$totalAmount\nStart Date: {currentDate.toLocal()}\nEnd Date: {endDate.toLocal()}',
           ),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => FarmerHomeScreen(),), (route) => false,);
               },
               child: const Text('OK'),
             ),
@@ -157,17 +159,129 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
     }
   }
 
+   int ? rentalDays;
+
+num  ?totalAmount;
+DateTime  ? currentDate; 
+DateTime ?endDate;
+
+
+  void makeSuccessOrder() async {
+  // Check if the machinery is already booked
+  final existingOrder = await FirebaseFirestore.instance
+      .collection('orders')
+      .where('machineryId', isEqualTo: widget.id)
+      .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
+      .get();
+
+  if (existingOrder.docs.isNotEmpty) {
+    // Machinery already booked, prompt for extension
+    final doc = existingOrder.docs.first;
+    int additionalDays = await _showDaysDialog(context,true);
+
+    if (additionalDays == 0 || additionalDays == null) return;
+
+    final existingEndDate = (doc['endDate'] as Timestamp).toDate();
+    final newEndDate = existingEndDate.add(Duration(days: additionalDays));
+    final additionalAmount = additionalDays * widget.machinery['price'];
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const Center(
+        child: CircularProgressIndicator(),
+      ),
+    );
+
+    // Process additional payment
+    _openCheckout(additionalAmount.toDouble(), (paymentId) async {
+      // Update existing order with new details
+      await FirebaseFirestore.instance
+          .collection('orders')
+          .doc(doc.id)
+          .update({
+        'endDate': newEndDate,
+        'extendeddays' : additionalDays,
+        'totalAmount': doc['totalAmount'] + additionalAmount,
+      });
+
+      // Close loading dialog
+      Navigator.pop(context);
+
+      // Show success popup
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Icon(
+            Icons.check_circle,
+            color: Colors.green,
+            size: 60,
+          ),
+          content: Text(
+            'Successfully extended the booking for ${widget.machinery['name']} by $additionalDays days.\n'
+            'New End Date: ${newEndDate.toLocal()}',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => FarmerHomeScreen()),
+                  (route) => false,
+                );
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    });
+    return;
+  }
+
+
+  print('hhhh');
+
+  // Normal booking flow if not already booked
+  rentalDays = await _showDaysDialog(context);
+  if (rentalDays == 0 || rentalDays == null) return;
+
+  totalAmount = rentalDays! * widget.machinery['price'];
+  currentDate = DateTime.now();
+  endDate = currentDate!.add(Duration(days: rentalDays!));
+
+  // Show loading dialog
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (context) => const Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
+
+  _openCheckout(totalAmount!.toDouble());
+}
+
   // Dialog to select rental days
-  Future<int> _showDaysDialog(BuildContext context) async {
+  Future<int> _showDaysDialog(BuildContext context, [bool isExtenend = false]) async {
     int selectedDays = 0;
     return await showDialog<int>(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Select Rental Days'),
+          title: isExtenend ?  Text('Extend Rental Days')  : const Text('Select Rental Days'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
+
+              if(isExtenend)
+              Text('You are already booked this machine, want to extent fill it'),
+
+
+
+
               Text(
                 'Price per day: ₹${widget.machinery['price']}',
                 style: TextStyle(fontSize: 16),
@@ -354,7 +468,9 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async{
+                          makeSuccessOrder();
+                        
                           
                         },
                         style: ElevatedButton.styleFrom(
