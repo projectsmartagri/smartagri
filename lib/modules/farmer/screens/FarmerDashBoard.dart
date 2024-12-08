@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/farmer/screens/FarmerProductScreen.dart';
 import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmer_product_list_screen.dart';
 
@@ -194,21 +195,3 @@ class ProductSalesScreen extends StatelessWidget {
     );
   }
 }
-
-class FarmerOrdersScreen extends StatelessWidget {
-  const FarmerOrdersScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Orders"),
-        backgroundColor: Colors.green,
-      ),
-      body: const Center(
-        child: Text("Orders Screen"),
-      ),
-    );
-  }
-}
-

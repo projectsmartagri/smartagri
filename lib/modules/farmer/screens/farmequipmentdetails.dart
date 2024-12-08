@@ -122,7 +122,7 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
         'paymentId': paymentId, // Store Razorpay payment ID
       };
 
-      await FirebaseFirestore.instance.collection('orders').add(orderData);
+      await FirebaseFirestore.instance.collection('rental_order').add(orderData);
 
       // Close loading dialog
       Navigator.pop(context);

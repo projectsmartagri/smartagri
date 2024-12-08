@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smartagri/modules/farmer/screens/all_equipment_screen.dart';
+import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 
 class HomePageContent extends StatelessWidget {
   @override
@@ -172,37 +173,44 @@ class HomePageContent extends StatelessWidget {
           itemCount: equipmentList.length,
           itemBuilder: (context, index) {
             final data = equipmentList[index].data() as Map<String, dynamic>;
-            return Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 4,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                      top: Radius.circular(12),
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return  EquipmentDetailsScreen(id: equipmentList[index].id, machinery: data,);
+                },));
+              },
+              child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                elevation: 4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(12),
+                      ),
+                      child: Image.network(
+                        data['image'] ?? '',
+                        height: 120,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                    child: Image.network(
-                      data['image'] ?? '',
-                      height: 120,
-                      fit: BoxFit.cover,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            data['name'] ?? 'Unknown',
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          Text("\$${data['price'] ?? 'N/A'}"),
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          data['name'] ?? 'Unknown',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        Text("\$${data['price'] ?? 'N/A'}"),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             );
           },

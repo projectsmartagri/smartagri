@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smartagri/modules/farmer/screens/FarmerOrderScreen.dart';
-import 'package:smartagri/modules/farmer/screens/FarmerProductScreen.dart';
+import 'package:smartagri/modules/farmer/screens/FarmerDashBoard.dart';
 import 'package:smartagri/modules/farmer/screens/FarmerProfileScreen.dart';
 import 'package:smartagri/modules/farmer/screens/farmer_home_screen.dart';
 
@@ -17,7 +17,7 @@ class _FarmerHomeScreenState extends State<FarmerHomeScreen> {
   static List<Widget> _pages = <Widget>[
     HomePageContent(),
     FarmerOrderScreen(),
-    FarmerProductScreen(),
+    FarmerDashboardScreen(),
     FarmerProfileScreen(),
   ];
 
