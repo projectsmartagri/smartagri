@@ -14,11 +14,11 @@ class FarmerHomeScreen extends StatefulWidget {
 class _FarmerHomeScreenState extends State<FarmerHomeScreen> {
   int _selectedIndex = 0;
 
-  static List<Widget> _pages = <Widget>[
+  static final List<Widget> _pages = <Widget>[
     HomePageContent(),
-    FarmerOrderScreen(),
-    FarmerDashboardScreen(),
-    FarmerProfileScreen(),
+     const FarmerOrderScreen(),
+    const FarmerDashboardScreen(),
+    const FarmerProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -36,6 +36,8 @@ class _FarmerHomeScreenState extends State<FarmerHomeScreen> {
     return Scaffold(
       appBar: _selectedIndex == 0
           ? AppBar(
+            automaticallyImplyLeading: false,
+              centerTitle: true,
               title: const Text(
                 'Smart Agri',
                 style: TextStyle(
@@ -45,21 +47,21 @@ class _FarmerHomeScreenState extends State<FarmerHomeScreen> {
                 ),
               ),
               actions: <Widget>[
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: _onSearchPressed,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.notifications),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => FarmerNotificationScreen(),
-                      ),
-                    );
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.search),
+                //   onPressed: _onSearchPressed,
+                // ),
+                // IconButton(
+                //   icon: const Icon(Icons.notifications),
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => FarmerNotificationScreen(),
+                //       ),
+                //     );
+                //   },
+                // ),
               ],
             )
           : null,
@@ -107,6 +109,6 @@ class _FarmerHomeScreenState extends State<FarmerHomeScreen> {
     );
   }
 
-  FarmerNotificationScreen() {}
+  // FarmerNotificationScreen() {}
 }
 

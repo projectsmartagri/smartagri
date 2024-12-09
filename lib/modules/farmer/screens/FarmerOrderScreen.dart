@@ -36,7 +36,9 @@ class FarmerOrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Orders'),
+        automaticallyImplyLeading: false,
+        title: const Text('Orders',style: TextStyle(color: Colors.white),),
+        centerTitle: true,
         backgroundColor: Colors.green,
         elevation: 2,
       ),

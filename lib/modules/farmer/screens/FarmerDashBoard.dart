@@ -37,8 +37,10 @@ class FarmerDashboardScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Farmer Dashboard"),
+        automaticallyImplyLeading: false,
+        title: const Text("Farmer Dashboard",style: TextStyle(color: Colors.white),),
         backgroundColor: Colors.green[700],
+        centerTitle: true,
         elevation: 2,
       ),
       body: Padding(

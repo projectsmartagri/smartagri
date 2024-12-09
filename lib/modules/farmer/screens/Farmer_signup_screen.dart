@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FarmerSignupScreen extends StatefulWidget {
   const FarmerSignupScreen({super.key});
@@ -22,16 +21,21 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
   final TextEditingController _locationController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  File? _image;
+  File? _profileImage; // Profile photo file
+  File? _farmerIdImage; // Farmer ID file
   bool isLoading = false;
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImage(bool isProfileImage) async {
     final ImagePicker picker = ImagePicker();
     final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       setState(() {
-        _image = File(pickedFile.path);
+        if (isProfileImage) {
+          _profileImage = File(pickedFile.path);
+        } else {
+          _farmerIdImage = File(pickedFile.path);
+        }
       });
     }
   }
@@ -48,9 +52,9 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
       return;
     }
 
-    if (_image == null) {
+    if (_profileImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please upload your Farmer ID!')),
+        const SnackBar(content: Text('Please upload your profile photo!')),
       );
       return;
     }
@@ -65,19 +69,24 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
         password: _passwordController.text.trim(),
       );
 
-      String fileName = 'farmer_ids/${userCredential.user!.uid}.jpg';
-      UploadTask uploadTask =
-          FirebaseStorage.instance.ref().child(fileName).putFile(_image!);
-      TaskSnapshot snapshot = await uploadTask;
-      String imageUrl = await snapshot.ref.getDownloadURL();
+      // Upload profile photo
+      String profileImageUrl = await _uploadFile(_profileImage!, 'profile_photos/${userCredential.user!.uid}.jpg');
 
+      // Upload farmer ID if available
+      String farmerIdUrl = '';
+      if (_farmerIdImage != null) {
+        farmerIdUrl = await _uploadFile(_farmerIdImage!, 'farmer_ids/${userCredential.user!.uid}.jpg');
+      }
+
+      // Save to Firestore
       await FirebaseFirestore.instance.collection('farmers').doc(userCredential.user!.uid).set({
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         'phone': _phoneNoController.text.trim(),
         'location': _locationController.text.trim(),
-        'farmerIdUrl': imageUrl,
-        'isApproved': false
+        'profileImageUrl': profileImageUrl,
+        'farmerIdUrl': farmerIdUrl,
+        'isApproved': false,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -98,6 +107,12 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
         isLoading = false;
       });
     }
+  }
+
+  Future<String> _uploadFile(File file, String path) async {
+    UploadTask uploadTask = FirebaseStorage.instance.ref().child(path).putFile(file);
+    TaskSnapshot snapshot = await uploadTask;
+    return await snapshot.ref.getDownloadURL();
   }
 
   @override
@@ -138,20 +153,19 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
                     const SizedBox(height: 16.0),
                     _buildTextField(_emailController, "Email", Icons.email, isEmail: true),
                     const SizedBox(height: 16.0),
-                    _buildTextField(
-                        _passwordController, "Password", Icons.lock, isPassword: true),
+                    _buildTextField(_passwordController, "Password", Icons.lock, isPassword: true),
                     const SizedBox(height: 16.0),
-                    _buildTextField(
-                        _confirmPasswordController, "Confirm Password", Icons.lock, isPassword: true),
+                    _buildTextField(_confirmPasswordController, "Confirm Password", Icons.lock, isPassword: true),
                     const SizedBox(height: 16.0),
-                    _buildTextField(
-                        _phoneNoController, "Phone Number", Icons.phone, isPhone: true),
+                    _buildTextField(_phoneNoController, "Phone Number", Icons.phone, isPhone: true),
                     const SizedBox(height: 16.0),
                     _buildTextField(_locationController, "Location", Icons.location_on),
                     const SizedBox(height: 16.0),
-                    Row(children: [
-                      Expanded(child: _buildImageUploadSection(),)
-                    ],),
+                    const Text("Profile Photo"),
+                    _buildImageUploadSection(isProfileImage: true, image: _profileImage),
+                    const SizedBox(height: 16.0),
+                    const Text("Farmer ID (Optional)"),
+                    _buildImageUploadSection(isProfileImage: false, image: _farmerIdImage),
                     const SizedBox(height: 24.0),
                     SizedBox(
                       width: double.infinity,
@@ -225,7 +239,7 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
     );
   }
 
-  Widget _buildImageUploadSection() {
+  Widget _buildImageUploadSection({required bool isProfileImage, File? image}) {
     return Card(
       color: Colors.white,
       shape: RoundedRectangleBorder(
@@ -236,11 +250,11 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            _image != null
+            image != null
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.file(
-                      _image!,
+                      image,
                       height: 150,
                       width: 150,
                       fit: BoxFit.cover,
@@ -249,9 +263,9 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
                 : const Text('No image selected'),
             const SizedBox(height: 10),
             ElevatedButton.icon(
-              onPressed: _pickImage,
+              onPressed: () => _pickImage(isProfileImage),
               icon: const Icon(Icons.image),
-              label: const Text('Upload Farmer ID',style: TextStyle(color: Colors.white),),
+              label: Text(isProfileImage ? 'Upload Profile Photo' : 'Upload Farmer ID'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green.shade700,
               ),

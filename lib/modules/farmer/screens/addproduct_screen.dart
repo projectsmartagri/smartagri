@@ -14,11 +14,13 @@ class FarmerAddProductScreen extends StatefulWidget {
   State<FarmerAddProductScreen> createState() => _FarmerAddProductScreenState();
 }
 
+
 class _FarmerAddProductScreenState extends State<FarmerAddProductScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController(); // New controller
   File? _imageFile;
   bool _isLoading = false;
 
@@ -59,6 +61,7 @@ class _FarmerAddProductScreenState extends State<FarmerAddProductScreen> {
         'title': _titleController.text,
         'description': _descriptionController.text,
         'price': double.parse(_priceController.text),
+        'quantity': int.parse(_quantityController.text), // Include quantity
         'category': widget.cat,
         'imageUrl': imageUrl,
         'createdAt': FieldValue.serverTimestamp(),
@@ -73,6 +76,7 @@ class _FarmerAddProductScreenState extends State<FarmerAddProductScreen> {
       _titleController.clear();
       _descriptionController.clear();
       _priceController.clear();
+      _quantityController.clear();
       setState(() {
         _imageFile = null;
       });
@@ -163,6 +167,24 @@ class _FarmerAddProductScreenState extends State<FarmerAddProductScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
+                TextFormField(
+                  controller: _quantityController, // New input field
+                  decoration: const InputDecoration(
+                    labelText: "Quantity",
+                    border: OutlineInputBorder(),
+                  ),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Please enter the product quantity";
+                    }
+                    if (int.tryParse(value) == null) {
+                      return "Please enter a valid integer";
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 16),
                 GestureDetector(
                   onTap: _pickImage,
                   child: Container(
@@ -207,3 +229,5 @@ class _FarmerAddProductScreenState extends State<FarmerAddProductScreen> {
     );
   }
 }
+
+
