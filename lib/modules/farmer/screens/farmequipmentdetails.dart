@@ -17,13 +17,48 @@ class EquipmentDetailsScreen extends StatefulWidget {
 class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
   late Razorpay _razorpay;
 
+  String ? supplierName;
+
   @override
   void initState() {
     super.initState();
     _razorpay = Razorpay();
     // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    fetchSupplierName(widget.machinery['userid']);
   }
+
+
+
+  Future<void> fetchSupplierName(String supplierId) async {
+    try {
+      final supplierData = await getSupplierData(supplierId);
+      if (supplierData != null) {
+        setState(() {
+          supplierName = supplierData['name'];
+        });
+      }
+    } catch (e) {
+      print('Error fetching supplier name: $e');
+    }
+  }
+
+  Future<Map<String, dynamic>?> getSupplierData(String supplierId) async {
+    try {
+      final snapshot = await FirebaseFirestore.instance
+          .collection('suppliers') // Replace with your supplier collection name
+          .doc(supplierId)
+          .get();
+
+      if (snapshot.exists) {
+        return snapshot.data();
+      }
+    } catch (e) {
+      print('Error fetching supplier data: $e');
+    }
+    return null;
+  }
+
 
   @override
   void dispose() {
@@ -315,6 +350,7 @@ DateTime ?endDate;
 
    @override
   Widget build(BuildContext context) {
+    print(widget.machinery['userid']);
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -380,6 +416,26 @@ DateTime ?endDate;
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
+                        'Company name',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        supplierName ?? 'loading....',
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
                         'Name',
                         style: TextStyle(
                           fontSize: 18,
@@ -396,6 +452,8 @@ DateTime ?endDate;
                     ],
                   ),
                   Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+
+
                   Text(
                     widget.machinery['description'],
                     style: TextStyle(
@@ -425,6 +483,31 @@ DateTime ?endDate;
                       ),
                     ],
                   ),
+                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+
+                  if( widget.machinery['availability'] == "Available")
+
+                  Row(
+                    children: [
+                      Text(
+                        'Quantity',
+                        style: TextStyle(
+                          fontSize: 18,
+                 
+                       
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '${widget.machinery['Quantity']}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if( widget.machinery['availability'] == "Available")
                   Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
                   // Availability Section
                   Row(
