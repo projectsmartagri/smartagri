@@ -26,6 +26,8 @@ class _FarmerAddProductScreenState extends State<FarmerAddProductScreen> {
 
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  
+
   Future<void> _pickImage() async {
     final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {

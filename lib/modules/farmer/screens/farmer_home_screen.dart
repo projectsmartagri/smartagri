@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smartagri/modules/farmer/screens/EquipmentListCompanies.dart';
+import 'package:smartagri/modules/farmer/screens/FarmerCompanyEquipment.dart';
+
 import 'package:smartagri/modules/farmer/screens/all_equipment_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 
@@ -240,7 +243,9 @@ class HomePageContent extends StatelessWidget {
             final data = companiesList[index].data() as Map<String, dynamic>;
             return GestureDetector(
               onTap: () {
-                // Add company card navigation here
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return Farmercompanyequipment (companyId: '', companyName: '',);
+                },));
               },
               child: Card(
                 margin: const EdgeInsets.symmetric(vertical: 8.0),

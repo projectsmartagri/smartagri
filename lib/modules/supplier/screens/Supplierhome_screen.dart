@@ -361,7 +361,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                                             description: dataDoc[index]
                                                 ['description']!,
                                             quantity: int.parse(
-                                                dataDoc[index]['Quantity']!),
+                                                dataDoc[index]['Quantity'].toString()),
                                             farmersOrders: [],
                                           ),
                                         ),

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:smartagri/modules/farmer/screens/homepage_screen.dart';
 
@@ -129,6 +130,11 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
     );
   }
 
+   String formatTimestamp(DateTime timestamp) {
+
+    return DateFormat('MMMM dd, yyyy').format(timestamp); // Example: December 12, 2024 - 02:30 PM
+  }
+
   // Process the order after successful payment
   Future<void> _processOrder({required String paymentId}) async {
     try {
@@ -159,6 +165,10 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
 
       await FirebaseFirestore.instance.collection('rental_order').add(orderData);
 
+      FirebaseFirestore.instance.collection('machinary').doc(widget.id).update({
+        'Quantity' : FieldValue.increment(-1)
+      });
+
       // Close loading dialog
       Navigator.pop(context);
 
@@ -173,7 +183,7 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
           ),
           content: Text(
             'Successfully booked ${widget.machinery['name']} for $rentalDays days. '
-            'Total: ₹$totalAmount\nStart Date: {currentDate.toLocal()}\nEnd Date: {endDate.toLocal()}',
+            '\nTotal: ₹$totalAmount\nStart Date: ${formatTimestamp(currentDate!)}\nEnd Date: ${formatTimestamp(endDate!)}',
           ),
           actions: [
             TextButton(

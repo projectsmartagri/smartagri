@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 
 class Farmercompanyequipment extends StatelessWidget {
-  final String companyId;
+  final String companyId; // Assuming you pass the userId here
   final String companyName;
 
   const Farmercompanyequipment({
@@ -13,179 +13,300 @@ class Farmercompanyequipment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sample data: Replace this with your API or database call
-    final Map<String, List<Map<String, dynamic>>> companyProducts = {
-      companyId: [
-        {
-          'image': 'https://4.imimg.com/data4/KJ/BY/MY-14831048/john-deere-5050d-tractor.jpg',
-          'name': 'Tractor A',
-          'price': 500.00,
-          'quantity': 10,
-        },
-        {
-          'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDmtBPvo3FVULESCy3-dW8K7KdDvBpZNSyOA&s',
-          'name': 'Waterpump',
-          'price': 800.00,
-          'quantity': 5,
-        },
-      ],
-    };
-
-    // Get products for the selected company
-    final products = companyProducts[companyId] ?? [];
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('$companyName'),
+        title: Text('Agriculture Equipment for $companyName',style: TextStyle(color: Colors.white),),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back,color: Colors.white,),
           onPressed: () {
             Navigator.pop(context);
           },
         ),
+        backgroundColor: Colors.green[800], // Darker green for the app bar
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: products.isNotEmpty
-            ? ListView.builder(
-                itemCount: products.length,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.green[200]!, Colors.green[700]!], // Green gradient for agriculture theme
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: StreamBuilder<QuerySnapshot>(
+          stream: fetchEquipmentForCompany(companyId),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return const Center(child: Text('No equipment available.'));
+            } else {
+              final equipmentList = snapshot.data!.docs.map((doc) {
+                return {
+                  'name': doc['name'],
+                  'price': doc['price'],
+                  'quantity': doc['Quantity'],
+                  'availability': doc['availability'],
+                  'description': doc['description'],
+                  'image': doc['image'],
+                };
+              }).toList();
+
+              return ListView.builder(
+                itemCount: equipmentList.length,
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final equipment = equipmentList[index];
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 16.0), // Increased vertical spacing
+                    margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                    elevation: 12, // Stronger shadow for a modern look
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0), // Rounded corners for a sleek look
+                      borderRadius: BorderRadius.circular(18.0),
                     ),
-                    elevation: 5, // Adds shadow for better visual hierarchy
-                    child: Container(
-                      padding: const EdgeInsets.all(16.0), // Padding inside the card
-                      height: 180, // Set a fixed height
-                      child: Row(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10.0), // Rounded image corners
-                            child: Image.network(
-                              product['image'],
-                              width: 150, // Increased image size
-                              height: 150,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: 16.0), // Spacing between image and text
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  product['name'],
-                                  style: const TextStyle(
-                                    fontSize: 18.0, // Larger text size
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0), // Spacing between title and price
-                                Text(
-                                  'Rent Rate: ₹${product['price'].toStringAsFixed(2)} / hr',
-                                  style: const TextStyle(
-                                    fontSize: 16.0, // Larger text size
-                                    color: Colors.green,
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0),
-                                Text(
-                                  'Available Quantity: ${product['quantity']}',
-                                  style: const TextStyle(
-                                    fontSize: 14.0,
-                                    color: Color.fromARGB(255, 26, 25, 25),
-                                  ),
-                                ),
-                                const SizedBox(height: 8.0),
-                                 Align(
-                      alignment: Alignment.bottomRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 10.0),
-                               child:  ElevatedButton(
-                                  onPressed: () {
-                                    // Navigate to a booking screen or any other action
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //     builder: (context) => FarmEquipmentsDetails(
-                                    //       image: '',
-                                    //        title: '', 
-                                    //        subtitle: '', 
-                                    //        price: 0,
-                                    //     ),
-                                    //   ),
-                                    // );
-                                  },
-                                   child: Text('Book Now',style: TextStyle(
-                                      color: Colors.white, // Change text color to white
-                                   ),
-                                   ),
-                                   
-                                style: ElevatedButton.styleFrom(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: 20, vertical: 10),
-                                       backgroundColor: Colors.green,
+                    clipBehavior: Clip.antiAlias,
+                    child: InkWell(
+                      onTap: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              elevation: 16,
+                              child: Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Image.network(equipment['image'], height: 200, width: double.infinity, fit: BoxFit.cover),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      equipment['name'],
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green[800],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Description: ${equipment['description']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.brown[700],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Price: \$${equipment['price']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.green[600],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Availability: ${equipment['availability']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.orange[800],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Text(
+                                      'Quantity: ${equipment['quantity']}',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.grey[700],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.green[800], // Dark green button
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(18.0),
+                                        ),
+                                      ),
+                                      child: Text('Close'),
+                                    ),
+                                  ],
                                 ),
                               ),
-                      ),
-                                 ),
-                                
-                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white, // Light background for the card
+                          borderRadius: BorderRadius.circular(18.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              offset: Offset(4, 4),
+                              blurRadius: 10,
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(15.0),
+                        child: Row(
+                          children: [
+                            equipment['image'] != null
+                                ? ClipRRect(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                    child: Image.network(
+                                      equipment['image'],
+                                      width: 90,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  )
+                                : const Icon(
+                                    Icons.image_outlined,
+                                    size: 60,
+                                    color: Colors.grey,
+                                  ),
+                            const SizedBox(width: 15),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    equipment['name'],
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.green[800],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Price: \$${equipment['price'].toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.green[600],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Availability: ${equipment['availability']}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.orange[700],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Quantity: ${equipment['quantity']}',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.brown[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(Icons.info_outline, color: Colors.green[700]),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20)),
+                                      elevation: 16,
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(20.0),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Image.network(equipment['image']),
+                                            const SizedBox(height: 15),
+                                            Text(
+                                              equipment['name'],
+                                              style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.green[700],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              'Description: ${equipment['description']}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.brown[700],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              'Price: \$${equipment['price']}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.green[600],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              'Availability: ${equipment['availability']}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.orange[800],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 10),
+                                            Text(
+                                              'Quantity: ${equipment['quantity']}',
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                color: Colors.grey[700],
+                                              ),
+                                            ),
+                                            const SizedBox(height: 15),
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.green[700],
+                                              ),
+                                              child: Text('Close'),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   );
                 },
-              )
-            : Center(
-                child: Text(
-                  'No products available for $companyName',
-                  style: const TextStyle(fontSize: 18, color: Colors.grey),
-                ),
-              ),
-      ),
-    );
-  }
-}
-
-class BookingScreen extends StatelessWidget {
-  final String productName;
-  final double productPrice;
-
-  const BookingScreen({
-    super.key,
-    required this.productName,
-    required this.productPrice,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Booking for $productName')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Text(
-              'Booking Details for $productName',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Price per hour: ₹${productPrice.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 18),
-            ),
-            // Add more booking details and form here
-            // For example, a form to specify booking time and date
-          ],
+              );
+            }
+          },
         ),
       ),
     );
+  }
+
+  Stream<QuerySnapshot> fetchEquipmentForCompany(String companyId) {
+    final CollectionReference equipmentCollection = FirebaseFirestore.instance.collection('machinary');
+    return equipmentCollection
+        .where('userid', isEqualTo: companyId)
+        .snapshots();
   }
 }
