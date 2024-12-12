@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 
-import 'singinScreen.dart';
 
 class Onboardingscreen extends StatelessWidget {
   const Onboardingscreen({super.key});
@@ -62,7 +62,7 @@ class Onboardingscreen extends StatelessWidget {
                   ),
                     onPressed: (){
 
-                    Navigator.push(context,  MaterialPageRoute(builder: (context) => const Singinscreen(),));
+                    Navigator.push(context,  MaterialPageRoute(builder: (context) => const UserLoginscreen(),));
                     },
 
                     child: const Text('Get Started',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smartagri/modules/user/screens/List_itemsScreen.dart';
 import 'package:smartagri/modules/user/screens/favouriteScreen.dart';
+import 'package:smartagri/modules/user/screens/product_custom_list_widget.dart';
 
 
 
@@ -37,123 +38,16 @@ class _HomePageState extends State<HomePage> {
     'Fertilizers'
   ];
 
-  final Map<String, List<Product>> products = {
-     'All': [
-      Product(name: 'Tomato', imageUrl: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTQvCg9Mub2HqzBhjpq72jMNr0c_jJZ-bmz08GHhCq2GF_ivqIJ'),
-      Product(name: 'Onion', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw0myvN9d65xTuId6xx26JQDC106zRdbtZoQ&s'),
-      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
-      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
-      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
-       Product(name: 'Potato', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP0eqkPvKnP9hdTDq01i9tZi_u5EJvkzcBRg&s'),
-      Product(name: 'Cauliflower', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu9zKy6_MNdNjpVkaSXub6-NGE7Oxad4WqmQ&s'),
-      Product(name: 'Cucumber', imageUrl: 'https://organicmandya.com/cdn/shop/files/Cucumber.jpg?v=1721383087&width=1024'),
-      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
-      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
-       Product(name: 'Cabbage', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWgRBeB_SsY1NbHIriVpXPd0K3Tr9YOD5evQ&s'),
-      Product(name: 'Garlic', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWy0HyqAPyeV2F6GnB0jxnS9Js5LLRruS0A&s'),
-      Product(name: 'Beans', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmK6vLW_he9gNupBjz7pgLowe4EVMWXsNzZA&s'),
-      Product(name: 'Carrot', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbjm8N6pW0euFA33rYzRZajobwS9k0XR8o8Q&s'),
-      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
-      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
-      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
-    ],
-    'Fruits': [
-      Product(name: 'Grapes', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9Yb72sDI3ay8Zx49tyMDmhstuRKWy3N3wJQ&s'),
-      Product(name: 'Apple', imageUrl: 'https://www.jiomart.com/images/product/original/590004487/apple-indian-6-pcs-pack-approx-750-g-950-g-product-images-o590004487-p590004487-0-202203170227.jpg?im=Resize=(420,420)'),
-      Product(name: 'Orange', imageUrl: 'https://m.media-amazon.com/images/I/31vcKZnUpzL.jpg'),
-      Product(name: 'Avacados', imageUrl: 'https://cdn.britannica.com/72/170772-050-D52BF8C2/Avocado-fruits.jpg'),
-      Product(name: 'Guava', imageUrl: 'https://specialtyproduce.com/sppics/17130.png'),
-      Product(name: 'Papaya', imageUrl: 'https://cdn.shopaccino.com/rootz/products/picture1-798125_m.jpg?v=488'),
-      Product(name: 'Sapota', imageUrl: 'https://5.imimg.com/data5/SELLER/Default/2023/10/357307036/UG/NN/TM/193586530/sapota-fruits.jpeg'),
-      Product(name: 'Watermelon', imageUrl: 'https://organicmandya.com/cdn/shop/files/Watermelon.jpg?v=1721378496&width=1000'),
-    ],
-
-      'Vegetables': [
-      Product(name: 'Tomato', imageUrl: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcTQvCg9Mub2HqzBhjpq72jMNr0c_jJZ-bmz08GHhCq2GF_ivqIJ'),
-      Product(name: 'Onion', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw0myvN9d65xTuId6xx26JQDC106zRdbtZoQ&s'),
-      Product(name: 'Potato', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP0eqkPvKnP9hdTDq01i9tZi_u5EJvkzcBRg&s'),
-      Product(name: 'Cauliflower', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu9zKy6_MNdNjpVkaSXub6-NGE7Oxad4WqmQ&s'),
-      Product(name: 'Cucumber', imageUrl: 'https://organicmandya.com/cdn/shop/files/Cucumber.jpg?v=1721383087&width=1024'),
-      Product(name: 'Cabbage', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWgRBeB_SsY1NbHIriVpXPd0K3Tr9YOD5evQ&s'),
-      Product(name: 'Garlic', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbWy0HyqAPyeV2F6GnB0jxnS9Js5LLRruS0A&s'),
-      Product(name: 'Beans', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmK6vLW_he9gNupBjz7pgLowe4EVMWXsNzZA&s'),
-      Product(name: 'Carrot', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbjm8N6pW0euFA33rYzRZajobwS9k0XR8o8Q&s'),
-    ],
-   
-     'Seeds': [
-       Product(name: 'Chia Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlHlewKMgxGj47U6sox-rV7itf_HwDu38VuQ&s'),
-      Product(name: 'Pumpkin Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTZy1GMZhrmqXNXf-4BrySLi3RdEA5879YNKQ&s'),
-      Product(name: 'Sunflower Seed', imageUrl: 'https://royalfantasy.in/cdn/shop/products/Sun-Flower-Seeds-1.jpg?v=1627732329'),
-      Product(name: 'Coriander Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShxoIG_0t1q7e5wXFU-8hv1AVchCNfngZHgg&s'),
-      Product(name: 'Cluster Beans Seed', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjAE5nYYzLGW_65zA3OpeBqxzbSiyytHctmQ&s'),
-      
-    ],
-   
-  };
-
-
-  final List<Map<String, String>> vegetableList = [
-  {
-    'name': 'Fresh Tomatoes',
-    'imageUrl': 'https://example.com/tomatoes.jpg',
-    'farmer': 'Farmer A',
-    'description': 'Freshly picked organic tomatoes.',
-    'rate': '\$5/kg',
-  },
-  {
-    'name': 'Green Bell Peppers',
-    'imageUrl': 'https://example.com/bellpeppers.jpg',
-    'farmer': 'Farmer B',
-    'description': 'Crisp and delicious green bell peppers.',
-    'rate': '\$3/kg',
-  },
-  {
-    'name': 'Carrots',
-    'imageUrl': 'https://example.com/carrots.jpg',
-    'farmer': 'Farmer C',
-    'description': 'Sweet and crunchy organic carrots.',
-    'rate': '\$2/kg',
-  },
-  {
-    'name': 'Broccoli',
-    'imageUrl': 'https://example.com/broccoli.jpg',
-    'farmer': 'Farmer D',
-    'description': 'Freshly harvested broccoli, high in nutrients.',
-    'rate': '\$4/kg',
-  },
-  {
-    'name': 'Spinach',
-    'imageUrl': 'https://example.com/spinach.jpg',
-    'farmer': 'Farmer E',
-    'description': 'Leafy organic spinach, perfect for salads.',
-    'rate': '\$2.5/kg',
-  },
-  {
-    'name': 'Cucumbers',
-    'imageUrl': 'https://example.com/cucumbers.jpg',
-    'farmer': 'Farmer F',
-    'description': 'Crisp and refreshing organic cucumbers.',
-    'rate': '\$3/kg',
-  },
-  {
-    'name': 'Red Onions',
-    'imageUrl': 'https://example.com/onions.jpg',
-    'farmer': 'Farmer G',
-    'description': 'Flavorful red onions, ideal for cooking.',
-    'rate': '\$2/kg',
-  },
-];
-
-
-
+  
 
   @override
   Widget build(BuildContext context) {
-    List<Product> displayedProducts = products[_selectedCategory] ?? [];
 
     return Scaffold(
+     
       appBar: AppBar(
               backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
               elevation: 0,
               title: const Text(
                 'Smart Agri',
@@ -194,94 +88,64 @@ class _HomePageState extends State<HomePage> {
 
 
   Widget _homeScreen() {
-  List<Product> displayedProducts = products[_selectedCategory] ?? [];
 
-  return SingleChildScrollView(
-    child: Column(
-      children: [
-       
-        CarouselSlider(
-          options: CarouselOptions(
-            height: 200.0,
-            autoPlay: true,
-            enlargeCenterPage: true,
-            aspectRatio: 16 / 9,
-            autoPlayCurve: Curves.fastOutSlowIn,
-            enableInfiniteScroll: true,
-            autoPlayAnimationDuration: const Duration(milliseconds: 800),
-            viewportFraction: 0.8,
-          ),
-          items: imgList
-              .map((item) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8.0),
-                      child: Image.network(item, fit: BoxFit.cover),
-                    ),
-                  ))
-              .toList(),
-        ),
-        // Sliding Category List
-        Container(
-          height: 60,
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            itemCount: categories.length,
-            itemBuilder: (context, index) {
-              String category = categories[index];
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: CategoryButton(
-                  label: category,
-                  isSelected: _selectedCategory == category,
-                  onPressed: () {
-                    setState(() {
-                      _selectedCategory = category;
-                    });
-                  },
-                ),
-              );
-            },
-          ),
-        ),
-        // Product Grid
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: GridView.builder(
-            shrinkWrap: true,  // Important to allow grid to resize inside the scroll view
-            physics: const NeverScrollableScrollPhysics(),  // Disable Grid's internal scrolling
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3,
-              childAspectRatio: 0.75,
-              crossAxisSpacing: 10.0,
-              mainAxisSpacing: 10.0,
-            ),
-            itemCount: displayedProducts.length,
-            itemBuilder: (context, index) {
-              Product product = displayedProducts[index];
-              return GestureDetector(
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => UserListitemScreen(itemList: vegetableList,)));
+  return Column(
+    children: [
+     
+      // CarouselSlider(
+      //   options: CarouselOptions(
+      //     height: 200.0,
+      //     autoPlay: true,
+      //     enlargeCenterPage: true,
+      //     aspectRatio: 16 / 9,
+      //     autoPlayCurve: Curves.fastOutSlowIn,
+      //     enableInfiniteScroll: true,
+      //     autoPlayAnimationDuration: const Duration(milliseconds: 800),
+      //     viewportFraction: 0.8,
+      //   ),
+      //   items: imgList
+      //       .map((item) => Padding(
+      //             padding: const EdgeInsets.symmetric(horizontal: 5.0),
+      //             child: ClipRRect(
+      //               borderRadius: BorderRadius.circular(8.0),
+      //               child: Image.network(item, fit: BoxFit.cover),
+      //             ),
+      //           ))
+      //       .toList(),
+      // ),
+      // // Sliding Category List
+      Container(
+        height: 60,
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
+          itemCount: categories.length,
+          itemBuilder: (context, index) {
+            String category = categories[index];
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: CategoryButton(
+                label: category,
+                isSelected: _selectedCategory == category,
+                onPressed: () {
+                  setState(() {
+                    _selectedCategory = category;
+                  });
                 },
-                child: Column(
-                  children: [
-                    Image.network(
-                      product.imageUrl,
-                      height: 120,
-                      width: 120,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(height: 8.0),
-                    Text(product.name),
-                  ],
-                ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
-      ],
-    ),
+      ),
+      // Product Grid
+
+      Expanded(child:  ProductGrid(cat: _selectedCategory,))
+     
+    
+    
+    
+    
+    ],
   );
 }
 

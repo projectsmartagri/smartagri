@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
+import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 import '../utils/helper.dart';
-import 'User_loginScreen.dart';
 
 class Locationscreen extends StatefulWidget {
   const Locationscreen({super.key});
@@ -194,7 +193,7 @@ class _LocationscreenState extends State<Locationscreen> {
                         Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => UserLoginscreen(zone: selectedValue,area: selectedLoc,),
+                            builder: (context) => UserLoginscreen(),
                           ),
                           (route) => false,
                         );

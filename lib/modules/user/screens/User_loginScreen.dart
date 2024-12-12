@@ -1,9 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:smartagri/modules/user/screens/homeScreen.dart';
+import 'package:smartagri/modules/user/screens/root_screen.dart';
 import 'package:smartagri/modules/user/screens/signupScreen.dart';
 
 class UserLoginscreen extends StatefulWidget {
-  const UserLoginscreen({super.key, String? zone, String? area});
+  const UserLoginscreen({super.key});
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -11,6 +14,57 @@ class UserLoginscreen extends StatefulWidget {
 
 class _LoginScreenState extends State<UserLoginscreen> {
   bool _obscurePassword = true;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  bool _isLoading = false;
+
+  Future<void> _loginUser() async {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Sign in with Firebase
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Login successful')),
+      );
+
+      // Navigate to the next screen after login
+      // Replace with your home/dashboard screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>  UserRootScreen()), // Example: Replace with home screen
+      );
+    } on FirebaseAuthException catch (e) {
+      String errorMessage = 'Login failed';
+      if (e.code == 'user-not-found') {
+        errorMessage = 'No user found with this email';
+      } else if (e.code == 'wrong-password') {
+        errorMessage = 'Incorrect password';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage)));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${e.toString()}')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,20 +72,17 @@ class _LoginScreenState extends State<UserLoginscreen> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: Container(
-        color: Color.fromARGB(255, 242, 244, 242), // Background color (light green)
+        color: const Color.fromARGB(255, 242, 244, 242), // Background color (light green)
         child: Stack(
           fit: StackFit.expand,
           children: [
-            // Foreground Content
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Form(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    // Decreased space between title and username/email field
-                    SizedBox(height: 240.0), // Reduced the space from 160.0 to 80.0
-
+                    const SizedBox(height: 240.0),
                     const Align(
                       alignment: Alignment.bottomCenter,
                       child: Padding(
@@ -40,17 +91,15 @@ class _LoginScreenState extends State<UserLoginscreen> {
                           "Smart Agri",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                             color: Color.fromRGBO(4, 75, 4, 0.961),
+                            color: Color.fromRGBO(4, 75, 4, 0.961),
                             fontFamily: 'dancing script',
                             fontSize: 30,
                           ),
                         ),
                       ),
                     ),
-                    
-                  
-                    // Field 1: Username/Email
                     TextFormField(
+                      controller: _emailController,
                       decoration: const InputDecoration(
                         labelText: 'Username/Email',
                         border: OutlineInputBorder(),
@@ -58,12 +107,11 @@ class _LoginScreenState extends State<UserLoginscreen> {
                       keyboardType: TextInputType.emailAddress,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Field 2: Password
                     TextFormField(
+                      controller: _passwordController,
                       decoration: InputDecoration(
                         labelText: 'Password',
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                         suffixIcon: IconButton(
                           icon: Icon(
                             _obscurePassword ? Icons.visibility : Icons.visibility_off,
@@ -78,8 +126,6 @@ class _LoginScreenState extends State<UserLoginscreen> {
                       obscureText: _obscurePassword,
                     ),
                     const SizedBox(height: 16.0),
-
-                    // Submit Button
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 50,
@@ -90,34 +136,36 @@ class _LoginScreenState extends State<UserLoginscreen> {
                           ),
                           backgroundColor: const Color.fromARGB(255, 65, 154, 68),
                         ),
-                        onPressed: () {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Login successfully')),
-                          );
-                        },
-                        child: const Text('LOGIN', style: TextStyle(fontSize:16 ,color: Color.fromARGB(255, 236, 243, 239))),
+                        onPressed: _isLoading ? null : _loginUser,
+                        child: _isLoading
+                            ? const CircularProgressIndicator(color: Colors.white)
+                            : const Text('LOGIN',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Color.fromARGB(255, 236, 243, 239),
+                                )),
                       ),
                     ),
-                    
-                    const SizedBox(height:16.0),
-                    Spacer(),
-
-                    // Create Account Button
+                    const SizedBox(height: 16.0),
+                    const Spacer(),
                     RichText(
                       text: TextSpan(
                         children: [
-                          TextSpan(
+                          const TextSpan(
                             text: 'Don\'t have an account? ',
-                            style: TextStyle(color: const Color.fromARGB(255, 52, 51, 51)),
+                            style: TextStyle(color: Color.fromARGB(255, 52, 51, 51)),
                           ),
                           TextSpan(
                             text: 'SIGN UP',
-                            style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              color: Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => signupScreen()),
+                                  MaterialPageRoute(builder: (context) => const SignupScreen()),
                                 );
                               },
                           ),
