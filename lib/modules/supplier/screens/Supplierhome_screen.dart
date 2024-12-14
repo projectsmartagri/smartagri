@@ -318,6 +318,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('machinary')
+                        .where('availability', isEqualTo: "Available" )
                         .where('userid',
                             isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                         .snapshots(),
@@ -480,7 +481,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('machinary')
-                        .where('availability', isEqualTo: "Not Available").where('userid',
+                        .where('availability', isEqualTo: "Not Available" ).where('userid',
                             isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                         .snapshots(),
                     builder: (context, snapshot) {
@@ -523,8 +524,8 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                                                 .toString(),
                                             description: dataDoc[index]
                                                 ['description']!,
-                                            quantity: int.parse(
-                                                dataDoc[index]['Quantity']!),
+                                            quantity:
+                                                dataDoc[index]['Quantity'],
                                             farmersOrders: [],
                                           ),
                                         ),

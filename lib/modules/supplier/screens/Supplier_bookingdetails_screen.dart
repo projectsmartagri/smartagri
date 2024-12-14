@@ -14,7 +14,8 @@ class SupplierBookingDetailsScreen extends StatefulWidget {
 class _SupplierBookingDetailsScreenState
     extends State<SupplierBookingDetailsScreen> {
   TextEditingController _searchController = TextEditingController();
-  TextEditingController _dateController = TextEditingController(); // For date input
+  TextEditingController _dateController =
+      TextEditingController(); // For date input
   List<QueryDocumentSnapshot> filteredOrders = [];
   List<Map<String, dynamic>> filteredDetails = [];
   double totalCompletedAmount = 0.0;
@@ -30,7 +31,8 @@ class _SupplierBookingDetailsScreenState
             Navigator.pop(context);
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const SupplierHomeScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const SupplierHomeScreen()),
             );
           },
         ),
@@ -71,7 +73,8 @@ class _SupplierBookingDetailsScreenState
               labelText: 'Search by Farmer',
               prefixIcon: Icon(Icons.search),
               border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
             onChanged: _searchBooking,
           ),
@@ -84,7 +87,8 @@ class _SupplierBookingDetailsScreenState
               labelText: 'Select Date',
               prefixIcon: Icon(Icons.calendar_today),
               border: OutlineInputBorder(),
-              contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              contentPadding:
+                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             ),
             readOnly: true,
             onTap: _selectDate, // To open the date picker
@@ -120,7 +124,8 @@ class _SupplierBookingDetailsScreenState
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator(color: Colors.green));
+                return Center(
+                    child: CircularProgressIndicator(color: Colors.green));
               }
 
               if (snapshot.hasError) {
@@ -133,7 +138,8 @@ class _SupplierBookingDetailsScreenState
                 future: _fetchFarmerAndMachineryDetails(rentalOrders),
                 builder: (context, dataSnapshot) {
                   if (dataSnapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator(color: Colors.green));
+                    return Center(
+                        child: CircularProgressIndicator(color: Colors.green));
                   }
 
                   if (dataSnapshot.hasError) {
@@ -153,89 +159,107 @@ class _SupplierBookingDetailsScreenState
                           startDate.day == selectedDate!.day;
                     }).toList();
                   }
-
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: DataTable(
-                      columns: const [
-                        DataColumn(label: Text('Farmer')),
-                        DataColumn(label: Text('Product')),
-                        DataColumn(label: Text('Booking Date')),
-                        DataColumn(label: Text('Return Date')),
-                        DataColumn(label: Text('Rental Days')),
-                        DataColumn(label: Text('Payment Status')),
-                        DataColumn(label: Text('Amount')),
-                      ],
-                      rows: List.generate(filteredOrders.length, (index) {
-                        QueryDocumentSnapshot completedData = filteredOrders[index];
-
-                        // Format the startDate and endDate
-                        Timestamp startDateTimestamp = completedData['startDate'];
-                        Timestamp endDateTimestamp = completedData['endDate'];
-                        String startDateFormatted = formatDate(startDateTimestamp);
-                        String endDateFormatted = formatDate(endDateTimestamp);
-
-                        // Get the details for the current row (farmer and machinery)
-                        String farmerName = filteredDetails[index]['farmer']['name']!;
-                        String machineryName = filteredDetails[index]['machinery']['name']!;
-
-                        totalCompletedAmount += completedData['totalAmount'];
-
-                        return DataRow(
-                          cells: [
-                            DataCell(
-                              InkWell(
-                                onTap: () {
-                                  _showFarmerDetails(context, filteredDetails[index]['farmer']);
-                                },
-                                child: Text(farmerName),
-                              ),
-                            ),
-                            DataCell(
-                              InkWell(
-                                onTap: () {
-                                  _showMachineryDetails(context, filteredDetails[index]['machinery']);
-                                },
-                                child: Text(machineryName),
-                              ),
-                            ),
-                            DataCell(Text(startDateFormatted)),
-                            DataCell(Text(endDateFormatted)),
-                            DataCell(Text(completedData['rentalDays']!.toString())),
-                            DataCell(
-                              Text(
-                                completedData['paymentStatus']!
-                                    .toString(),
-                                style: TextStyle(
-                                  color: completedData['paymentStatus']
-                                      ? Colors.green
-                                      : Colors.red,
-                                ),
-                              ),
-                            ),
-                            DataCell(Text('₹${completedData['totalAmount']}')),
+                  return Column(
+                    children: [
+                      SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: DataTable(
+                          columns: const [
+                            DataColumn(label: Text('Farmer')),
+                            DataColumn(label: Text('Product')),
+                            DataColumn(label: Text('Booking Date')),
+                            DataColumn(label: Text('Return Date')),
+                            DataColumn(label: Text('Rental Days')),
+                            DataColumn(label: Text('Payment Status')),
+                            DataColumn(label: Text('Amount')),
                           ],
-                        );
-                      }),
-                    ),
+                          rows: List.generate(filteredOrders.length, (index) {
+                            QueryDocumentSnapshot completedData =
+                                filteredOrders[index];
+                        
+                            // Format the startDate and endDate
+                            Timestamp startDateTimestamp =
+                                completedData['startDate'];
+                            Timestamp endDateTimestamp =
+                                completedData['endDate'];
+                            String startDateFormatted =
+                                formatDate(startDateTimestamp);
+                            String endDateFormatted =
+                                formatDate(endDateTimestamp);
+                        
+                            // Get the details for the current row (farmer and machinery)
+                            String farmerName =
+                                filteredDetails[index]['farmer']['name']!;
+                            String machineryName =
+                                filteredDetails[index]['machinery']['name']!;
+                            totalCompletedAmount +=
+                                completedData['totalAmount'];
+                        
+                            return DataRow(
+                              cells: [
+                                DataCell(
+                                  InkWell(
+                                    onTap: () {
+                                      _showFarmerDetails(context,
+                                          filteredDetails[index]['farmer']);
+                                    },
+                                    child: Text(farmerName),
+                                  ),
+                                ),
+                                DataCell(
+                                  InkWell(
+                                    onTap: () {
+                                      _showMachineryDetails(context,
+                                          filteredDetails[index]['machinery']);
+                                    },
+                                    child: Text(machineryName),
+                                  ),
+                                ),
+                                DataCell(Text(startDateFormatted)),
+                                DataCell(Text(endDateFormatted)),
+                                DataCell(Text(
+                                    completedData['rentalDays']!.toString())),
+                                DataCell(
+                                  Text(
+                                    completedData['paymentStatus']!.toString(),
+                                    style: TextStyle(
+                                      color: completedData['paymentStatus']
+                                          ? Colors.green
+                                          : Colors.red,
+                                    ),
+                                  ),
+                                ),
+                                DataCell(
+                                    Text('₹${completedData['totalAmount']}')),
+                              ],
+                            );
+                          }),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              Text(
+                                'Total:',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                              Spacer(),
+                              Text(
+                                '₹$totalCompletedAmount',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        ),
+                    ],
                   );
                 },
               );
             },
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Text(
-                'Total:',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Spacer(),
-              Text(
-                '₹$totalCompletedAmount',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
           ),
         ],
       ),
@@ -258,20 +282,34 @@ class _SupplierBookingDetailsScreenState
       String machineryId = order['machineryId'];
 
       // Fetch farmer details from the 'farmers' collection
-      DocumentSnapshot farmerDoc =
-          await FirebaseFirestore.instance.collection('farmers').doc(farmerUid).get();
-      String farmerName = farmerDoc.exists ? farmerDoc['name'] ?? 'Unknown' : 'Unknown';
-      String farmerEmail = farmerDoc.exists ? farmerDoc['email'] ?? 'Unknown' : 'Unknown';
-      String farmerPhone = farmerDoc.exists ? farmerDoc['phone'] ?? 'Unknown' : 'Unknown';
-      String farmerLocation = farmerDoc.exists ? farmerDoc['location'] ?? 'Unknown' : 'Unknown';
-      String farmerProfileImageUrl = farmerDoc.exists ? farmerDoc['profileImageUrl'] ?? '' : '';
+      DocumentSnapshot farmerDoc = await FirebaseFirestore.instance
+          .collection('farmers')
+          .doc(farmerUid)
+          .get();
+      String farmerName =
+          farmerDoc.exists ? farmerDoc['name'] ?? 'Unknown' : 'Unknown';
+      String farmerEmail =
+          farmerDoc.exists ? farmerDoc['email'] ?? 'Unknown' : 'Unknown';
+      String farmerPhone =
+          farmerDoc.exists ? farmerDoc['phone'] ?? 'Unknown' : 'Unknown';
+      String farmerLocation =
+          farmerDoc.exists ? farmerDoc['location'] ?? 'Unknown' : 'Unknown';
+      String farmerProfileImageUrl =
+          farmerDoc.exists ? farmerDoc['profileImageUrl'] ?? '' : '';
 
       // Fetch machinery details from the 'machinery' collection
-      DocumentSnapshot machineryDoc =
-          await FirebaseFirestore.instance.collection('machinary').doc(machineryId).get();
-      String machineryName = machineryDoc.exists ? machineryDoc['name'] ?? 'Unknown' : 'Unknown';
-      String machineryAvailability = machineryDoc.exists ? machineryDoc['availability'] ?? 'Unknown' : 'Unknown';
-      String machineryDescription = machineryDoc.exists ? machineryDoc['description'] ?? 'Unknown' : 'Unknown';
+      DocumentSnapshot machineryDoc = await FirebaseFirestore.instance
+          .collection('machinary')
+          .doc(machineryId)
+          .get();
+      String machineryName =
+          machineryDoc.exists ? machineryDoc['name'] ?? 'Unknown' : 'Unknown';
+      String machineryAvailability = machineryDoc.exists
+          ? machineryDoc['availability'] ?? 'Unknown'
+          : 'Unknown';
+      String machineryDescription = machineryDoc.exists
+          ? machineryDoc['description'] ?? 'Unknown'
+          : 'Unknown';
 
       details.add({
         'farmer': {
@@ -314,7 +352,8 @@ class _SupplierBookingDetailsScreenState
   }
 
   // Show Machinery details
-  void _showMachineryDetails(BuildContext context, Map<String, dynamic> machinery) {
+  void _showMachineryDetails(
+      BuildContext context, Map<String, dynamic> machinery) {
     showDialog(
       context: context,
       builder: (context) {
@@ -348,11 +387,12 @@ class _SupplierBookingDetailsScreenState
   Future<void> _selectDate() async {
     DateTime currentDate = DateTime.now();
     DateTime pickedDate = await showDatePicker(
-      context: context,
-      initialDate: selectedDate ?? currentDate,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(currentDate.year + 5),
-    ) ?? currentDate;
+          context: context,
+          initialDate: selectedDate ?? currentDate,
+          firstDate: DateTime(2020),
+          lastDate: DateTime(currentDate.year + 5),
+        ) ??
+        currentDate;
 
     setState(() {
       selectedDate = pickedDate;

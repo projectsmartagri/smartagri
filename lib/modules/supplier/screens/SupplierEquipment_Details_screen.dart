@@ -1,11 +1,15 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
 import 'package:smartagri/modules/supplier/services/supplier_machinery_service.dart';
 import 'package:smartagri/utils/helper.dart';
+import 'package:intl/intl.dart';
 
-class SupplierEquipmentDetailsScreen extends StatelessWidget {
+
+class SupplierEquipmentDetailsScreen extends StatefulWidget {
   final String name;
   final String imageUrl;
   final String rentRate;
@@ -24,6 +28,11 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<SupplierEquipmentDetailsScreen> createState() => _SupplierEquipmentDetailsScreenState();
+}
+
+class _SupplierEquipmentDetailsScreenState extends State<SupplierEquipmentDetailsScreen> {
+  @override
   Widget build(BuildContext context) {
     final List<Map<String, String>> farmersOrders = [
       // Sample data of farmers who ordered this equipment
@@ -33,9 +42,60 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
       {'farmerName': 'Farmer Charlie', 'bookingDate': '2024-10-03', 'dueDate': '2024-10-10', 'returnDate': ''},
     ];
 
+
+   Future<List<Map<String,dynamic>>> fetchFarmerAndRentalData(String id) async {
+  try {
+    // Querying the 'rental_order' collection for documents where 'machineryId' is equal to the provided id
+    QuerySnapshot rentalSnapshot = await FirebaseFirestore.instance
+        .collection('rental_order')
+        .where('machineryId', isEqualTo: id)
+        .get();
+
+    List<Map<String, dynamic>> farmerAndRentalData = [];
+    final dateFormatter = DateFormat('yyyy-MM-dd');
+
+    // Loop through the documents in the snapshot
+    for (var doc in rentalSnapshot.docs) {
+      // Accessing the data of each document
+      Map<String, dynamic> rentalData = doc.data() as Map<String, dynamic>;
+      String docId = doc.id;
+      bool isReturned = rentalData['isReturned']??false;
+
+      // Fetching farmer data
+      String uid = rentalData['uid'];
+      
+      DocumentSnapshot farmerSnapshot = await FirebaseFirestore.instance.collection('farmers').doc(uid).get();
+
+      // Get the farmer's name from the snapshot
+      String farmerName = farmerSnapshot.exists ? farmerSnapshot['name'] ?? 'Unknown' : 'Unknown';
+      String bookingDate = dateFormatter.format((rentalData['bookedAt'] as Timestamp).toDate());
+      String returnDate = rentalData['endDate'] != null
+          ? dateFormatter.format((rentalData['endDate'] as Timestamp).toDate())
+          : 'Not Returned';
+
+      // Add the rental data and the farmer name to the list
+      farmerAndRentalData.add({
+        'isReturned':isReturned,
+        'rentalId':docId,
+        'ProductId': rentalData['machineryId'],
+        'bookingDate': bookingDate,
+        'returnDate': returnDate,
+        'farmer': farmerName,  // Add the farmer's name here
+      });
+    }
+
+    // Print the list to check the updated data
+    return farmerAndRentalData;
+
+  } catch (e) {
+    rethrow;
+  }
+}
+
+
     void deleteMachinery() async {
       try {
-        await SupplierMachineryService().machinarydel(id);
+        await SupplierMachineryService().machinarydel(widget.id);
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Machinery deleted successfully!')));
       } catch (e) {
@@ -58,12 +118,12 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => EditEquipmentScreen(
-                    id: id,
-                    initialName: name,
-                    initialImageUrl: imageUrl,
-                    initialRentRate: rentRate,
-                    initialDescription: description,
-                    initialQuantity: quantity,
+                    id: widget.id,
+                    initialName: widget.name,
+                    initialImageUrl: widget.imageUrl,
+                    initialRentRate: widget.rentRate,
+                    initialDescription: widget.description,
+                    initialQuantity: widget.quantity,
                   ),
                 ),
               );
@@ -108,53 +168,88 @@ class SupplierEquipmentDetailsScreen extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.network(imageUrl, height: 250, width: double.infinity, fit: BoxFit.cover),
+                      child: Image.network(widget.imageUrl, height: 250, width: double.infinity, fit: BoxFit.cover),
                     ),
                     const SizedBox(height: 16),
-                    Text(name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87)),
+                    Text(widget.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black87)),
                     const SizedBox(height: 8),
-                    Text('Rent Rate: $rentRate/day', style: TextStyle(fontSize: 20, color: Colors.green)),
+                    Text('Rent Rate: ${widget.rentRate}/day', style: TextStyle(fontSize: 20, color: Colors.green)),
                     const SizedBox(height: 8),
-                    Text(description, style: const TextStyle(fontSize: 16, color: Colors.black54)),
+                    Text(widget.description, style: const TextStyle(fontSize: 16, color: Colors.black54)),
                     const SizedBox(height: 16),
-                    Text('Quantity Available: $quantity', style: TextStyle(fontSize: 18, color: Colors.orange)),
+                    Text('Quantity Available: ${widget.quantity}', style: TextStyle(fontSize: 18, color: Colors.orange)),
                   ],
                 ),
               ),
             ),
             const Divider(height: 30),
             const Text('Farmers Orders', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: farmersOrders.length,
-              itemBuilder: (context, index) {
-                final order = farmersOrders[index];
-                return Card(
-                  margin: const EdgeInsets.symmetric(vertical: 8),
-                  elevation: 4,
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: Colors.green[100],
-                      child: const Icon(Icons.person, color: Colors.green),
-                    ),
-                    title: Text(order['farmerName'] ?? '', style: const TextStyle(fontWeight: FontWeight.bold)),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Booking Date: ${order['bookingDate']}'),
-                        Text('Due Date: ${order['dueDate']}'),
-                        Text(
-                          'Return Date: ${order['returnDate']?.isEmpty ?? true ? 'Not Returned' : order['returnDate']}',
-                          style: TextStyle(
-                            color: order['returnDate']?.isEmpty ?? true ? Colors.red : Colors.green,
-                          ),
+            FutureBuilder(
+            future: fetchFarmerAndRentalData(widget.id),
+              builder: (context,snapshot) {
+              if(snapshot.connectionState == ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator(color: Colors.green,));
+                }
+                else if(snapshot.hasError){
+                  return Center(child: Text('Error Fetching data'),);
+                }
+                else if(!snapshot.hasData || snapshot.data!.isEmpty){
+                  return Center(child: Text('No data available'),);
+                  }
+                  else{
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    final order = snapshot.data![index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8),
+                      elevation: 4,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                          backgroundColor: Colors.green[100],
+                          child: const Icon(Icons.person, color: Colors.green),
                         ),
-                      ],
-                    ),
-                  ),
+                        title: Text(order['farmer'] ?? '', style: const TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Booking Date: ${order['bookingDate']}'),
+                            Text(order['isReturned']?'Returned':
+                              'Return Date: ${order['returnDate'] }',
+                              style: TextStyle(
+                                color:  Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                        trailing: Visibility(
+                          visible: !order['isReturned'],
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)
+                              )
+                            ),
+                            onPressed: ()async{
+                                await FirebaseFirestore.instance.collection('rental_order').doc(order['rentalId']).update({'isReturned':true});
+                                order['isReturned']= true;
+                                setState(() {
+                                  
+                                });
+                            }, 
+                            child: Text('Return')),
+                            ),
+                      ),
+                      
+                    );
+                  },
                 );
-              },
+                }
+              }
             ),
           ],
         ),
