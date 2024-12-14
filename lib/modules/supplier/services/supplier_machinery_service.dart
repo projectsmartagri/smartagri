@@ -34,15 +34,7 @@ class SupplierMachineryService {
         'image':url,
         'Quantity':quantity 
       });
-
-      
-
-
-     }
-
-
-
-    
+     }    
 
     }
      catch(e){

@@ -165,9 +165,22 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
 
       await FirebaseFirestore.instance.collection('rental_order').add(orderData);
 
-      FirebaseFirestore.instance.collection('machinary').doc(widget.id).update({
+      await FirebaseFirestore.instance.collection('machinary').doc(widget.id).update({
         'Quantity' : FieldValue.increment(-1)
       });
+
+      await FirebaseFirestore.instance.collection('machinary').doc(widget.id).get().then((docSnapshot) {
+  if (docSnapshot.exists) {
+    int currentQuantity = docSnapshot['Quantity'];
+
+    if (currentQuantity <= 0) {
+      // Set availability to "Not Available" if quantity is zero
+      FirebaseFirestore.instance.collection('machinary').doc(widget.id).update({
+        'availability': 'Not Available',
+      });
+    }
+  }
+});
 
       // Close loading dialog
       Navigator.pop(context);
@@ -214,12 +227,14 @@ DateTime ?endDate;
   void makeSuccessOrder() async {
   // Check if the machinery is already booked
   final existingOrder = await FirebaseFirestore.instance
-      .collection('orders')
+      .collection('rental_order')
       .where('machineryId', isEqualTo: widget.id)
       .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
       .get();
 
+
   if (existingOrder.docs.isNotEmpty) {
+
     // Machinery already booked, prompt for extension
     final doc = existingOrder.docs.first;
     int additionalDays = await _showDaysDialog(context,true);
@@ -243,7 +258,7 @@ DateTime ?endDate;
     _openCheckout(additionalAmount.toDouble(), (paymentId) async {
       // Update existing order with new details
       await FirebaseFirestore.instance
-          .collection('orders')
+          .collection('rental_order')
           .doc(doc.id)
           .update({
         'endDate': newEndDate,
@@ -287,10 +302,9 @@ DateTime ?endDate;
   }
 
 
-  print('hhhh');
 
   // Normal booking flow if not already booked
-  rentalDays = await _showDaysDialog(context);
+  rentalDays = await _showDaysDialog(context); 
   if (rentalDays == 0 || rentalDays == null) return;
 
   totalAmount = rentalDays! * widget.machinery['price'];
@@ -345,10 +359,9 @@ DateTime ?endDate;
           ),
           actions: [
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(selectedDays);
-                
-                
+              onPressed: (){
+
+                Navigator.of(context).pop(selectedDays);            
               },
               child: const Text('OK'),
             ),

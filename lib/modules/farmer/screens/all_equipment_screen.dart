@@ -53,6 +53,8 @@ class MachineryListScreen extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             itemBuilder: (context, index) {
               final machinery = machineryList[index];
+              print('eeeeeeeeeeeeee');
+              print(machinery.data());
               return Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20),
