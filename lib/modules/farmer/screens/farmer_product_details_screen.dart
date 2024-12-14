@@ -1,11 +1,41 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:smartagri/modules/farmer/screens/farmer_product_edit.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final QueryDocumentSnapshot product;
 
   const ProductDetailsScreen({super.key, required this.product});
+
+  // Method to delete the product from Firestore
+  Future<void> deleteProduct(BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance.collection('products').doc(product.id).delete();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Product deleted successfully')),
+      );
+      Navigator.pop(context); // Go back to the previous screen after deletion
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to delete product')),
+      );
+    }
+  }
+
+  // Navigate to the edit screen (you would need to implement this screen)
+  void editProduct(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProductScreen(product: product),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +46,16 @@ class ProductDetailsScreen extends StatelessWidget {
           style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
         ),
         backgroundColor: Colors.green[700],
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.edit),
+            onPressed: () => editProduct(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () => deleteProduct(context),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -125,29 +165,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 16),
 
-                  // Seller Information Section
-                  Text(
-                    "Seller Information",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green[800],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      Icon(Icons.person, color: Colors.green[700]),
-                      const SizedBox(width: 8),
-                      Text(
-                        product['farmerId'],
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ],
-                  ),
+                 
                 ],
               ),
             ),
@@ -157,3 +175,7 @@ class ProductDetailsScreen extends StatelessWidget {
     );
   }
 }
+
+// You will need to implement the EditProductScreen where users can edit the product details.
+
+
