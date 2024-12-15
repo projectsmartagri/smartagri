@@ -1,68 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smartagri/modules/admin/screen/FarmerDetails.dart';
 
-class ManageFarmer extends StatelessWidget {
+class ManageFarmer extends StatefulWidget {
   const ManageFarmer({super.key});
+
+  @override
+  State<ManageFarmer> createState() => _ManageFarmerState();
+}
+
+class _ManageFarmerState extends State<ManageFarmer>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Manage Farmers'),
+        title: const Text('Farmer Management'),
         backgroundColor: Colors.green,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.white,
+          tabs: const [
+            Tab(text: 'Pending'),
+            Tab(text: 'Approved'),
+          ],
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildFarmersList('pending'),
+          _buildFarmersList('approved'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFarmersList(String status) {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection('farmers')
+          .where('status', isEqualTo: status)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+          return const Center(child: Text('No data found.'));
+        }
+
+        final farmers = snapshot.data!.docs;
+        return ListView.builder(
+          itemCount: farmers.length,
+          itemBuilder: (context, index) {
+            final farmer = farmers[index];
+            final name = farmer['name'] ?? 'No Name';
+            final location = farmer['location'] ?? 'No Location';
+            final contact = farmer['phone'] ?? 'No Phone';
+            final pdfUrl = farmer['pdfUrl'] ?? '';
+
+            return _buildFarmerCard(
+                context, name, location, contact, pdfUrl);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildFarmerCard(BuildContext context, String name, String location,
+      String contact, String pdfUrl) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      elevation: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Farmer Management',
-              style: TextStyle(
-                fontSize: 24,
+            Text(
+              name,
+              style: const TextStyle(
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: Colors.green,
               ),
             ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: ListView(
-                children: [
-                  _buildFarmerCard(
-                    context,
-                    'John Doe',
-                    'johndoe@gmail.com',
-                    '123-456-7890',
+            const SizedBox(height: 4),
+            Text('Location: $location'),
+            Text('Contact: $contact'),
+            const SizedBox(height: 8),
+            GestureDetector(
+              onTap: () {
+                // Open PDF link
+              },
+              child: Row(
+                children: const [
+                  Icon(Icons.picture_as_pdf, color: Colors.red),
+                  SizedBox(width: 4),
+                  Text(
+                    'View Document',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      decoration: TextDecoration.underline,
+                    ),
                   ),
-                  _buildFarmerCard(
-                    context,
-                    'Jane Smith',
-                    'janesmith@gmail.com',
-                    '987-654-3210',
-                  ),
-                  _buildFarmerCard(
-                    context,
-                    'Peter Parker',
-                    'peterparker@gmail.com',
-                    '456-789-1234',
-                  ),
-                  // Add more farmers as needed
                 ],
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Navigate to a page to add new farmers
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Add Farmer tapped')),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green, // Button color
-                  minimumSize: const Size(double.infinity, 50), // Button height
-                ),
-                child: const Text('Add New Farmer'),
               ),
             ),
           ],
@@ -71,48 +123,9 @@ class ManageFarmer extends StatelessWidget {
     );
   }
 
-  Widget _buildFarmerCard(
-      BuildContext context, String name, String email, String phone) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => FarmerDetails(
-              name: name,
-              email: email,
-              phone: phone, location: '', imageUrl: '', certificateImageUrl: '',
-            ),
-          ),
-        );
-      },
-      child: Card(
-        elevation: 4,
-        margin: const EdgeInsets.symmetric(vertical: 8),
-        child: ListTile(
-          leading: const Icon(Icons.person, color: Colors.green),
-          title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text('Email: $email\nPhone: $phone'),
-          trailing: PopupMenuButton<String>(
-            onSelected: (String value) {
-              // Handle menu actions
-            },
-            itemBuilder: (BuildContext context) {
-              return <PopupMenuEntry<String>>[
-                const PopupMenuItem<String>(
-                  value: 'edit',
-                  child: Text('Edit'),
-                ),
-                const PopupMenuItem<String>(
-                  value: 'delete',
-                  child: Text('Delete'),
-                ),
-              ];
-            },
-          ),
-        ),
-      ),
-    );
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }
-

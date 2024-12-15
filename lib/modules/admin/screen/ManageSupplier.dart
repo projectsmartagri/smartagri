@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:smartagri/modules/admin/screen/SupplierDetails.dart';
 
-// Dummy data for suppliers
-class ManageSupplierScreen extends StatelessWidget {
-  ManageSupplierScreen({super.key});
+class ManageSupplierScreen extends StatefulWidget {
+  const ManageSupplierScreen({super.key});
 
-  final List<Map<String, String>> suppliers = [
-    {'name': 'Supplier A', 'email': 'supplierA@example.com'},
-    {'name': 'Supplier B', 'email': 'supplierB@example.com'},
-    {'name': 'Supplier C', 'email': 'supplierC@example.com'},
-  ];
+  @override
+  State<ManageSupplierScreen> createState() => _ManageSupplierScreenState();
+}
+
+class _ManageSupplierScreenState extends State<ManageSupplierScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this); // 2 tabs
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,104 +32,142 @@ class ManageSupplierScreen extends StatelessWidget {
           ),
         ),
         backgroundColor: Colors.green,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.white,
+          tabs: const [
+            Tab(text: 'Rejected'), // Tab for Rejected suppliers
+            Tab(text: 'Approved'), // Tab for Approved suppliers
+          ],
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: suppliers.length,
-                itemBuilder: (context, index) {
-                  final supplier = suppliers[index];
-                  return Card(
-                    elevation: 4,
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.person,
-                        color: Colors.green,
-                        size: 40,
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          _buildSuppliersList(false), // Rejected suppliers (isApproved == false)
+          _buildSuppliersList(true),  // Approved suppliers (isApproved == true)
+        ],
+      ),
+    );
+  }
+
+  // Function to fetch and display supplier list based on approval status
+  Widget _buildSuppliersList(bool isApproved) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('suppliers')
+            .where('isApproved', isEqualTo: isApproved) // Filter by isApproved field
+            .snapshots(),
+        builder: (context, snapshot) {
+          // Handle the connection state (waiting for data)
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          // Handle the case when there is no data
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return Center(
+                child: Text(
+                    'No ${isApproved ? 'approved' : 'Rejected'} suppliers found.'));
+          }
+
+          // Extract the suppliers data from the snapshot
+          final suppliers = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: suppliers.length,
+            itemBuilder: (context, index) {
+              final supplier = suppliers[index];
+              final name = supplier['name'] ?? 'No Name';
+              final email = supplier['email'] ?? 'No Email';
+
+              return Card(
+                elevation: 4,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.person,
+                    color: Colors.green,
+                    size: 40,
+                  ),
+                  title: Text(
+                    name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(email),
+                  onTap: () {
+                    // Navigate to the SupplierDetails page when tapped
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SupplierDetails(
+                          companyname: name,
+                          email: email,
+                          companyName: '',
+                          phone: '',
+                          address: '',
+                          companyDocumentUrl: '',
+                          name: '',
+                        ),
                       ),
-                      title: Text(
-                        supplier['name']!,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                    );
+                  },
+                  trailing: PopupMenuButton(
+                    icon: const Icon(Icons.more_vert),
+                    itemBuilder: (context) => [
+                      const PopupMenuItem(
+                        value: 'view',
+                        child: Text('View'),
                       ),
-                      subtitle: Text(supplier['email']!),
-                      onTap: () {
-                        // Navigate to the SupplierDetails page when the card is tapped
+                      const PopupMenuItem(
+                        value: 'edit',
+                        child: Text('Edit'),
+                      ),
+                      const PopupMenuItem(
+                        value: 'delete',
+                        child: Text('Delete'),
+                      ),
+                    ],
+                    onSelected: (value) {
+                      if (value == 'view') {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SupplierDetails(
-                              companyname: supplier['name']!,
-                              email: supplier['email']!, companyName: '', phone: '', address: '', companyDocumentUrl: '', name: '',
+                              name: name,
+                              email: email,
+                              companyName: '',
+                              phone: '',
+                              address: '',
+                              companyDocumentUrl: '',
+                              companyname: '',
                             ),
                           ),
                         );
-                      },
-                      trailing: PopupMenuButton(
-                        icon: const Icon(Icons.more_vert),
-                        itemBuilder: (context) => [
-                          PopupMenuItem(
-                            value: 'view',
-                            child: const Text('View'),
-                          ),
-                          PopupMenuItem(
-                            value: 'edit',
-                            child: const Text('Edit'),
-                          ),
-                          PopupMenuItem(
-                            value: 'delete',
-                            child: const Text('Delete'),
-                          ),
-                        ],
-                        onSelected: (value) {
-                          // Handle menu item actions here
-                          if (value == 'view') {
-                            // Navigate to the SupplierDetails page
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SupplierDetails(
-                                  name: supplier['name']!,
-                                  email: supplier['email']!, companyName: '', phone: '', address: '', companyDocumentUrl: '', companyname: '',  
-                                ),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('$value ${supplier['name']}')),
-                            );
-                          }
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                // Navigate to the Add Supplier page (you can replace this with your add supplier logic)
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Add Supplier Tapped')),
-                );
-              },
-              icon: const Icon(Icons.add),
-              label: const Text('Add Supplier'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.green,
-                minimumSize: const Size(double.infinity, 50), // Full-width button
-              ),
-            ),
-          ],
-        ),
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('$value $name')),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              );
+            },
+          );
+        },
       ),
     );
   }
-}
 
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+}
