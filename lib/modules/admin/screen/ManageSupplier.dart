@@ -29,15 +29,17 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 24,
+            letterSpacing: 1.5,
           ),
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.green.shade600,
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: Colors.white,
+          labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           tabs: const [
-            Tab(text: 'Rejected'), // Tab for Rejected suppliers
-            Tab(text: 'Approved'), // Tab for Approved suppliers
+            Tab(text: 'Rejected'),
+            Tab(text: 'Approved'),
           ],
         ),
       ),
@@ -69,8 +71,11 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
           // Handle the case when there is no data
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(
-                child: Text(
-                    'No ${isApproved ? 'approved' : 'Rejected'} suppliers found.'));
+              child: Text(
+                'No ${isApproved ? 'approved' : 'Rejected'} suppliers found.',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              ),
+            );
           }
 
           // Extract the suppliers data from the snapshot
@@ -82,79 +87,73 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
               final supplier = suppliers[index];
               final name = supplier['name'] ?? 'No Name';
               final email = supplier['email'] ?? 'No Email';
+              final phone = supplier['phone'] ?? 'No Phone';
+              final address = supplier['address'] ?? 'No Address';
+              final companyLicenseUrl = supplier['companyLicenseUrl'] ?? '';
+              final isApproved = supplier['isApproved'] ?? '';
 
               return Card(
-                elevation: 4,
-                margin: const EdgeInsets.symmetric(vertical: 8),
+                elevation: 6,  // Elevated effect
+                margin: const EdgeInsets.symmetric(vertical: 12),  // Adjusted margin
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(15),  // Rounded corners for a softer look
                 ),
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.person,
-                    color: Colors.green,
-                    size: 40,
-                  ),
-                  title: Text(
-                    name,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(email),
+                child: InkWell(
                   onTap: () {
                     // Navigate to the SupplierDetails page when tapped
                     Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => SupplierDetails(
-                          companyname: name,
                           email: email,
-                          companyName: '',
-                          phone: '',
-                          address: '',
-                          companyDocumentUrl: '',
-                          name: '',
+                          phone: phone,
+                          address: address,
+                          companyLicenseUrl: companyLicenseUrl,
+                          name: name,
+                          isApproved: isApproved,
                         ),
                       ),
                     );
                   },
-                  trailing: PopupMenuButton(
-                    icon: const Icon(Icons.more_vert),
-                    itemBuilder: (context) => [
-                      const PopupMenuItem(
-                        value: 'view',
-                        child: Text('View'),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          isApproved ? Colors.green.shade100 : Colors.red.shade100, 
+                          Colors.white,
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
                       ),
-                      const PopupMenuItem(
-                        value: 'edit',
-                        child: Text('Edit'),
+                      borderRadius: BorderRadius.circular(15),  // Rounded corners for gradient
+                    ),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.person,
+                        color: Colors.green.shade700,
+                        size: 45,
                       ),
-                      const PopupMenuItem(
-                        value: 'delete',
-                        child: Text('Delete'),
+                      title: Text(
+                        name,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.green.shade700,
+                        ),
                       ),
-                    ],
-                    onSelected: (value) {
-                      if (value == 'view') {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => SupplierDetails(
-                              name: name,
-                              email: email,
-                              companyName: '',
-                              phone: '',
-                              address: '',
-                              companyDocumentUrl: '',
-                              companyname: '',
-                            ),
-                          ),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('$value $name')),
-                        );
-                      }
-                    },
+                      subtitle: Text(
+                        email,
+                        style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      ),
+                     
+                      
+                      
+                      trailing: Icon(
+                        isApproved ? Icons.check_circle : Icons.pending,
+                        color: isApproved ? Colors.green : Colors.red,
+                        size: 30,
+                      ),
+                    ),
                   ),
                 ),
               );

@@ -13,10 +13,10 @@ class AdminHomescreen extends StatelessWidget {
         title: const Text(
           'Smart Agri',
           style: TextStyle(
-            color: Color.fromRGBO(4, 75, 4, 0.961),
+            color: Colors.white,
             fontFamily: 'Dancing Script',
             fontWeight: FontWeight.bold,
-            fontSize: 24,
+            fontSize: 28,
           ),
         ),
         backgroundColor: const Color.fromARGB(234, 32, 203, 32),
@@ -26,6 +26,7 @@ class AdminHomescreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            // Header Section
             Center(
               child: Column(
                 children: const [
@@ -33,7 +34,8 @@ class AdminHomescreen extends StatelessWidget {
                     'Welcome, Admin!',
                     style: TextStyle(
                       fontSize: 30,
-                      fontWeight: FontWeight.w500,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.green,
                     ),
                   ),
                   SizedBox(height: 16),
@@ -47,8 +49,8 @@ class AdminHomescreen extends StatelessWidget {
                 mainAxisSpacing: 16.0,
                 children: [
                   _buildCard(context, Icons.person, 'Manage Users'),
-                  _buildCard(context, Icons.person, 'Manage Farmer'),
-                  _buildCard(context, Icons.person, 'Manage Supplier'),
+                  _buildCard(context, Icons.agriculture, 'Manage Farmer'),
+                  _buildCard(context, Icons.local_shipping, 'Manage Supplier'),
                 ],
               ),
             ),
@@ -67,50 +69,63 @@ class AdminHomescreen extends StatelessWidget {
             context,
             MaterialPageRoute(builder: (context) => const ManageUser()),
           );
-        } 
-        else if (title == 'Manage Farmer') {
-          // Navigate to the Manage User Screen
+        } else if (title == 'Manage Farmer') {
+          // Navigate to the Manage Farmer Screen
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const ManageFarmer()),
           );
-        } 
-
-         else if (title == 'Manage Supplier') {
-          // Navigate to the Manage User Screen
+        } else if (title == 'Manage Supplier') {
+          // Navigate to the Manage Supplier Screen
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) =>  ManageSupplierScreen()),
+            MaterialPageRoute(builder: (context) => const ManageSupplierScreen()),
           );
-        } 
-
-        
-        else {
+        } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('$title tapped')),
           );
         }
       },
       child: Card(
-        elevation: 4,
+        elevation: 8,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(15),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              icon,
-              size: 40,
-              color: Colors.green,
+        color: Colors.white,
+        shadowColor: Colors.greenAccent,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.green.shade300, Colors.green.shade600],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(15),
             ),
-            const SizedBox(height: 10),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  icon,
+                  size: 50,
+                  color: Colors.white,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
