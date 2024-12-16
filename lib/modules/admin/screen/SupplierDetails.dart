@@ -167,6 +167,7 @@ class SupplierDetails extends StatelessWidget {
                     _buildActionButton(
                       context,
                       label: 'Approve',
+
                       icon: Icons.check,
                       color: const Color.fromARGB(255, 28, 168, 63),
                       onPressed: () async {
@@ -289,14 +290,7 @@ class FullScreenImage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 249, 249, 249),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ],
+       
       ),
       body: Center(
         child: Image.network(imageUrl),

@@ -161,6 +161,12 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
         'address': _addressController.text,
       });
 
+      // If logo image was changed, update the logo URL
+      if (_backgroundImage != null) {
+        String newLogoUrl = await uploadImageToStorage(_backgroundImage!, false);
+        await supplierRef.update({'logo': newLogoUrl});
+      }
+
       // After updating Firestore, fetch and show the updated data
       fetchSupplierData();
 

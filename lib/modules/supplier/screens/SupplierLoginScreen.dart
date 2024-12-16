@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierSignUpScreen.dart';
 import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
 import 'package:smartagri/modules/supplier/services/Supplier_auth%20_services.dart';
-// Import your auth service
 
 class SupplierLoginScreen extends StatefulWidget {
   const SupplierLoginScreen({super.key});
@@ -23,11 +22,9 @@ class _SupplierLoginScreenState extends State<SupplierLoginScreen> {
 
   // Function to handle login
   void loginhandler() async {
-    // Get email and password from text fields
     String email = _emailController.text.trim();
     String password = _passwordController.text.trim();
 
-    // Check if fields are empty
     if (email.isEmpty || password.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please enter both email and password')),
@@ -36,30 +33,28 @@ class _SupplierLoginScreenState extends State<SupplierLoginScreen> {
     }
 
     setState(() {
-      isLoading = true; // Show loading indicator
+      isLoading = true;
     });
 
     try {
-      // Call the login function from the auth service
-     bool isLoggin=  await _authServices.loginSupplier(email: email, password: password);
+      bool isLoggin = await _authServices.loginSupplier(email: email, password: password);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login successfully')),
       );
 
-
-
-     if(isLoggin){
-       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SupplierHomeScreen(),));
-     }
-
+      if (isLoggin) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const SupplierHomeScreen()),
+        );
+      }
     } catch (e) {
-      // Display the error message in a SnackBar
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login failed: ${e.toString()}')),
       );
     } finally {
       setState(() {
-        isLoading = false; // Hide loading indicator
+        isLoading = false;
       });
     }
   }
@@ -68,123 +63,134 @@ class _SupplierLoginScreenState extends State<SupplierLoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true,
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          // Background Image
-          Image.asset(
-            'asset/image/image.jpg',
-            fit: BoxFit.cover,
-          ),
-          // Foreground Content
-          SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Spacer(),
-                    const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 20.0),
-                        child: Text(
-                          "Smart Agri",
-                          style: TextStyle(
-                            color: Color.fromRGBO(4, 75, 4, 1),
-                            fontFamily: 'dancing script',
-                            fontSize: 30,
-                            fontWeight: FontWeight.bold,
-                          ),
+      body: Container(
+        decoration: const BoxDecoration(
+         
+          color: Color.fromARGB(255, 234, 246, 234)
+             
+            
+          
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: Form(
+              child: Column(
+                children: [
+                  const Spacer(),
+                  const Text(
+                    "Smart Agri",
+                    style: TextStyle(
+                      fontFamily: 'dancing script',
+                      fontSize: 32,
+                      color: Color.fromARGB(255, 40, 152, 70),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Email Input
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Email',
+                      labelStyle: const TextStyle(color: Colors.black87),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      prefixIcon: const Icon(Icons.email, color: Colors.green),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 20),
+                  // Password Input
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Password',
+                      labelStyle: const TextStyle(color: Colors.black87),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.green),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.green,
                         ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
                       ),
                     ),
-
-                    // Field 1: Username/Email
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Username/Email',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    const SizedBox(height: 16.0),
-
-                    // Field 2: Password
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
-                        ),
-                      ),
-                      obscureText: _obscurePassword,
-                    ),
-                    const SizedBox(height: 16.0),
-
-                    // Loading Indicator or Submit Button
-                    isLoading
-                        ? const CircularProgressIndicator() // Show loading indicator
-                        : SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            height: 50,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                backgroundColor: Colors.green,
+                    obscureText: _obscurePassword,
+                  ),
+                  const SizedBox(height: 20),
+                  // Login Button or Loading Indicator
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: loginhandler,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 57, 168, 51),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
                               ),
-                              onPressed: loginhandler,
-                              child: const Text('LOGIN', style: TextStyle(color: Colors.white)),
+                            ),
+                            child: const Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 239, 241, 239),
+                              ),
                             ),
                           ),
-
-                    const SizedBox(height: 16.0),
+                        ),
+                  const SizedBox(height: 18),
                     const Spacer(),
-
-                    // Create Account Button
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: 'Don\'t have an account? ',
-                            style: TextStyle(color: Colors.white),
+                  // Sign Up Link
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Don't have an account? ",
+                          style: TextStyle(color: Color.fromARGB(255, 95, 92, 92), fontSize: 14),
+                        ),
+                        TextSpan(
+                          text: 'SIGN UP',
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 42, 167, 90),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          TextSpan(
-                            text: 'SIGN UP',
-                            style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const SupplierSignupScreen()),
-                                );
-                              },
-                          ),
-                        ],
-                      ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SupplierSignupScreen(),
+                                ),
+                              );
+                            },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }

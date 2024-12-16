@@ -24,7 +24,7 @@ Future<void> main() async {
           scaffoldBackgroundColor: Colors.white
          
         ),
-        home: AdminHomescreen()),
+        home: ChooseScreen()),
     ) ;
 }
 

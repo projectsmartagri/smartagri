@@ -132,12 +132,45 @@ class CustomDrawer extends StatelessWidget {
               ),
             ),
             onTap: () async {
-              await _auth.signOut(); // Firebase sign out
-              Navigator.pop(context);
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => ChooseScreen()),
-                (route) => false,
+              // Show confirmation dialog
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text("Are you sure you want to log out?",
+                     style: TextStyle(
+                fontSize: 20,
+                
+              ),),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          // Close the dialog if Cancel is pressed
+                          Navigator.of(context).pop();
+                        },
+                        child: Text("Cancel"),
+                      ),
+                      TextButton(
+                        onPressed: () async {
+                          // Perform logout and navigate to ChooseScreen
+                          await _auth.signOut(); // Firebase sign out
+                          Navigator.pop(context); // Close the dialog
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => ChooseScreen()),
+                            (route) => false, // Remove all previous routes
+                          );
+                        },
+                        child: Text("Log out",
+                         style: TextStyle(
+                fontSize: 16,
+               
+                color: Colors.red,
+              ),),
+                      ),
+                    ],
+                  );
+                },
               );
             },
           ),

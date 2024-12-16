@@ -38,7 +38,7 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
           indicatorColor: Colors.white,
           labelStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
           tabs: const [
-            Tab(text: 'Rejected'),
+            Tab(text: 'Pending'),
             Tab(text: 'Approved'),
           ],
         ),
@@ -72,8 +72,8 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return Center(
               child: Text(
-                'No ${isApproved ? 'approved' : 'Rejected'} suppliers found.',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                'No ${isApproved ? 'approved' : 'rejected'} suppliers found.',
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
               ),
             );
           }
@@ -88,15 +88,16 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
               final name = supplier['name'] ?? 'No Name';
               final email = supplier['email'] ?? 'No Email';
               final phone = supplier['phone'] ?? 'No Phone';
+              
               final address = supplier['address'] ?? 'No Address';
               final companyLicenseUrl = supplier['companyLicenseUrl'] ?? '';
-              final isApproved = supplier['isApproved'] ?? '';
+              final isApproved = supplier['isApproved'] ?? false;
 
               return Card(
-                elevation: 6,  // Elevated effect
-                margin: const EdgeInsets.symmetric(vertical: 12),  // Adjusted margin
+                elevation: 6, // Elevated effect
+                margin: const EdgeInsets.symmetric(vertical: 12), // Adjusted margin
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),  // Rounded corners for a softer look
+                  borderRadius: BorderRadius.circular(15), // Rounded corners for a softer look
                 ),
                 child: InkWell(
                   onTap: () {
@@ -119,13 +120,13 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          isApproved ? Colors.green.shade100 : Colors.red.shade100, 
+                          isApproved ? Colors.green.shade100 : Colors.red.shade100,
                           Colors.white,
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
-                      borderRadius: BorderRadius.circular(15),  // Rounded corners for gradient
+                      borderRadius: BorderRadius.circular(15), // Rounded corners for gradient
                     ),
                     child: ListTile(
                       leading: Icon(
@@ -141,13 +142,20 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
                           color: Colors.green.shade700,
                         ),
                       ),
-                      subtitle: Text(
-                        email,
-                        style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            email,
+                            style: TextStyle(fontSize: 14, color: Colors.grey.shade600),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Address: $address',
+                            style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
+                          ),
+                        ],
                       ),
-                     
-                      
-                      
                       trailing: Icon(
                         isApproved ? Icons.check_circle : Icons.pending,
                         color: isApproved ? Colors.green : Colors.red,
