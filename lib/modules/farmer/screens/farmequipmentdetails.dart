@@ -19,6 +19,8 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
   late Razorpay _razorpay;
 
   String ? supplierName;
+  String? supplierAddress;
+  String? phoneNumber;
 
   @override
   void initState() {
@@ -37,6 +39,8 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
       if (supplierData != null) {
         setState(() {
           supplierName = supplierData['name'];
+          supplierAddress = supplierData['address'];
+          phoneNumber = supplierData['phone'];
         });
       }
     } catch (e) {
@@ -448,6 +452,46 @@ DateTime ?endDate;
                       const Spacer(),
                       Text(
                         supplierName ?? 'loading....',
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Location',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        supplierAddress ?? 'loading....',
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Phone Number',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.grey.shade400,
+                        ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        phoneNumber ?? 'loading....',
                         style: const TextStyle(
                           fontSize: 18,
                         ),

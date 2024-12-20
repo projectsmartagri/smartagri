@@ -23,6 +23,8 @@ class _SupplierBookingDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
+      totalCompletedAmount = 0;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
