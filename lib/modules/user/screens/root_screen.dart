@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smartagri/modules/user/screens/homeScreen.dart';
 import 'package:smartagri/modules/user/screens/mycartScreen.dart';
+import 'package:smartagri/modules/user/screens/user_order_screen.dart';
+import 'package:smartagri/modules/user/screens/user_profile_screen.dart';
 
 class UserRootScreen extends StatefulWidget {
   @override
@@ -12,8 +14,8 @@ class _UserRootScreenState extends State<UserRootScreen> {
   final List<Widget> _screens = [
     HomePage(),
     Mycartscreen(),
-    Scaffold(),
-    Scaffold()
+    OrderScreen(),
+    ProfileScreen()
   ];
 
   int _currentIndex = 0;

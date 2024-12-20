@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smartagri/modules/farmer/screens/farmer_product_details_screen.dart';
+import 'package:smartagri/modules/user/screens/productdetailScreen.dart';
+import 'package:smartagri/modules/user/screens/user_product_details_screen.dart';
 
 class ProductGrid extends StatefulWidget {
   final String cat;
@@ -104,76 +107,81 @@ class _ProductGridState extends State<ProductGrid> {
             var imageUrl = product['imageUrl'] ?? '';
             var price = product['price']?.toDouble() ?? 0.0;
 
-            return Card(
-              elevation: 6,
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: Colors.green, width: .5),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                    child: Image.network(
-                      imageUrl,
-                      height: 100,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) => Container(
-                        color: Colors.grey[300],
-                        height: 140,
+            return InkWell(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder:(context) => UserProductDetailsScreen(product: product,), ));
+              },
+              child: Card(
+                elevation: 6,
+                color: Colors.white,
+                shape: RoundedRectangleBorder(
+                  side: BorderSide(color: Colors.green, width: .5),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                      child: Image.network(
+                        imageUrl,
+                        height: 100,
                         width: double.infinity,
-                        child: const Icon(Icons.image_not_supported, size: 50),
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                    child: Text(
-                      'Price: \$${price.toString()}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.teal,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        _addToCart(productId, name, imageUrl, price);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) => Container(
+                          color: Colors.grey[300],
+                          height: 140,
+                          width: double.infinity,
+                          child: const Icon(Icons.image_not_supported, size: 50),
                         ),
-                        minimumSize: Size(double.infinity, 40),
-                      ),
-                      child: const Text(
-                        'Add to Cart',
-                        style: TextStyle(color: Colors.white, fontSize: 13),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                      child: Text(
+                        'Price: \$${price.toString()}',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.teal,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          _addToCart(productId, name, imageUrl, price);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.green,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          minimumSize: Size(double.infinity, 40),
+                        ),
+                        child: const Text(
+                          'Add to Cart',
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
