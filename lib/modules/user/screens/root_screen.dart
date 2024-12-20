@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/user/screens/accountScreen.dart';
 import 'package:smartagri/modules/user/screens/homeScreen.dart';
 import 'package:smartagri/modules/user/screens/mycartScreen.dart';
+ // Import your ProfilePage screen
 
 class UserRootScreen extends StatefulWidget {
   @override
@@ -12,8 +14,8 @@ class _UserRootScreenState extends State<UserRootScreen> {
   final List<Widget> _screens = [
     HomePage(),
     Mycartscreen(),
-    Scaffold(),
-    Scaffold()
+    Scaffold(), // You can replace this with the 'Orders' screen
+    UserProfileScreen(), // Add ProfilePage here
   ];
 
   int _currentIndex = 0;
@@ -28,7 +30,6 @@ class _UserRootScreenState extends State<UserRootScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      
       body: _screens[_currentIndex], // Display the selected screen
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,

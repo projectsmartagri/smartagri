@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../services/add_to_favourites.dart';
 import '../widgets/custombuttonWidget.dart';
-import 'favouriteScreen.dart';
 import 'mycartScreen.dart';
 
 class Productdetailscreen extends StatefulWidget {
@@ -68,7 +67,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
         
               child: CarouselSlider(
                   items: [
-                    Image.asset(widget.image)
+                    Image.network(widget.image)
                   ],
                   options: CarouselOptions(
                     height: 400,
@@ -112,26 +111,7 @@ class _ProductdetailscreenState extends State<Productdetailscreen> {
                         fontSize: ht/37.48
                       ),),
         
-                      IconButton(
-                        icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_outline,
-                          color: isFavorite ? Colors.red : null,
-                        size: ht/37.48,),
-                        onPressed: () {
-                          if(isFavorite){
-                            deleteFromFav(values: widget.value);
-                            _toggleFavorite();
-        
-        
-                          }else{
-        
-                            _toggleFavorite();
-                            addToFav(values: widget.value);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Favouritescreen(),));
-        
-                          }
-        
-                          },
-                      )
+                     
                     ],
                   ),
         

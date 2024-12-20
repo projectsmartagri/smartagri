@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:smartagri/modules/user/screens/productdetailScreen.dart';
 
 class ProductGrid extends StatefulWidget {
   final String cat;
@@ -103,8 +104,29 @@ class _ProductGridState extends State<ProductGrid> {
             var name = product['title'] ?? 'Unnamed';
             var imageUrl = product['imageUrl'] ?? '';
             var price = product['price']?.toDouble() ?? 0.0;
+            print(imageUrl);
 
-            return Card(
+            return GestureDetector(
+              onTap: () {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Productdetailscreen(
+          image: imageUrl,
+          title: name,
+          subtitle: 'Product Details', 
+          price: price,
+          value: {
+            'productId': productId,
+            'name': name,
+            'image': imageUrl,
+            'price': price,
+          },
+        ),
+      ),
+    );
+  },
+            child: Card(
               elevation: 6,
               color: Colors.white,
               shape: RoundedRectangleBorder(
@@ -175,7 +197,7 @@ class _ProductGridState extends State<ProductGrid> {
                   ),
                 ],
               ),
-            );
+            ));
           },
         );
       },

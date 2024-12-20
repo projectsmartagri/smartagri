@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smartagri/modules/user/screens/List_itemsScreen.dart';
-import 'package:smartagri/modules/user/screens/favouriteScreen.dart';
+import 'package:smartagri/modules/user/screens/exploreScreen.dart';
 import 'package:smartagri/modules/user/screens/product_custom_list_widget.dart';
 
 
@@ -60,11 +60,11 @@ class _HomePageState extends State<HomePage> {
               ),
               actions: [
                  IconButton(
-                  icon: const Icon(Icons.favorite_border_outlined, color: Color.fromARGB(255, 68, 69, 68)),
+                  icon: const Icon(Icons.search_outlined, color: Color.fromARGB(255, 68, 69, 68)),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Favouritescreen()),
+                      MaterialPageRoute(builder: (context) => ExploreScreen()),
                     );
                   },
                 ),

@@ -36,6 +36,7 @@ class Favouritescreen extends StatelessWidget {
               child: ListView.builder(
                 itemCount: favList.length,
                 itemBuilder: (context, index) {
+                  print(favList);
                   return Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Column(children: [
@@ -43,7 +44,7 @@ class Favouritescreen extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(25.0),
-                            child: Image.asset(favList[index]['image']),
+                            child: Image.network(favList[index]['image']),
                           ),
                           const Spacer(),
                           Column(

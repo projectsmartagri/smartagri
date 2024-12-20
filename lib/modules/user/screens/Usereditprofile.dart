@@ -1,32 +1,32 @@
 import 'package:flutter/material.dart';
 
-class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({Key? key}) : super(key: key);
+class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({Key? key}) : super(key: key);
 
   @override
-  _UserProfilePageState createState() => _UserProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
-class _UserProfilePageState extends State<UserProfileScreen> {
+class _ProfilePageState extends State<EditProfilePage> {
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
-  final TextEditingController _paymentMethodController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     // Example pre-filled data
-    _nameController.text = 'Jane Doe';
-    _addressController.text = '123 Elm St, Springfield, IL';
-    _paymentMethodController.text = 'Visa ending in 1234';
+    _nameController.text = 'John Doe';
+    _emailController.text = 'john.doe@example.com';
+    _phoneController.text = '123-456-7890';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Consumer Profile'),
-        backgroundColor: Colors.blue,
+        title: const Text('Profile'),
+        backgroundColor: Colors.green,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -37,46 +37,47 @@ class _UserProfilePageState extends State<UserProfileScreen> {
               CircleAvatar(
                 radius: 50,
                 backgroundImage: NetworkImage(
-                    'https://www.example.com/consumer_profile_image.jpg'), // Replace with consumer's profile image URL
+                    'https://www.example.com/your_profile_image.jpg'), // Replace with user's profile image URL
               ),
               const SizedBox(height: 20),
-              // Consumer Details Section
+              // User Details Section
               TextField(
                 controller: _nameController,
                 decoration: const InputDecoration(
-                  labelText: 'Full Name',
+                  labelText: 'Name',
                   border: OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: _addressController,
+                controller: _emailController,
                 decoration: const InputDecoration(
-                  labelText: 'Shipping Address',
+                  labelText: 'Email',
                   border: OutlineInputBorder(),
                 ),
-                maxLines: 3,
+                keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 10),
               TextField(
-                controller: _paymentMethodController,
+                controller: _phoneController,
                 decoration: const InputDecoration(
-                  labelText: 'Payment Method',
+                  labelText: 'Phone Number',
                   border: OutlineInputBorder(),
                 ),
+                keyboardType: TextInputType.phone,
               ),
               const SizedBox(height: 20),
               // Save Changes Button
               ElevatedButton(
                 onPressed: () {
-                  // Save updated consumer details
-                  print('Updated Full Name: ${_nameController.text}');
-                  print('Updated Address: ${_addressController.text}');
-                  print('Updated Payment Method: ${_paymentMethodController.text}');
+                  // Save updated details
+                  print('Updated Name: ${_nameController.text}');
+                  print('Updated Email: ${_emailController.text}');
+                  print('Updated Phone: ${_phoneController.text}');
                 },
                 child: const Text('Save Changes'),
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(double.infinity, 50), backgroundColor: Colors.blue,
+                  minimumSize: const Size(double.infinity, 50), backgroundColor: Colors.green,
                 ),
               ),
               const SizedBox(height: 20),
@@ -84,7 +85,7 @@ class _UserProfilePageState extends State<UserProfileScreen> {
               ElevatedButton(
                 onPressed: () {
                   // Handle logout logic here
-                  print('Consumer logged out');
+                  print('User logged out');
                 },
                 child: const Text('Log Out'),
                 style: ElevatedButton.styleFrom(
