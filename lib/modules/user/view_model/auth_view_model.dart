@@ -72,13 +72,13 @@ class AuthViewModel extends ChangeNotifier {
 
       _user = existingUser;
 
-      Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => Bottomnavigationbar(zone: null, area: null),
-        ),
-        (route) => false,
-      );
+      // Navigator.pushAndRemoveUntil(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => Bottomnavigationbar(zone: null, area: null),
+      //   ),
+      //   (route) => false,
+      // );
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Login Successful')),
       );

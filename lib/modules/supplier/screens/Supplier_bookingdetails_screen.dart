@@ -13,7 +13,6 @@ class SupplierBookingDetailsScreen extends StatefulWidget {
 
 class _SupplierBookingDetailsScreenState
     extends State<SupplierBookingDetailsScreen> {
-  TextEditingController _searchController = TextEditingController();
   TextEditingController _dateController =
       TextEditingController(); // For date input
   List<QueryDocumentSnapshot> filteredOrders = [];
@@ -23,6 +22,8 @@ class _SupplierBookingDetailsScreenState
 
   @override
   Widget build(BuildContext context) {
+    totalCompletedAmount = 0;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -64,37 +65,17 @@ class _SupplierBookingDetailsScreenState
   }
 
   Widget _buildSearchAndDateFilter() {
-    return Row(
-      children: [
-        Expanded(
-          child: TextField(
-            controller: _searchController,
-            decoration: InputDecoration(
-              labelText: 'Search by Farmer',
-              prefixIcon: Icon(Icons.search),
-              border: OutlineInputBorder(),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            onChanged: _searchBooking,
-          ),
-        ),
-        const SizedBox(width: 16),
-        Expanded(
-          child: TextField(
-            controller: _dateController,
-            decoration: InputDecoration(
-              labelText: 'Select Date',
-              prefixIcon: Icon(Icons.calendar_today),
-              border: OutlineInputBorder(),
-              contentPadding:
-                  EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            ),
-            readOnly: true,
-            onTap: _selectDate, // To open the date picker
-          ),
-        ),
-      ],
+    return TextField(
+      controller: _dateController,
+      decoration: InputDecoration(
+        labelText: 'Select Date',
+        prefixIcon: Icon(Icons.calendar_today),
+        border: OutlineInputBorder(),
+        contentPadding:
+            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      ),
+      readOnly: true,
+      onTap: _selectDate, // To open the date picker
     );
   }
 
@@ -134,6 +115,15 @@ class _SupplierBookingDetailsScreenState
 
               List<QueryDocumentSnapshot> rentalOrders = snapshot.data!.docs;
 
+              // Sort rentalOrders based on the startDate (booking date)
+              rentalOrders.sort((a, b) {
+                Timestamp timestampA = a['startDate'];
+                Timestamp timestampB = b['startDate'];
+                DateTime dateA = timestampA.toDate();
+                DateTime dateB = timestampB.toDate();
+                return dateA.compareTo(dateB); // Sorting in ascending order
+              });
+
               return FutureBuilder(
                 future: _fetchFarmerAndMachineryDetails(rentalOrders),
                 builder: (context, dataSnapshot) {
@@ -159,6 +149,7 @@ class _SupplierBookingDetailsScreenState
                           startDate.day == selectedDate!.day;
                     }).toList();
                   }
+
                   return Column(
                     children: [
                       SingleChildScrollView(
@@ -176,7 +167,7 @@ class _SupplierBookingDetailsScreenState
                           rows: List.generate(filteredOrders.length, (index) {
                             QueryDocumentSnapshot completedData =
                                 filteredOrders[index];
-                        
+
                             // Format the startDate and endDate
                             Timestamp startDateTimestamp =
                                 completedData['startDate'];
@@ -186,7 +177,7 @@ class _SupplierBookingDetailsScreenState
                                 formatDate(startDateTimestamp);
                             String endDateFormatted =
                                 formatDate(endDateTimestamp);
-                        
+
                             // Get the details for the current row (farmer and machinery)
                             String farmerName =
                                 filteredDetails[index]['farmer']['name']!;
@@ -194,7 +185,7 @@ class _SupplierBookingDetailsScreenState
                                 filteredDetails[index]['machinery']['name']!;
                             totalCompletedAmount +=
                                 completedData['totalAmount'];
-                        
+
                             return DataRow(
                               cells: [
                                 DataCell(
@@ -237,24 +228,24 @@ class _SupplierBookingDetailsScreenState
                         ),
                       ),
                       const SizedBox(height: 16),
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          child: Row(
-                            children: [
-                              Text(
-                                'Total:',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                              Spacer(),
-                              Text(
-                                '₹$totalCompletedAmount',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.bold),
-                              ),
-                            ],
-                          ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Row(
+                          children: [
+                            Text(
+                              'Total:',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                            Spacer(),
+                            Text(
+                              '₹$totalCompletedAmount',
+                              style: TextStyle(
+                                  fontSize: 18, fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
+                      ),
                     ],
                   );
                 },
@@ -369,18 +360,6 @@ class _SupplierBookingDetailsScreenState
         );
       },
     );
-  }
-
-  // Search functionality for booking
-  void _searchBooking(String query) {
-    setState(() {
-      filteredOrders = filteredOrders
-          .where((order) => order['uid']
-              .toString()
-              .toLowerCase()
-              .contains(query.toLowerCase()))
-          .toList();
-    });
   }
 
   // Open date picker

@@ -41,11 +41,9 @@ class _LoginScreenState extends State<UserLoginscreen> {
         const SnackBar(content: Text('Login successful')),
       );
 
-      // Navigate to the next screen after login
-      // Replace with your home/dashboard screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  UserRootScreen()), // Example: Replace with home screen
+        MaterialPageRoute(builder: (context) => UserRootScreen()),
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'Login failed';
@@ -69,114 +67,134 @@ class _LoginScreenState extends State<UserLoginscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBody: true,
-      extendBodyBehindAppBar: true,
       body: Container(
-        color: const Color.fromARGB(255, 242, 244, 242), // Background color (light green)
-        child: Stack(
-          fit: StackFit.expand,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Form(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const SizedBox(height: 240.0),
-                    const Align(
-                      alignment: Alignment.bottomCenter,
-                      child: Padding(
-                        padding: EdgeInsets.only(bottom: 20.0),
-                        child: Text(
-                          "Smart Agri",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromRGBO(4, 75, 4, 0.961),
-                            fontFamily: 'dancing script',
-                            fontSize: 30,
-                          ),
+        decoration: const BoxDecoration(
+        
+           color: Color.fromARGB(255, 234, 246, 234),
+          
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 40),
+                  // App Logo or Illustration (optional)
+                 
+                  const SizedBox(height: 200),
+                  // Title
+                  const Text(
+                    "Smart Agri",
+                    style: TextStyle(
+                      fontFamily: 'dancing script',
+                      fontSize: 32,
+                      color: Color.fromARGB(255, 41, 140, 48),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  // Email Input
+                  TextFormField(
+                    controller: _emailController,
+                    decoration: InputDecoration(
+                      labelText: 'Username/Email',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      prefixIcon: const Icon(Icons.email, color: Colors.green),
+                    ),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: 20),
+                  // Password Input
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      filled: true,
+                      fillColor: Colors.white,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.green),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          color: Colors.green,
                         ),
+                        onPressed: () {
+                          setState(() {
+                            _obscurePassword = !_obscurePassword;
+                          });
+                        },
                       ),
                     ),
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Username/Email',
-                        border: OutlineInputBorder(),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                    ),
-                    const SizedBox(height: 16.0),
-                    TextFormField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        border: const OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscurePassword ? Icons.visibility : Icons.visibility_off,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscurePassword = !_obscurePassword;
-                            });
-                          },
+                    obscureText: _obscurePassword,
+                  ),
+                  const SizedBox(height: 20),
+                  // Login Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : _loginUser,
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                        backgroundColor: Colors.green,
+                        shadowColor: Colors.greenAccent,
+                        elevation: 5,
                       ),
-                      obscureText: _obscurePassword,
-                    ),
-                    const SizedBox(height: 16.0),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      height: 50,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          backgroundColor: const Color.fromARGB(255, 65, 154, 68),
-                        ),
-                        onPressed: _isLoading ? null : _loginUser,
-                        child: _isLoading
-                            ? const CircularProgressIndicator(color: Colors.white)
-                            : const Text('LOGIN',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Color.fromARGB(255, 236, 243, 239),
-                                )),
-                      ),
-                    ),
-                    const SizedBox(height: 16.0),
-                    const Spacer(),
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          const TextSpan(
-                            text: 'Don\'t have an account? ',
-                            style: TextStyle(color: Color.fromARGB(255, 52, 51, 51)),
-                          ),
-                          TextSpan(
-                            text: 'SIGN UP',
-                            style: const TextStyle(
-                              color: Colors.green,
-                              fontWeight: FontWeight.bold,
+                      child: _isLoading
+                          ? const CircularProgressIndicator(color: Colors.white)
+                          : const Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
                             ),
-                            recognizer: TapGestureRecognizer()
-                              ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const SignupScreen()),
-                                );
-                              },
-                          ),
-                        ],
-                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  const SizedBox(height: 350),
+                 // Spacer(),
+                  // Sign-Up Option
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const TextSpan(
+                          text: "Don't have an account? ",
+                          style: TextStyle(color: Color.fromARGB(255, 129, 126, 126)),
+                        ),
+                        TextSpan(
+                          text: 'SIGN UP',
+                          style: const TextStyle(
+                            color: Color.fromARGB(255, 52, 155, 67),
+                            fontWeight: FontWeight.bold,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => const SignupScreen()),
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                 // const SizedBox(height: 40),
+                ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

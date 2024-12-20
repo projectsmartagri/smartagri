@@ -51,7 +51,7 @@ final FirebaseStorage _storage = FirebaseStorage.instance;
   Future<String> uploadfile({required String name,required String uid,required File file}) async {
     try {
       // Define the storage path for the company license
-      Reference storageRef = _storage.ref().child('machinary/');
+      Reference storageRef = _storage.ref().child('machinery/${DateTime.now().millisecondsSinceEpoch}.jpg');
 
       // Upload the file to Firebase Storage
       UploadTask uploadTask = storageRef.putFile(file);

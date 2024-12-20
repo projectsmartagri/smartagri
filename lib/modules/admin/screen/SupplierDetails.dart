@@ -1,20 +1,44 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SupplierDetails extends StatelessWidget {
-  final String companyName;
+  final String name;
   final String email;
   final String phone;
   final String address;
-  final String companyDocumentUrl;
+  final String companyLicenseUrl;
+  final bool isApproved; // Added status field to determine if the supplier is pending or accepted
 
-  const SupplierDetails({
+   SupplierDetails({
     super.key,
-    required this.companyName,
+    required this.name,
     required this.email,
     required this.phone,
     required this.address,
-    required this.companyDocumentUrl, required String name, required String companyname,
+    required this.companyLicenseUrl,
+    required this.isApproved, // Passed the status field in the constructor
   });
+
+  // Firebase Firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  // Method to update approval status
+  Future<void> _updateSupplierStatus(String supplierId, bool isApproved) async {
+    try {
+      await _firestore.collection('suppliers').doc(supplierId).update({
+        'isApproved': isApproved,
+      });
+
+      String statusMessage = isApproved ? 'Supplier Approved' : 'Supplier Rejected';
+      print(statusMessage);
+
+      // Move to another tab or show a snackbar
+      // For now, we will just show a SnackBar
+    } catch (e) {
+      print('Error updating supplier: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +85,7 @@ class SupplierDetails extends StatelessWidget {
                       _buildInfoRow(
                         icon: Icons.business,
                         label: 'Company Name',
-                        value: companyName,
+                        value: name,
                       ),
                       const SizedBox(height: 16),
                       _buildInfoRow(
@@ -83,7 +107,7 @@ class SupplierDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       const Text(
-                        'Uploaded Company Document:',
+                        'Uploaded Company Document: ',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -92,14 +116,34 @@ class SupplierDetails extends StatelessWidget {
                       ),
                       const SizedBox(height: 12),
                       Center(
-                        child: companyDocumentUrl.isNotEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  companyDocumentUrl,
-                                  height: 200,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
+                        child: companyLicenseUrl.isNotEmpty
+                            ? GestureDetector(
+                                onTap: () {
+                                  _showFullScreenImage(context, companyLicenseUrl);
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: Image.network(
+                                    companyLicenseUrl,
+                                    height: 200,
+                                    width: double.infinity,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, progress) {
+                                      if (progress == null) return child;
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return const Text(
+                                        'Failed to load ID image.',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               )
                             : const Text(
@@ -115,34 +159,40 @@ class SupplierDetails extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildActionButton(
-                    context,
-                    label: 'Approve',
-                    icon: Icons.check,
-                    color: const Color.fromARGB(255, 14, 161, 26),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Supplier Approved')),
-                      );
-                    },
-                  ),
-                  const SizedBox(width: 20),
-                  _buildActionButton(
-                    context,
-                    label: 'Reject',
-                    icon: Icons.close,
-                    color: Colors.red.shade600,
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Supplier Rejected')),
-                      );
-                    },
-                  ),
-                ],
-              ),
+              // Only show the buttons if the status is "pending" (isApproved == false)
+              if (!isApproved) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildActionButton(
+                      context,
+                      label: 'Approve',
+
+                      icon: Icons.check,
+                      color: const Color.fromARGB(255, 28, 168, 63),
+                      onPressed: () async {
+                        await _updateSupplierStatus('userid', true);  // Use actual supplier ID
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Supplier Approved')),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 20),
+                    _buildActionButton(
+                      context,
+                      label: 'Reject',
+                      icon: Icons.close,
+                      color: Colors.red.shade600,
+                      onPressed: () async {
+                        await _updateSupplierStatus('userid', false);  // Use actual supplier ID
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Supplier Rejected')),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),
@@ -215,6 +265,35 @@ class SupplierDetails extends StatelessWidget {
         ),
         elevation: 5,
         textStyle: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  // Show full screen image
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenImage(imageUrl: imageUrl),
+      ),
+    );
+  }
+}
+
+class FullScreenImage extends StatelessWidget {
+  final String imageUrl;
+
+  const FullScreenImage({super.key, required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 249, 249, 249),
+       
+      ),
+      body: Center(
+        child: Image.network(imageUrl),
       ),
     );
   }

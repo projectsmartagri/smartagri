@@ -106,6 +106,7 @@ class _ProductGridState extends State<ProductGrid> {
             var name = product['title'] ?? 'Unnamed';
             var imageUrl = product['imageUrl'] ?? '';
             var price = product['price']?.toDouble() ?? 0.0;
+            print(imageUrl);
 
             return InkWell(
               onTap: () {
@@ -184,9 +185,10 @@ class _ProductGridState extends State<ProductGrid> {
                 ),
               ),
             );
-          },
+          }
         );
-      },
+      }
     );
+
   }
-}
+  }

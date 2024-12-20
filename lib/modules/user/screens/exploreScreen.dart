@@ -97,54 +97,7 @@ class ExploreScreen extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
-            child: GridView.builder(
-
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    // mainAxisSpacing: 8,
-                    // crossAxisSpacing: 8
-                    ),
-                itemCount: list.length,
-                itemBuilder: (BuildContext, int index) {
-                  return GestureDetector(
-                    onTap: () {
-                      bvrg(context: context,category:list[index]['text'] );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        width: wt/8.23,
-                        height: ht/17.99,
-                        // color: Color(0xff53B1751A ),
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(10)),
-                          color: list[index]['color'],
-                        ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(list[index]['image']),
-
-                              const SizedBox(height: 20),
-
-                              Text(list[index]['text'],
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(color: Colors.black ,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),)
-
-                            ],
-                          ),
-                        ),
-
-                      ),
-                    ),
-                  );
-                }
-                ),
-          )
+         
                 ],
               ),
         ));

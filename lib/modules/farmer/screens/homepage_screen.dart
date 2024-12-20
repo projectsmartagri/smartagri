@@ -36,13 +36,15 @@ class _FarmerHomeScreenState extends State<FarmerHomeScreen> {
     return Scaffold(
       appBar: _selectedIndex == 0
           ? AppBar(
+            backgroundColor:  Color.fromARGB(255, 245, 247, 245),
             automaticallyImplyLeading: false,
-              centerTitle: true,
-              title: const Text(
+              //centerTitle: true,
+              title: Text(
                 'Smart Agri',
                 style: TextStyle(
                   fontFamily: 'Dancing Script',
-                  fontSize: 20,
+                  fontSize: 25,
+                   color: Color.fromRGBO(4, 75, 4, 0.961),
                   fontWeight: FontWeight.bold,
                 ),
               ),

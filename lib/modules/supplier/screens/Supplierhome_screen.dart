@@ -425,11 +425,8 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                                                     SizedBox(height: 10),
                                                     Row(
                                                       children: [
-                                                        Icon(Icons.attach_money,
-                                                            color: Colors
-                                                                .yellowAccent,
-                                                            size: 18),
-                                                        SizedBox(width: 5),
+                                                       
+                                                      
                                                         Text(
                                                           'Rent Rate: ₹${dataDoc[index]['price'].toString()}',
                                                           style: TextStyle(

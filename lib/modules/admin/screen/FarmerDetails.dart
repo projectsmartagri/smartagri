@@ -5,7 +5,8 @@ class FarmerDetails extends StatelessWidget {
   final String email;
   final String phone;
   final String location;
-  final String certificateImageUrl;
+  final String farmerIdUrl;
+  final bool isApproved;  // Add a field to track whether the farmer is approved
 
   const FarmerDetails({
     super.key,
@@ -13,7 +14,8 @@ class FarmerDetails extends StatelessWidget {
     required this.email,
     required this.phone,
     required this.location,
-    required this.certificateImageUrl, required String imageUrl,
+    required this.farmerIdUrl,
+    required this.isApproved,  // Pass isApproved in the constructor
   });
 
   @override
@@ -80,67 +82,95 @@ class FarmerDetails extends StatelessWidget {
                         label: 'Location',
                         value: location,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 16),
                       const Text(
-                        'Uploaded Certificate:',
+                        'Farmer ID: ',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                           color: Colors.black87,
                         ),
                       ),
-                      const SizedBox(height: 12),
-                      Center(
-                        child: certificateImageUrl.isNotEmpty
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
+                      const SizedBox(height: 8),
+                      farmerIdUrl.isNotEmpty
+                          ? GestureDetector(
+                              onTap: () {
+                                _showFullScreenImage(context, farmerIdUrl);
+                              },
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
                                 child: Image.network(
-                                  certificateImageUrl,
+                                  farmerIdUrl,
                                   height: 200,
                                   width: double.infinity,
                                   fit: BoxFit.cover,
-                                ),
-                              )
-                            : const Text(
-                                'No certificate uploaded.',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
+                                  loadingBuilder: (context, child, progress) {
+                                    if (progress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  },
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return const Text(
+                                      'Failed to load ID image.',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
-                      ),
+                            )
+                          : const Text(
+                              'No ID image available.',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.black54,
+                              ),
+                            ),
+                      const SizedBox(height: 24),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: 30),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildActionButton(
-                    context,
-                    label: 'Accept',
-                    icon: Icons.check,
-                    color: const Color.fromARGB(255, 14, 161, 26),
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Farmer Accepted')),
-                      );
-                    },
-                  ),
-                  _buildActionButton(
-                    context,
-                    label: 'Reject',
-                    icon: Icons.close,
-                    color: Colors.red.shade600,
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Farmer Rejected')),
-                      );
-                    },
-                  ),
-                ],
-              ),
+              // Display Accept/Reject buttons if farmer is not approved
+              if (!isApproved) ...[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildActionButton(
+                      context,
+                      label: 'Accept',
+                      icon: Icons.check,
+                      color: const Color.fromARGB(255, 28, 168, 63),
+                      onPressed: () async {
+                        // Call function to approve the farmer
+                        await _updateFarmerStatus('farmerId', true); // Use actual farmerId
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Farmer Accepted')),
+                        );
+                      },
+                    ),
+                    const SizedBox(width: 20),
+                    _buildActionButton(
+                      context,
+                      label: 'Reject',
+                      icon: Icons.close,
+                      color: Colors.red.shade600,
+                      onPressed: () async {
+                        // Call function to reject the farmer
+                        await _updateFarmerStatus('farmerId', false); // Use actual farmerId
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Farmer Rejected')),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
             ],
           ),
         ),
@@ -200,14 +230,44 @@ class FarmerDetails extends StatelessWidget {
       ),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        padding: const EdgeInsets.symmetric(
-          vertical: 14,
-          horizontal: 24,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         elevation: 5,
+        textStyle: const TextStyle(fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenImage(imageUrl: imageUrl),
+      ),
+    );
+  }
+
+  // Simulated function to update the farmer's approval status
+  Future<void> _updateFarmerStatus(String farmerId, bool isApproved) async {
+    // Code to update the farmer's approval status in Firebase or backend goes here
+  }
+}
+
+class FullScreenImage extends StatelessWidget {
+  final String imageUrl;
+
+  const FullScreenImage({super.key, required this.imageUrl});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 250, 249, 249),
+      ),
+      body: Center(
+        child: Image.network(imageUrl),
       ),
     );
   }
