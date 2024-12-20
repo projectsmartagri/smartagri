@@ -20,6 +20,7 @@ Future<void> main() async {
   
   runApp(
      MaterialApp(
+       debugShowCheckedModeBanner: false,
         theme: ThemeData(
           scaffoldBackgroundColor: Colors.white
          
