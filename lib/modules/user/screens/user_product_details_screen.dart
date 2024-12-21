@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:smartagri/modules/farmer/screens/farmer_product_edit.dart';
+import 'package:smartagri/modules/user/screens/root_screen.dart';
 
 class UserProductDetailsScreen extends StatefulWidget {
   final QueryDocumentSnapshot product;
@@ -105,6 +106,7 @@ class _UserProductDetailsScreenState extends State<UserProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    
       bottomSheet:  Container(
         margin: EdgeInsets.symmetric(horizontal: 10),
               width: MediaQuery.of(context).size.width,
@@ -125,10 +127,19 @@ class _UserProductDetailsScreenState extends State<UserProductDetailsScreen> {
                 ),
               ),
             ),
-        
-          
-      
-      body: SingleChildScrollView(
+      body: Column(
+      children: [
+        const SizedBox(height: 25), // Top padding
+        Align(
+          alignment: Alignment.topLeft,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.green),
+            onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder:(context) => UserRootScreen()));
+            },
+          ),
+        ),
+        Expanded( child: SingleChildScrollView(
         child: Card(
           margin: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
           shape: RoundedRectangleBorder(
@@ -252,6 +263,9 @@ class _UserProductDetailsScreenState extends State<UserProductDetailsScreen> {
           ),
         ),
       ),
+        ),
+      ]
+      )
     );
   }
 }

@@ -154,7 +154,7 @@ class _ProductGridState extends State<ProductGrid> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                       child: Text(
-                        'Price: \$${price.toString()}',
+                        'Price:\₹${price.toString()}',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
