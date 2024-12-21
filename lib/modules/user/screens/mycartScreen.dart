@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:smartagri/modules/user/screens/orderacceptedScreen.dart';
 
 import '../widgets/custombuttonWidget.dart';
 
@@ -75,7 +76,10 @@ class _MycartscreenState extends State<Mycartscreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Order placed successfully!')),
     );
-    Navigator.pop(context);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const Orderacceptedscreen()),
+    );
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -153,7 +157,8 @@ class _MycartscreenState extends State<Mycartscreen> {
             ),
       body: SafeArea(
         child: _isLoading
-            ? const Center(child: CircularProgressIndicator()) // Full screen loading
+            ? const Center(
+                child: CircularProgressIndicator()) // Full screen loading
             : SingleChildScrollView(
                 child: Column(
                   children: [
@@ -175,11 +180,14 @@ class _MycartscreenState extends State<Mycartscreen> {
                           .collection('cart')
                           .snapshots(),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const Center(child: CircularProgressIndicator());
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
                         }
                         if (snapshot.hasError) {
-                          return Center(child: Text('Error: ${snapshot.error}'));
+                          return Center(
+                              child: Text('Error: ${snapshot.error}'));
                         }
 
                         cartList = snapshot.data?.docs ?? [];
@@ -205,7 +213,8 @@ class _MycartscreenState extends State<Mycartscreen> {
                                     ),
                                     const SizedBox(width: 25),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text(
                                           cartList[index]['name'],
@@ -219,19 +228,28 @@ class _MycartscreenState extends State<Mycartscreen> {
                                         Row(
                                           children: [
                                             InkWell(
-                                              onTap: () {
-                                                FirebaseFirestore.instance
-                                                    .collection('users')
-                                                    .doc(FirebaseAuth.instance.currentUser?.uid)
-                                                    .collection('cart')
-                                                    .doc(cartList[index].id)
-                                                    .update({
-                                                  'quantity': FieldValue.increment(-1),
-                                                });
-                                              },
-                                              child: const Icon(
+                                              onTap: itemCount > 1
+                                                  ? () {
+                                                      FirebaseFirestore.instance
+                                                          .collection('users')
+                                                          .doc(FirebaseAuth
+                                                              .instance
+                                                              .currentUser
+                                                              ?.uid)
+                                                          .collection('cart')
+                                                          .doc(cartList[index]
+                                                              .id)
+                                                          .update({
+                                                        'quantity': FieldValue
+                                                            .increment(-1),
+                                                      });
+                                                    }
+                                                  : null,
+                                              child: Icon(
                                                 Icons.remove,
-                                                color: Color(0xffB3B3B3),
+                                                color: itemCount > 1
+                                                    ? const Color(0xffB3B3B3)
+                                                    : Colors.grey,
                                                 size: 20,
                                               ),
                                             ),
@@ -242,11 +260,13 @@ class _MycartscreenState extends State<Mycartscreen> {
                                               onTap: () {
                                                 FirebaseFirestore.instance
                                                     .collection('users')
-                                                    .doc(FirebaseAuth.instance.currentUser?.uid)
+                                                    .doc(FirebaseAuth.instance
+                                                        .currentUser?.uid)
                                                     .collection('cart')
                                                     .doc(cartList[index].id)
                                                     .update({
-                                                  'quantity': FieldValue.increment(1),
+                                                  'quantity':
+                                                      FieldValue.increment(1),
                                                 });
                                               },
                                               child: const Icon(
@@ -264,7 +284,8 @@ class _MycartscreenState extends State<Mycartscreen> {
                                       onTap: () {
                                         FirebaseFirestore.instance
                                             .collection('users')
-                                            .doc(FirebaseAuth.instance.currentUser?.uid)
+                                            .doc(FirebaseAuth
+                                                .instance.currentUser?.uid)
                                             .collection('cart')
                                             .doc(cartList[index].id)
                                             .delete();
@@ -276,7 +297,7 @@ class _MycartscreenState extends State<Mycartscreen> {
                                     ),
                                     const SizedBox(height: 50),
                                     Text(
-                                      '\$ ${totalPrice.toStringAsFixed(2)}',
+                                      '\₹ ${totalPrice.toStringAsFixed(2)}',
                                       style: const TextStyle(
                                         color: Color(0xff181725),
                                         fontSize: 16,
