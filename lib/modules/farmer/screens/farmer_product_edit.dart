@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -21,6 +20,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _quantityController = TextEditingController(); // Added quantity controller
 
   // For storing the selected image
   File? _selectedImage;
@@ -34,72 +34,73 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _priceController.text = widget.product['price']?.toString() ?? ''; // Handle price being null
     _categoryController.text = widget.product['category'] ?? ''; // Prevent null value
     _descriptionController.text = widget.product['description'] ?? ''; // Prevent null value
+    _quantityController.text = widget.product['quantity']?.toString() ?? ''; // Initialize quantity
   }
-
 
   Future<void> updateProduct() async {
-  if (_titleController.text.isEmpty ||
-      _priceController.text.isEmpty ||
-      _categoryController.text.isEmpty ||
-      _descriptionController.text.isEmpty) {
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Please fill in all fields')));
-    return;
-  }
-
-  try {
-    String? imageUrl;
-
-    // If the user has selected a new image, upload it to Firebase Storage
-    if (_selectedImage != null) {
-      // Generate a unique filename for the image
-      final String uniqueFileName =
-          'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
-
-      // Upload the image to Firebase Storage
-      final storageRef = FirebaseStorage.instance
-          .ref()
-          .child('product_images/$uniqueFileName');
-
-      // Upload task with file
-      final uploadTask = storageRef.putFile(_selectedImage!);
-       print('\\\\\\\\\\\\\\\\\\\\\\\\\\\\');
-      // Await upload completion
-      final snapshot = await uploadTask;
-      print('++++++++++++++++++++++++');
-
-      // Get the download URL of the uploaded image
-      imageUrl = await snapshot.ref.getDownloadURL();
-    } else {
-      // If no image was selected, retain the old image URL
-      imageUrl = widget.product['imageUrl'];
+    if (_titleController.text.isEmpty ||
+        _priceController.text.isEmpty ||
+        _categoryController.text.isEmpty ||
+        _descriptionController.text.isEmpty ||
+        _quantityController.text.isEmpty) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text('Please fill in all fields')));
+      return;
     }
 
-    // Update the product information in Firestore
-    await FirebaseFirestore.instance
-        .collection('products')
-        .doc(widget.product.id)
-        .update({
-      'title': _titleController.text,
-      'price': double.parse(_priceController.text),
-      'category': _categoryController.text,
-      'description': _descriptionController.text,
-      'imageUrl': imageUrl,
-    });
+    try {
+      String? imageUrl;
 
-    // Success message and navigation
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product updated successfully')));
-    Navigator.pop(context); // Return to the previous screen
-  } catch (e) {
-    debugPrint('Error while updating product: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to update product')));
+      // If the user has selected a new image, upload it to Firebase Storage
+      if (_selectedImage != null) {
+        // Generate a unique filename for the image
+        final String uniqueFileName =
+            'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+        // Upload the image to Firebase Storage
+        final storageRef = FirebaseStorage.instance
+            .ref()
+            .child('product_images/$uniqueFileName');
+
+        // Upload task with file
+        final uploadTask = storageRef.putFile(_selectedImage!);
+        print('\\\\\\\\\\\\\\\\\\\\\\\\\\\\');
+
+        // Await upload completion
+        final snapshot = await uploadTask;
+        print('++++++++++++++++++++++++');
+
+        // Get the download URL of the uploaded image
+        imageUrl = await snapshot.ref.getDownloadURL();
+      } else {
+        // If no image was selected, retain the old image URL
+        imageUrl = widget.product['imageUrl'];
+      }
+
+      // Update the product information in Firestore
+      await FirebaseFirestore.instance
+          .collection('products')
+          .doc(widget.product.id)
+          .update({
+        'title': _titleController.text,
+        'price': double.parse(_priceController.text),
+        'category': _categoryController.text,
+        'description': _descriptionController.text,
+        'imageUrl': imageUrl,
+        'quantity': int.parse(_quantityController.text), // Update quantity
+      });
+
+      // Success message and navigation
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Product updated successfully')));
+      Navigator.pop(context); // Return to the previous screen
+    } catch (e) {
+      debugPrint('Error while updating product: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update product')));
+    }
   }
-}
 
-
- 
   // Function to pick an image from the gallery
   Future<void> pickImage() async {
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
@@ -119,7 +120,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
         backgroundColor: Colors.green[700],
         actions: [
           IconButton(
-            icon: const Icon(Icons.save,color: Colors.white,),
+            icon: const Icon(Icons.save, color: Colors.white),
             onPressed: updateProduct,
           ),
         ],
@@ -144,6 +145,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
               // Description input with multi-line and rounded borders
               _buildInputField(_descriptionController, 'Product Description', Icons.description, maxLines: 5),
+              const SizedBox(height: 16),
+
+              // Quantity input with rounded borders and padding
+              _buildInputField(_quantityController, 'Quantity (kg)', Icons.add_box, keyboardType: TextInputType.number),
               const SizedBox(height: 16),
 
               // Image picker button with rounded corners
@@ -177,9 +182,6 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 Image.file(_selectedImage!, width: 150, height: 150, fit: BoxFit.cover),
                 const SizedBox(height: 16),
               ],
-
-             
-            
             ],
           ),
         ),
