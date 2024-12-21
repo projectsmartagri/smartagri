@@ -1,42 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SupplierDetails extends StatelessWidget {
+  final String supplierId; // Pass the supplier's Firestore document ID
   final String name;
   final String email;
   final String phone;
   final String address;
   final String companyLicenseUrl;
-  final bool isApproved; // Added status field to determine if the supplier is pending or accepted
+  final bool isApproved;
 
-   SupplierDetails({
+  SupplierDetails({
     super.key,
+    required this.supplierId,
     required this.name,
     required this.email,
     required this.phone,
     required this.address,
     required this.companyLicenseUrl,
-    required this.isApproved, // Passed the status field in the constructor
+    required this.isApproved,
   });
 
   // Firebase Firestore instance
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Method to update approval status
-  Future<void> _updateSupplierStatus(String supplierId, bool isApproved) async {
+  Future<void> _updateSupplierStatus(
+      BuildContext context, bool newApprovalStatus) async {
     try {
+      // Update the `isApproved` field in the database
       await _firestore.collection('suppliers').doc(supplierId).update({
-        'isApproved': isApproved,
+        'isApproved': newApprovalStatus,
       });
 
-      String statusMessage = isApproved ? 'Supplier Approved' : 'Supplier Rejected';
-      print(statusMessage);
+      // Show feedback
+      String statusMessage = newApprovalStatus
+          ? 'Supplier Approved Successfully!'
+          : 'Supplier Rejected Successfully!';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(statusMessage)),
+      );
 
-      // Move to another tab or show a snackbar
-      // For now, we will just show a SnackBar
+      // Optionally: Close the screen or refresh state
+      Navigator.pop(context, true); // Pass `true` to indicate a change
     } catch (e) {
-      print('Error updating supplier: $e');
+      // Handle errors
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error updating supplier: $e')),
+      );
     }
   }
 
@@ -44,14 +55,7 @@ class SupplierDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Supplier Details',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
-        ),
+        title: const Text('Supplier Details'),
         backgroundColor: const Color.fromARGB(255, 39, 156, 68),
         centerTitle: true,
       ),
@@ -128,21 +132,6 @@ class SupplierDetails extends StatelessWidget {
                                     height: 200,
                                     width: double.infinity,
                                     fit: BoxFit.cover,
-                                    loadingBuilder: (context, child, progress) {
-                                      if (progress == null) return child;
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    },
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return const Text(
-                                        'Failed to load ID image.',
-                                        style: TextStyle(
-                                          color: Colors.red,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      );
-                                    },
                                   ),
                                 ),
                               )
@@ -159,22 +148,17 @@ class SupplierDetails extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              // Only show the buttons if the status is "pending" (isApproved == false)
-              if (!isApproved) ...[
+              if (!isApproved) // Show buttons only if the supplier is not approved
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     _buildActionButton(
                       context,
                       label: 'Approve',
-
                       icon: Icons.check,
                       color: const Color.fromARGB(255, 28, 168, 63),
                       onPressed: () async {
-                        await _updateSupplierStatus('userid', true);  // Use actual supplier ID
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Supplier Approved')),
-                        );
+                        await _updateSupplierStatus(context, true);
                       },
                     ),
                     const SizedBox(width: 20),
@@ -184,15 +168,11 @@ class SupplierDetails extends StatelessWidget {
                       icon: Icons.close,
                       color: Colors.red.shade600,
                       onPressed: () async {
-                        await _updateSupplierStatus('userid', false);  // Use actual supplier ID
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Supplier Rejected')),
-                        );
+                        await _updateSupplierStatus(context, false);
                       },
                     ),
                   ],
                 ),
-              ],
             ],
           ),
         ),
@@ -200,7 +180,7 @@ class SupplierDetails extends StatelessWidget {
     );
   }
 
-  // Reusable method to build info rows with icon and label
+  // Reusable method to build info rows
   Widget _buildInfoRow({
     required IconData icon,
     required String label,
@@ -250,21 +230,14 @@ class SupplierDetails extends StatelessWidget {
     return ElevatedButton.icon(
       onPressed: onPressed,
       icon: Icon(icon, color: Colors.white),
-      label: Text(
-        label,
-        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-      ),
+      label: Text(label),
       style: ElevatedButton.styleFrom(
         backgroundColor: color,
-        padding: const EdgeInsets.symmetric(
-          vertical: 14,
-          horizontal: 24,
-        ),
+        padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
         elevation: 5,
-        textStyle: const TextStyle(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -289,8 +262,7 @@ class FullScreenImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 249, 249, 249),
-       
+        backgroundColor: Colors.white,
       ),
       body: Center(
         child: Image.network(imageUrl),

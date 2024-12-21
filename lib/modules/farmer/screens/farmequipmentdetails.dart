@@ -449,11 +449,14 @@ DateTime ?endDate;
                           color: Colors.grey.shade400,
                         ),
                       ),
-                      const Spacer(),
-                      Text(
-                        supplierName ?? 'loading....',
-                        style: const TextStyle(
-                          fontSize: 18,
+                      
+                      Expanded(
+
+                        child: Text(
+                          supplierName ?? 'loading....',
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ],
