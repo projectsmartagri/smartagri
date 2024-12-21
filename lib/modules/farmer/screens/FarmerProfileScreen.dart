@@ -13,14 +13,16 @@ class FarmerProfileScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.green[800],
-        title: const Text('Farmer Profile',style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Farmer Profile',
+          style: TextStyle(color: Colors.white),
+        ),
         centerTitle: true,
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('farmers')
-            .doc(FirebaseAuth
-                .instance.currentUser?.uid) // Replace with actual document ID
+            .doc(FirebaseAuth.instance.currentUser?.uid)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -49,16 +51,14 @@ class FarmerProfileScreen extends StatelessWidget {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            // Profile Picture
                             CircleAvatar(
                               radius: 50.0,
                               backgroundImage: NetworkImage(
                                 farmerData['profileImageUrl'] ??
-                                    'https://via.placeholder.com/150', // Default image
+                                    'https://via.placeholder.com/150',
                               ),
                             ),
                             const SizedBox(height: 10),
-                            // Farmer Name
                             Text(
                               farmerData['name'] ?? 'Unknown',
                               style: const TextStyle(
@@ -68,7 +68,6 @@ class FarmerProfileScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 5),
-                            // Farmer Role/Tagline
                             Text(
                               'Dedicated Agropreneur',
                               style: TextStyle(
@@ -77,7 +76,6 @@ class FarmerProfileScreen extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            // View Farmer ID Button
                             ElevatedButton.icon(
                               onPressed: () {
                                 showDialog(
@@ -98,9 +96,7 @@ class FarmerProfileScreen extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.of(context).pop();
                                         },
-                                        child: const Text(
-                                          'Close',
-                                        ),
+                                        child: const Text('Close'),
                                       ),
                                     ],
                                   ),
@@ -119,9 +115,6 @@ class FarmerProfileScreen extends StatelessWidget {
                                 ),
                               ),
                             ),
-                         
-                         
-                         
                           ],
                         ),
                       ),
@@ -130,7 +123,6 @@ class FarmerProfileScreen extends StatelessWidget {
 
                     _sectionHeader('Personal Details', Colors.green),
 
-                    // Personal Details Section
                     Card(
                       color: Colors.white,
                       elevation: 4,
@@ -149,16 +141,13 @@ class FarmerProfileScreen extends StatelessWidget {
                             ),
                             _detailRow(Icons.phone,
                                 farmerData['phone'] ?? 'Not available'),
-
-
-                                Divider(
+                            Divider(
                               height: 25,
                               thickness: .5,
                               color: Colors.grey.shade300,
                               endIndent: 10,
                               indent: 10,
                             ),
-                           
                             _detailRow(Icons.location_on,
                                 farmerData['location'] ?? 'Not available'),
                           ],
@@ -168,15 +157,14 @@ class FarmerProfileScreen extends StatelessWidget {
 
                     const SizedBox(height: 20),
 
-                    // Farm Information Section
                     _sectionHeader('Farm Information', Colors.green),
                     Card(
                       color: Colors.white,
                       child: Column(
                         children: [
                           ListTile(
-                            leading:
-                                const Icon(Icons.check_circle, color: Colors.green),
+                            leading: const Icon(Icons.check_circle,
+                                color: Colors.green),
                             title: Text(
                               farmerData['isApproved'] == true
                                   ? 'Approved'
@@ -184,62 +172,92 @@ class FarmerProfileScreen extends StatelessWidget {
                               style: const TextStyle(fontSize: 16),
                             ),
                           ),
+                          Divider(
+                            height: 25,
+                            thickness: .5,
+                            color: Colors.grey.shade300,
+                            endIndent: 10,
+                            indent: 10,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 20, bottom: 20),
+                            child: GestureDetector(
+                              onTap: () async {
+                                bool confirmLogout = await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Logout'),
+                                      content: const Text(
+                                          'Are you sure you want to log out?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(false);
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop(true);
+                                          },
+                                          child: const Text('Logout'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
 
-                           Divider(
-                              height: 25,
-                              thickness: .5,
-                              color: Colors.grey.shade300,
-                              endIndent: 10,
-                              indent: 10,
-                            ),
-
-                           Padding(
-                             padding: const EdgeInsets.only(left: 20,bottom: 20),
-                             child: GestureDetector(
-                              onTap: () async{
-                                await FirebaseAuth.instance.signOut();
-                             
-                                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ChooseScreen(),), (route) {
-                                  return false;
-                                },);
+                                if (confirmLogout) {
+                                  await FirebaseAuth.instance.signOut();
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChooseScreen()),
+                                    (route) => false,
+                                  );
+                                }
                               },
-                               child: _detailRow(Icons.logout,
-                                     'log out'),
-                             ),
-                           ),
+                              child: _detailRow(Icons.logout, 'Log Out'),
+                            ),
+                          ),
                         ],
                       ),
                     ),
 
-                    SizedBox(height: 15,),
-
+                    const SizedBox(height: 15),
 
                     Row(
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                                onPressed: () {
-
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => FarmerEditProfile(farmerId: FirebaseAuth.instance.currentUser!.uid,),));
-                                
-                                },
-                                icon: const  Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                ),
-                                label: const Text('Edit profile',
-                                    style: TextStyle(color: Colors.white)),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.green[700],
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => FarmerEditProfile(
+                                    farmerId:
+                                        FirebaseAuth.instance.currentUser!.uid,
                                   ),
                                 ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                            ),
+                            label: const Text('Edit Profile',
+                                style: TextStyle(color: Colors.white)),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[700],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
                               ),
+                            ),
+                          ),
                         ),
-                         
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -252,7 +270,6 @@ class FarmerProfileScreen extends StatelessWidget {
     );
   }
 
-  // Section Header Widget
   Widget _sectionHeader(String title, Color color) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -277,7 +294,6 @@ class FarmerProfileScreen extends StatelessWidget {
     );
   }
 
-  // Detail Row Widget
   Widget _detailRow(IconData icon, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

@@ -301,7 +301,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'AVAILABLE FOR RENT',
+                            'AVAILABLE MACHINES',
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -466,7 +466,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        'NOT AVAILABLE',
+                        'BOOKED',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
