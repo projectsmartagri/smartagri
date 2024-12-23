@@ -33,7 +33,7 @@ class SplashScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo
-                Image.asset(
+                Image.network(
                   'network/https://freeeway.com/wp-content/uploads/2024/06/Smart-farming-IoT-SIM-1024x461.png', // Replace with your logo path
                   height: 100,
                 ),
@@ -85,17 +85,3 @@ class SplashScreen extends StatelessWidget {
 }
 
 // Placeholder for ChooseScreen
-class ChooseScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Choose Screen')),
-      body: Center(
-        child: Text(
-          'Welcome to Choose Screen',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
