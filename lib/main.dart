@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:smartagri/Splash_screen.dart';
 import 'package:smartagri/firebase_options.dart';
 import 'package:smartagri/modules/admin/screen/Admin_homescreen.dart';
 import 'package:smartagri/modules/choose_screen.dart';
@@ -27,7 +28,7 @@ Future<void> main() async {
           scaffoldBackgroundColor: Colors.white
          
         ),
-        home: ChooseScreen()),
+        home: SplashScreen()),
     ) ;
 }
 
