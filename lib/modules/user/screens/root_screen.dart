@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/user/screens/accountScreen.dart';
 import 'package:smartagri/modules/user/screens/homeScreen.dart';
 import 'package:smartagri/modules/user/screens/mycartScreen.dart';
 import 'package:smartagri/modules/user/screens/user_order_screen.dart';
 import 'package:smartagri/modules/user/screens/user_profile_screen.dart';
+ // Import your ProfilePage screen
 
 class UserRootScreen extends StatefulWidget {
   @override
   _UserRootScreenState createState() => _UserRootScreenState();
 }
-
 class _UserRootScreenState extends State<UserRootScreen> {
   // List of screens for bottom navigation bar
   final List<Widget> _screens = [
     HomePage(),
     Mycartscreen(),
-    OrderScreen(),
-    ProfileScreen()
+    OrderScreen(), // You can replace this with the 'Orders' screen
+    ProfileScreen(), // Add ProfilePage here
   ];
 
   int _currentIndex = 0;

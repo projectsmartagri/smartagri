@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/choose_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
@@ -54,9 +55,62 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  void _showLogoutConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15),
+          ),
+          title: const Text(
+            "Confirm Logout",
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Colors.red,
+            ),
+          ),
+          content: const Text(
+            "Are you sure you want to logout? This will end your session.",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text(
+                "Cancel",
+                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+              ),
+              onPressed: () async {
+                Navigator.pop(context);
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => ChooseScreen()),
+                  (route) => false,
+                );
+              },
+              child: const Text(
+                "Logout",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _logout() async {
     await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacementNamed('/login'); // Replace with your login route
+    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
@@ -71,7 +125,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text('Profile', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color.fromARGB(255, 58, 166, 108),
         actions: [
           IconButton(
             onPressed: () {
@@ -85,7 +139,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
           IconButton(
-            onPressed: _logout,
+            onPressed: () => _showLogoutConfirmationDialog(context),
             icon: const Icon(Icons.logout, color: Colors.white),
           ),
         ],
@@ -125,56 +179,86 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      if (!isEditing)
-                        ProfileField(label: 'Name', value: userData['name']),
-                      if (isEditing)
-                        TextFormField(
-                          controller: nameController,
-                          decoration: const InputDecoration(labelText: 'Name'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your name';
-                            }
-                            return null;
-                          },
+                      Card(
+                        margin: const EdgeInsets.symmetric(vertical: 10),
+                        elevation: 4,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
                         ),
-                      const SizedBox(height: 10),
-                      if (!isEditing)
-                        ProfileField(label: 'Phone', value: userData['phone']),
-                      if (isEditing)
-                        TextFormField(
-                          controller: phoneController,
-                          decoration: const InputDecoration(labelText: 'Phone'),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            if (value.length != 10) {
-                              return 'Enter a valid 10-digit phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                      const SizedBox(height: 10),
-                      ProfileField(label: 'Email', value: userData['email']),
-                      const SizedBox(height: 10),
-                      
-                      const SizedBox(height: 20),
-                      if (isEditing)
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: _saveChanges,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.teal,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Profile Details",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                    color: Color.fromARGB(255, 50, 183, 96)),
                               ),
-                            ),
-                            child: const Text(
-                              'Save Changes',
-                              style: TextStyle(color: Colors.white),
-                            ),
+                              const SizedBox(height: 10),
+                              ProfileField(label: 'Name', value: userData['name']),
+                              ProfileField(label: 'Phone', value: userData['phone']),
+                              ProfileField(label: 'Email', value: userData['email']),
+                              const Divider(),
+                            ],
                           ),
+                        ),
+                      ),
+                      if (isEditing)
+                        Column(
+                          children: [
+                            TextFormField(
+                              controller: nameController,
+                              decoration: InputDecoration(
+                                labelText: 'Name',
+                                filled: true,
+                                fillColor: Colors.grey[100],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your name';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            TextFormField(
+                              controller: phoneController,
+                              decoration: InputDecoration(
+                                labelText: 'Phone',
+                                filled: true,
+                                fillColor: Colors.grey[100],
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your phone number';
+                                }
+                                if (value.length != 10) {
+                                  return 'Enter a valid 10-digit phone number';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20),
+                            ElevatedButton(
+                              onPressed: _saveChanges,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.teal,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              child: const Text('Save Changes'),
+                            ),
+                          ],
                         ),
                     ],
                   ),
@@ -196,20 +280,24 @@ class ProfileField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
-        ),
-        const SizedBox(height: 5),
-        Text(
-          value ?? 'N/A',
-          style: const TextStyle(fontSize: 16, color: Colors.black),
-        ),
-        const Divider(height: 20, color: Colors.grey),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: const TextStyle(
+                fontSize: 16, fontWeight: FontWeight.bold, color: Colors.grey),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            value ?? 'N/A',
+            style: const TextStyle(fontSize: 16, color: Colors.black),
+          ),
+          const Divider(height: 20, color: Colors.grey),
+        ],
+      ),
     );
   }
 }

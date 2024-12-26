@@ -15,14 +15,13 @@ class SupplierEditProfileScreen extends StatefulWidget {
 
 class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
   final TextEditingController _companyNameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
 
   File? _backgroundImage;
   String? _licenseImage;
-  String? _backgroundImageUrl;  // To store the URL of the background image
-  String? _licenseImageUrl;     // To store the URL of the license image
+  String? _backgroundImageUrl; // To store the URL of the background image
+  String? _licenseImageUrl; // To store the URL of the license image
 
   bool _isLoading = false; // To track loading state
 
@@ -35,7 +34,6 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
   @override
   void dispose() {
     _companyNameController.dispose();
-    _emailController.dispose();
     _phoneController.dispose();
     _addressController.dispose();
     super.dispose();
@@ -59,7 +57,6 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
 
         setState(() {
           _companyNameController.text = data['name'] ?? '';
-          _emailController.text = data['email'] ?? '';
           _phoneController.text = data['phone'] ?? '';
           _addressController.text = data['address'] ?? '';
 
@@ -81,7 +78,8 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
 
   // Method to pick an image from the gallery and upload it to Firebase Storage
   Future<void> _pickImage(bool isLicense) async {
-    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     if (pickedImage != null) {
       setState(() {
         if (isLicense) {
@@ -94,8 +92,9 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
       });
 
       // Upload the image to Firebase Storage and get the URL
-      String imageUrl = await uploadImageToStorage(File(pickedImage.path), isLicense);
-      
+      String imageUrl =
+          await uploadImageToStorage(File(pickedImage.path), isLicense);
+
       // Update Firestore with the new image URL
       await updateSupplierData(imageUrl, isLicense);
     }
@@ -109,13 +108,13 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
       Reference storageRef = FirebaseStorage.instance
           .ref()
           .child('supplier_images/$fileName.jpg');
-      
+
       // Upload the file to Firebase Storage
       UploadTask uploadTask = storageRef.putFile(imageFile);
-      
+
       // Wait for the upload to complete
       TaskSnapshot snapshot = await uploadTask;
-      
+
       // Get the download URL of the uploaded image
       String downloadUrl = await snapshot.ref.getDownloadURL();
       return downloadUrl;
@@ -129,8 +128,9 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
   Future<void> updateSupplierData(String imageUrl, bool isLicense) async {
     try {
       final id = FirebaseAuth.instance.currentUser!.uid;
-      final supplierRef = FirebaseFirestore.instance.collection('suppliers').doc(id);
-      
+      final supplierRef =
+          FirebaseFirestore.instance.collection('suppliers').doc(id);
+
       if (isLicense) {
         // Update the company license image
         await supplierRef.update({'companyLicenseUrl': imageUrl});
@@ -151,12 +151,12 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
 
     try {
       final id = FirebaseAuth.instance.currentUser!.uid;
-      final supplierRef = FirebaseFirestore.instance.collection('suppliers').doc(id);
+      final supplierRef =
+          FirebaseFirestore.instance.collection('suppliers').doc(id);
 
       // Update the company details in Firestore
       await supplierRef.update({
         'name': _companyNameController.text,
-        'email': _emailController.text,
         'phone': _phoneController.text,
         'address': _addressController.text,
       });
@@ -187,7 +187,10 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Profile',style: TextStyle(color: Colors.white),),
+        title: const Text(
+          'Edit Profile',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.green[700], // Agricultural theme color
       ),
       body: _isLoading
@@ -214,8 +217,8 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
                               )
                             : CircleAvatar(
                                 radius: 75,
-                                backgroundColor: Colors.green[100], // Agricultural theme color
-                                child:  Icon(
+                                backgroundColor: Colors.green[100],
+                                child: Icon(
                                   Icons.agriculture,
                                   color: Colors.green[700],
                                   size: 50,
@@ -226,11 +229,11 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
                   ElevatedButton(
                     onPressed: () => _pickImage(false),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700], // Agricultural theme color
+                      backgroundColor: Colors.green[700],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      minimumSize: Size(double.infinity, 50), // Full width
+                      minimumSize: Size(double.infinity, 50),
                     ),
                     child: const Text(
                       'Change Logo',
@@ -239,7 +242,6 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
                   ),
                   const SizedBox(height: 20),
                   _buildTextField(_companyNameController, 'Company Name'),
-                  _buildTextField(_emailController, 'Email'),
                   _buildTextField(_phoneController, 'Phone Number'),
                   _buildTextField(_addressController, 'Address'),
                   const SizedBox(height: 16),
@@ -263,7 +265,7 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
                           : Container(
                               height: 200,
                               width: double.infinity,
-                              color: Colors.green[100], // Agricultural theme color
+                              color: Colors.green[100],
                               child: const Icon(
                                 Icons.add_photo_alternate,
                                 color: Colors.white,
@@ -274,11 +276,11 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
                   ElevatedButton(
                     onPressed: () => _pickImage(true),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700], // Agricultural theme color
+                      backgroundColor: Colors.green[700],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      minimumSize: Size(double.infinity, 50), // Full width
+                      minimumSize: Size(double.infinity, 50),
                     ),
                     child: const Text(
                       'Change License Image',
@@ -289,11 +291,11 @@ class _SupplierEditProfileScreenState extends State<SupplierEditProfileScreen> {
                   ElevatedButton(
                     onPressed: saveEditedData, // Save the edited data
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700], // Agricultural theme color
+                      backgroundColor: Colors.green[700],
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      minimumSize: Size(double.infinity, 50), // Full width
+                      minimumSize: Size(double.infinity, 50),
                     ),
                     child: const Text(
                       'Save Changes',

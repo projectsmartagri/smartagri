@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -22,16 +21,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     print(widget.product.id);
     try {
       await FirebaseFirestore.instance.collection('products').doc(widget.product.id).delete();
-      setState(() {
-        
-      });
-      
+      setState(() {});
       Navigator.pop(context); // Go back to the previous screen after deletion
     } catch (e) {
-      setState(() {
-        
-      });
-      
+      setState(() {});
     }
   }
 
@@ -173,6 +166,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                       color: Colors.brown,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Product Quantity Section
+                  Text(
+                    "Quantity Available: ${widget.product['quantity']} kg",
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.blueGrey,
                     ),
                   ),
                   const SizedBox(height: 16),

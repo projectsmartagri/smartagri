@@ -1,25 +1,84 @@
-import 'package:flutter/gestures.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/admin/screen/Admin_homescreen.dart';
 
 class Adminloginscreen extends StatefulWidget {
-  const Adminloginscreen({super.key, String? zone, String? area});
+  const Adminloginscreen({super.key});
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _AdminLoginScreenState createState() => _AdminLoginScreenState();
 }
 
-class _LoginScreenState extends State<Adminloginscreen> {
+class _AdminLoginScreenState extends State<Adminloginscreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
+
+  Future<void> _login() async {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Step 1: Check if the email exists in the "admin" Firestore collection
+      final adminSnapshot = await FirebaseFirestore.instance
+          .collection('admin')
+          .where('email', isEqualTo: email)
+          .get();
+
+      if (adminSnapshot.docs.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Email not found in admin records')),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
+      // Step 2: Authenticate with Firebase Authentication
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+
+      if (userCredential.user != null) {
+          Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => AdminHomescreen()),
+        );
+      }
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message ?? 'Authentication failed')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('An unexpected error occurred')),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-        
-            color: Color.fromARGB(255, 234, 246, 234),
-           
-          
+          color: Color.fromARGB(255, 234, 246, 234),
         ),
         child: Center(
           child: SingleChildScrollView(
@@ -28,10 +87,7 @@ class _LoginScreenState extends State<Adminloginscreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  // Logo or Header Image
-                 
                   const SizedBox(height: 20),
-                  // Title
                   const Text(
                     "Smart Agri",
                     style: TextStyle(
@@ -42,8 +98,8 @@ class _LoginScreenState extends State<Adminloginscreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // Email Input
                   TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       labelText: 'Username/Email',
                       filled: true,
@@ -56,8 +112,8 @@ class _LoginScreenState extends State<Adminloginscreen> {
                     keyboardType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 20),
-                  // Password Input
                   TextFormField(
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       filled: true,
@@ -68,7 +124,9 @@ class _LoginScreenState extends State<Adminloginscreen> {
                       prefixIcon: const Icon(Icons.lock, color: Colors.green),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                          _obscurePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                           color: Colors.green,
                         ),
                         onPressed: () {
@@ -81,38 +139,35 @@ class _LoginScreenState extends State<Adminloginscreen> {
                     obscureText: _obscurePassword,
                   ),
                   const SizedBox(height: 20),
-                  // Login Button
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Login successfully')),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
+                  _isLoading
+                      ? const CircularProgressIndicator()
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _login,
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 14),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 64, 171, 80),
+                              shadowColor:
+                                  const Color.fromARGB(255, 80, 221, 151),
+                              elevation: 5,
+                            ),
+                            child: const Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color.fromARGB(255, 225, 230, 225),
+                              ),
+                            ),
+                          ),
                         ),
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        backgroundColor: const Color.fromARGB(255, 64, 171, 80),
-                        shadowColor: const Color.fromARGB(255, 80, 221, 151),
-                        elevation: 5,
-                      ),
-                      child: const Text(
-                        'LOGIN',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 225, 230, 225),
-                        ),
-                      ),
-                    ),
-                  ),
                   const SizedBox(height: 20),
-                  
-                  const SizedBox(height: 40),
                 ],
               ),
             ),
