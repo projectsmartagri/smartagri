@@ -7,6 +7,7 @@ environment:
   sdk: ^3.5.0
 
 dependencies:
+  animated_text_kit: ^4.2.2
   cached_network_image: ^3.4.1
   carousel_slider: ^5.0.0
   cloud_firestore: ^4.14.0
@@ -42,3 +43,6 @@ flutter:
           weight: 500
         - asset: asset/fonts/DancingScript-Bold.ttf
           weight: 700
+
+ 
+flutter pub get animated_text_kit: ^4.2.1
