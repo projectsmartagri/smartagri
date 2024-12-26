@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:smartagri/modules/user/screens/bottomnavigationbar.dart';
 import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 
 
