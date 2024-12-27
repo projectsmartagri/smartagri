@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmer_product_list_screen.dart';
+import 'package:smartagri/modules/farmer/screens/farmer_product_order_screen.dart';
 
 class FarmerDashboardScreen extends StatelessWidget {
   const FarmerDashboardScreen({super.key});
@@ -67,7 +70,8 @@ class FarmerDashboardScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const FarmerOrdersScreen()),
+                      MaterialPageRoute(builder: (context) =>  FarmerOrdersScreen(farmerId:  FirebaseAuth.instance.currentUser!.uid
+,)),
                     );
                   },
                 ),
@@ -195,20 +199,5 @@ class ProductSalesScreen extends StatelessWidget {
   }
 }
 
-class FarmerOrdersScreen extends StatelessWidget {
-  const FarmerOrdersScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Orders"),
-        backgroundColor: Colors.green,
-      ),
-      body: const Center(
-        child: Text("Orders Screen"),
-      ),
-    );
-  }
-}
 

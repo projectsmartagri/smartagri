@@ -162,7 +162,7 @@ class _ProductGridState extends State<ProductGrid> {
                         ),
                       ),
                     ),
-                    Padding(
+                    product['quantity'] > 0 ?    Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: ElevatedButton(
                         onPressed: () {
@@ -180,7 +180,7 @@ class _ProductGridState extends State<ProductGrid> {
                           style: TextStyle(color: Colors.white, fontSize: 13),
                         ),
                       ),
-                    ),
+                    ): Text('out of stock',style: TextStyle(color: Colors.red),)
                   ],
                 ),
               ),

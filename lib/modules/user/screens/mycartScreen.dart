@@ -40,6 +40,38 @@ class _MycartscreenState extends State<Mycartscreen> {
     return total;
   }
 
+  Future<void> decreaseProductQuantity(List<dynamic> orderData) async {
+  final productsCollection = FirebaseFirestore.instance.collection('products');
+
+  for (var order in orderData) {
+    final productId = order['productId']; // Product ID from the cart
+    final quantityToDecrease = order['quantity']; // Quantity to decrease
+
+    // Check if productId exists in products collection
+    final productDoc = productsCollection.doc(productId);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final productSnapshot = await transaction.get(productDoc);
+
+      if (productSnapshot.exists) {
+        final currentQuantity = productSnapshot.data()?['quantity'] ?? 0;
+
+        
+          // Decrease the quantity
+          transaction.update(productDoc, {
+            'quantity': currentQuantity - quantityToDecrease,
+          });
+        
+      } else {
+        throw Exception('Product not found for ID: $productId');
+      }
+    }).catchError((error) {
+      print('Error updating quantity for product ID: $productId');
+      print(error);
+    });
+  }
+}
+
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     setState(() {
       _isLoading = true; // Show loading indicator
@@ -55,6 +87,16 @@ class _MycartscreenState extends State<Mycartscreen> {
         .get();
 
     final orderData = cartSnapshot.docs.map((doc) => doc.data()).toList();
+
+
+     await  decreaseProductQuantity(orderData);
+
+
+
+
+    
+
+    
 
     await FirebaseFirestore.instance.collection('orders').add({
       'userId': user.uid,

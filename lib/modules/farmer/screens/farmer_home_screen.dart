@@ -8,14 +8,83 @@ import 'package:smartagri/modules/farmer/screens/all_equipment_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 
 class HomePageContent extends StatelessWidget {
+
+
+Widget _buildCarouselSlider() {
+  return StreamBuilder<QuerySnapshot>(
+    stream: FirebaseFirestore.instance
+        .collection('banners')
+        .where('type', isEqualTo: 'farmer')
+        .snapshots(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      }
+      if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+        return const Center(child: Text('No banners available.'));
+      }
+
+      final bannerImages = snapshot.data!.docs.map((doc) {
+        final data = doc.data() as Map<String, dynamic>;
+        return data['imageUrl'] ?? '';
+      }).toList();
+
+      return CarouselSlider(
+        options: CarouselOptions(
+          height: 200.0,
+          autoPlay: true,
+          enlargeCenterPage: true,
+        ),
+        items: bannerImages.map((url) {
+          return Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8.0),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 8,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Stack(
+                fit: StackFit.expand,
+                children: [
+                  Image.network(url, fit: BoxFit.cover),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.black.withOpacity(0.5),
+                          Colors.transparent
+                        ],
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    },
+  );
+}
+
+
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
-    List<String> carouselImages = [
-      'https://5.imimg.com/data5/SELLER/Default/2023/11/364648303/OR/VC/GX/186750549/jangeer-multicrop-thresher-500x500.jpeg',
-      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTL2wkfKp1i7WvvRbQkiLFmAyiNxctUXuWCQ&s',
-      'https://media.licdn.com/dms/image/v2/D5612AQG8JZ0pQy8Dog/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1709282970844?e=2147483647&v=beta&t=EldBFEM6BXbZurlbMZBQbBhsPcrn9Y9TO0JDvXjg92o',
-    ];
-
+    
     return Container(
       decoration: const BoxDecoration(
         gradient: LinearGradient(
@@ -30,53 +99,9 @@ class HomePageContent extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 30),_buildCarouselSlider(),
 
-              // **Carousel Slider**
-              CarouselSlider(
-                options: CarouselOptions(
-                  height: 200.0,
-                  autoPlay: true,
-                  enlargeCenterPage: true,
-                ),
-                items: carouselImages.map((url) {
-                  return Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Stack(
-                        fit: StackFit.expand,
-                        children: [
-                          Image.network(url, fit: BoxFit.cover),
-                          Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  Colors.black.withOpacity(0.5),
-                                  Colors.transparent
-                                ],
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.topCenter,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-
+             
               const SizedBox(height: 30),
 
               // **Equipments Section**

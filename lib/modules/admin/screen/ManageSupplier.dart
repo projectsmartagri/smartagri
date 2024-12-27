@@ -111,7 +111,7 @@ class _ManageSupplierScreenState extends State<ManageSupplierScreen>
                           address: address,
                           companyLicenseUrl: companyLicenseUrl,
                           name: name,
-                          isApproved: isApproved, supplierId: '',
+                          isApproved: isApproved, supplierId: supplier.id,
                         ),
                       ),
                     );

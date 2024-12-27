@@ -80,7 +80,7 @@ class _ManageFarmerState extends State<ManageFarmer>
             final phone = farmer['phone'] ?? 'No Phone';
             final location = farmer['location'] ?? 'No Location';
 
-            return _buildFarmerCard(context, name, email, farmerIdUrl, isApproved, phone, location);
+            return _buildFarmerCard(context, name, email, farmerIdUrl, isApproved, phone, location,farmer.id);
           },
         );
       },
@@ -95,6 +95,7 @@ class _ManageFarmerState extends State<ManageFarmer>
     bool isApproved,
     String phone,
     String location,
+    String id,
   ) {
     return GestureDetector(
       onTap: () {
@@ -103,6 +104,7 @@ class _ManageFarmerState extends State<ManageFarmer>
           context,
           MaterialPageRoute(
             builder: (context) => FarmerDetails(
+              farmerId: id,
               name: name,
               email: email,
               farmerIdUrl: farmerIdUrl,

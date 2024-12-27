@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class FarmerDetails extends StatelessWidget {
@@ -6,7 +7,8 @@ class FarmerDetails extends StatelessWidget {
   final String phone;
   final String location;
   final String farmerIdUrl;
-  final bool isApproved;  // Add a field to track whether the farmer is approved
+  final String farmerId; // Unique ID for the farmer document
+  final bool isApproved;
 
   const FarmerDetails({
     super.key,
@@ -15,7 +17,8 @@ class FarmerDetails extends StatelessWidget {
     required this.phone,
     required this.location,
     required this.farmerIdUrl,
-    required this.isApproved,  // Pass isApproved in the constructor
+    required this.farmerId, // Include farmerId for document reference
+    required this.isApproved,
   });
 
   @override
@@ -136,7 +139,6 @@ class FarmerDetails extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 30),
-              // Display Accept/Reject buttons if farmer is not approved
               if (!isApproved) ...[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -147,11 +149,7 @@ class FarmerDetails extends StatelessWidget {
                       icon: Icons.check,
                       color: const Color.fromARGB(255, 28, 168, 63),
                       onPressed: () async {
-                        // Call function to approve the farmer
-                        await _updateFarmerStatus('farmerId', true); // Use actual farmerId
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Farmer Accepted')),
-                        );
+                        await _updateFarmerStatus(context, true);
                       },
                     ),
                     const SizedBox(width: 20),
@@ -161,11 +159,7 @@ class FarmerDetails extends StatelessWidget {
                       icon: Icons.close,
                       color: Colors.red.shade600,
                       onPressed: () async {
-                        // Call function to reject the farmer
-                        await _updateFarmerStatus('farmerId', false); // Use actual farmerId
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Farmer Rejected')),
-                        );
+                        await _updateFarmerStatus(context, false);
                       },
                     ),
                   ],
@@ -176,6 +170,40 @@ class FarmerDetails extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _updateFarmerStatus(BuildContext context, bool isApproved) async {
+    try {
+      // Update the farmer's document in the Firestore `farmers` collection
+      if(isApproved){
+
+        await FirebaseFirestore.instance
+          .collection('farmers')
+          .doc(farmerId)
+          .update({'isApproved': isApproved});
+
+      }else{
+        await FirebaseFirestore.instance
+          .collection('farmers')
+          .doc(farmerId)
+          .delete();
+
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(isApproved
+              ? 'Farmer has been approved.'
+              : 'Farmer has been rejected.'),
+        ),
+      );
+
+      Navigator.pop(context); // Go back to the previous screen
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: ${error.toString()}')),
+      );
+    }
   }
 
   Widget _buildInfoRow({
@@ -247,11 +275,6 @@ class FarmerDetails extends StatelessWidget {
         builder: (context) => FullScreenImage(imageUrl: imageUrl),
       ),
     );
-  }
-
-  // Simulated function to update the farmer's approval status
-  Future<void> _updateFarmerStatus(String farmerId, bool isApproved) async {
-    // Code to update the farmer's approval status in Firebase or backend goes here
   }
 }
 

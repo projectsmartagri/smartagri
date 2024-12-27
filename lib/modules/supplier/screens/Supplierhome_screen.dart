@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:smartagri/modules/choose_screen.dart';
+import 'package:smartagri/modules/farmer/screens/add_banner_screen.dart';
 import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierEquipment_Details_screen.dart';
 import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
@@ -180,18 +181,48 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
           
           // ),
 ,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add,color: Colors.white,),
-        backgroundColor: Colors.green,
-      
-        onPressed: () {
-          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    AddEquipmentscreen()), // Navigate to AddEquipmentScreen
-                          );
-        },
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                child: Text('Add machinary',style: TextStyle(color: Colors.white),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
+              
+                onPressed: () {
+                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddEquipmentscreen()), // Navigate to AddEquipmentScreen
+                                  );
+                },
+              ),
+            ),
+
+
+            Expanded(
+              child: ElevatedButton(
+                child: Text('Add banner' ,style: TextStyle(color: Colors.white),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                ),
+              
+                onPressed: () {
+                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            AddBannerScreen()), // Navigate to AddEquipmentScreen
+                                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
       appBar: AppBar(
         leading:  Builder(
@@ -259,28 +290,28 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   // ),
 
                   // Indicators
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: imgList.asMap().entries.map((entry) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _currentIndex = entry.key; // Update index on tap
-                          });
-                        },
-                        child: Container(
-                          width: 8.0,
-                          height: 8.0,
-                          margin: EdgeInsets.symmetric(horizontal: 4.0),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: (Colors.black.withOpacity(
-                                _currentIndex == entry.key ? 0.9 : 0.4)),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: imgList.asMap().entries.map((entry) {
+                  //     return GestureDetector(
+                  //       onTap: () {
+                  //         setState(() {
+                  //           _currentIndex = entry.key; // Update index on tap
+                  //         });
+                  //       },
+                  //       child: Container(
+                  //         width: 8.0,
+                  //         height: 8.0,
+                  //         margin: EdgeInsets.symmetric(horizontal: 4.0),
+                  //         decoration: BoxDecoration(
+                  //           shape: BoxShape.circle,
+                  //           color: (Colors.black.withOpacity(
+                  //               _currentIndex == entry.key ? 0.9 : 0.4)),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   }).toList(),
+                  // ),
 
                   Padding(
                     padding: const EdgeInsets.all(8.0),

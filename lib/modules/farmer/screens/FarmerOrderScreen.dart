@@ -6,7 +6,7 @@ class FarmerOrderScreen extends StatelessWidget {
 
   Future<List<Map<String, dynamic>>> fetchOrders() async {
     final ordersSnapshot =
-        await FirebaseFirestore.instance.collection('orders').get();
+        await FirebaseFirestore.instance.collection('rental_order').get();
 
     List<Map<String, dynamic>> orders = [];
     for (var doc in ordersSnapshot.docs) {
