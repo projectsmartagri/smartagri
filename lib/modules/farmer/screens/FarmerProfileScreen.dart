@@ -20,43 +20,79 @@ class FarmerProfileScreen extends StatelessWidget {
         centerTitle: true,
         actions: [
           IconButton(
+            
             onPressed: () async {
-              bool confirmLogout = await showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    title: const Text('Confirm Logout'),
-                    content: const Text('Are you sure you want to log out?'),
-                    actions: [
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(false);
-                        },
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(true);
-                        },
-                        child: const Text('Logout'),
-                      ),
-                    ],
-                  );
-                },
-              );
-
-              if (confirmLogout) {
-                await FirebaseAuth.instance.signOut();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => ChooseScreen()),
-                  (route) => false,
-                );
-              }
+  bool confirmLogout = await showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        contentPadding: const EdgeInsets.all(20),
+        title: Row(
+          children: [
+            Icon(
+              Icons.logout,
+              color: Colors.red[600],
+            ),
+            const SizedBox(width: 10),
+            const Text(
+              'Confirm Logout',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        content: const Text(
+          'Are you sure you want to log out?',
+          style: TextStyle(fontSize: 16),
+        ),
+        backgroundColor: Colors.green[50],
+        actionsPadding: const EdgeInsets.symmetric(horizontal: 10),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.grey[300],
+              foregroundColor: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(false);
             },
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.red[600],
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            child: const Text('Logout'),
+          ),
+        ],
+      );
+    },
+  );
+
+  if (confirmLogout) {
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => ChooseScreen()),
+      (route) => false,
+    );
+  }
+},
+
             icon: const Icon(Icons.logout, color: Colors.white),
           ),
         ],
