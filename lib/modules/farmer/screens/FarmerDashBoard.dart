@@ -4,6 +4,7 @@ import 'package:smartagri/modules/farmer/screens/FarmerProductScreen.dart';
 import 'package:smartagri/modules/farmer/screens/addproduct_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmer_product_list_screen.dart';
 import 'package:smartagri/modules/farmer/screens/farmer_product_order_screen.dart';
+import 'package:smartagri/modules/farmer/screens/farmer_sales_report.dart';
 
 class FarmerDashboardScreen extends StatelessWidget {
   const FarmerDashboardScreen({super.key});
@@ -185,19 +186,4 @@ class DashboardCard extends StatelessWidget {
   }
 }
 
-class ProductSalesScreen extends StatelessWidget {
-  const ProductSalesScreen({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Product Sales"),
-        backgroundColor: Colors.green,
-      ),
-      body: const Center(
-        child: Text("Product Sales Screen"),
-      ),
-    );
-  }
-}
