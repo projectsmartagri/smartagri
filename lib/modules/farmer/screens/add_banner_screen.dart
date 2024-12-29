@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as Path;
 
 class AddBannerScreen extends StatefulWidget {
-  const AddBannerScreen({super.key, this.type});
+  const AddBannerScreen({super.key, this.type="farmer"});
 
   final type;
 

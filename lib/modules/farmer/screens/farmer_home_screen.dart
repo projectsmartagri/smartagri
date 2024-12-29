@@ -233,7 +233,7 @@ Widget _buildCarouselSlider() {
                             data['name'] ?? 'Unknown',
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          Text("\$${data['price'] ?? 'N/A'}"),
+                          Text("\₹${data['price'] ?? 'N/A'}"),
                         ],
                       ),
                     ),
@@ -249,7 +249,8 @@ Widget _buildCarouselSlider() {
 
   Widget _buildCompanyList() {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('suppliers').snapshots(),
+      stream: FirebaseFirestore.instance.collection('suppliers')
+      .where('isApproved' , isEqualTo: true).snapshots(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const CircularProgressIndicator();
