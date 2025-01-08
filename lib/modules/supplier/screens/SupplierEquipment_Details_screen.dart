@@ -73,6 +73,8 @@ class _SupplierEquipmentDetailsScreenState extends State<SupplierEquipmentDetail
           ? dateFormatter.format((rentalData['endDate'] as Timestamp).toDate())
           : 'Not Returned';
 
+           int quantityBooked = rentalData['quantity'] ?? 0;
+
       // Add the rental data and the farmer name to the list
       farmerAndRentalData.add({
         'isReturned':isReturned,
@@ -80,7 +82,8 @@ class _SupplierEquipmentDetailsScreenState extends State<SupplierEquipmentDetail
         'ProductId': rentalData['machineryId'],
         'bookingDate': bookingDate,
         'returnDate': returnDate,
-        'farmer': farmerName,  // Add the farmer's name here
+        'farmer': farmerName,
+        'quantity': quantityBooked,  // Add the farmer's name here
       });
     }
 
@@ -215,6 +218,7 @@ class _SupplierEquipmentDetailsScreenState extends State<SupplierEquipmentDetail
                         subtitle: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                             Text('Quantity Booked: ${order['quantity']}'),
                             Text('Booking Date: ${order['bookingDate']}'),
                             Text(order['isReturned']?'Returned':
                               'Return Date: ${order['returnDate'] }',
