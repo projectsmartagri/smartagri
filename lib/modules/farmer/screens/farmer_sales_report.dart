@@ -11,7 +11,6 @@ class ProductSalesScreen extends StatefulWidget {
 
 class _ProductSalesScreenState extends State<ProductSalesScreen> {
   DateTime? selectedDate;
-    
 
   final ValueNotifier<double> totalSales = ValueNotifier<double>(0.0);
 
@@ -22,6 +21,7 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
         .get();
 
     final Map<String, Map<String, dynamic>> salesData = {};
+    double overallTotalSales = 0.0;
 
     for (var order in ordersSnapshot.docs) {
       final orderData = order.data();
@@ -61,15 +61,14 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
           salesData[productId]!['quantity'] += quantity;
           salesData[productId]!['totalSales'] += quantity * price;
 
-          totalSales.value =  salesData[productId]!['totalSales'];
-          
+          // Accumulate total sales for all products
+          overallTotalSales += quantity * price;
         }
       }
     }
 
-    
-
-       
+    // Update the ValueNotifier for overall total sales
+    totalSales.value = overallTotalSales;
 
     return salesData.values.toList();
   }
@@ -91,18 +90,17 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final String farmerId = "8WtI8RUxGQSnzj1UAcymRK1sgLu2"; // Replace with auth ID
+    final String farmerId = "farmerId"; // Replace with auth ID
 
     return Scaffold(
-
       bottomSheet: Container(
         color: Colors.green.shade800,
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 20.0),
         child: ValueListenableBuilder(
           valueListenable: totalSales,
-          builder:(context, value, child) =>  Text(
-            'Total Sales:${value}',
+          builder: (context, value, child) => Text(
+            'Total Sales: ₹${value.toStringAsFixed(2)}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontSize: 20,
@@ -113,7 +111,10 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
         ),
       ),
       appBar: AppBar(
-        title: const Text("Agri Sales Report" ,style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Agri Sales Report",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.green.shade800,
         elevation: 0,
         actions: [
@@ -124,9 +125,6 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
-         
-        ),
         child: FutureBuilder<List<Map<String, dynamic>>>(
           future: fetchSalesData(farmerId),
           builder: (context, snapshot) {
@@ -146,8 +144,6 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
 
             return Column(
               children: [
-                
-                
                 Expanded(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -160,7 +156,6 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
                         dataRowColor: MaterialStateProperty.all(
                           const Color.fromARGB(255, 224, 251, 225),
                         ),
-                        
                         columnSpacing: 30,
                         columns: const [
                           DataColumn(

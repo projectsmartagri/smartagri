@@ -153,7 +153,7 @@ class OrderTile extends StatelessWidget {
                         'Start Date: ${order['startDate'].toDate().toLocal()}'),
                     Text('End Date: ${order['endDate'].toDate().toLocal()}'),
                     Text(
-                      'Total Amount: \$${order['totalAmount'].toStringAsFixed(2)}',
+                      'Total Amount: ₹${order['totalAmount'].toStringAsFixed(2)}',
                       style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                   ],
@@ -204,7 +204,7 @@ class OrderDetailsScreen extends StatelessWidget {
             Text('End Date: ${order['endDate'].toDate().toLocal()}'),
             const SizedBox(height: 8),
             Text(
-              'Total Amount: \$${order['totalAmount'].toStringAsFixed(2)}',
+              'Total Amount: ₹${order['totalAmount'].toStringAsFixed(2)}',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
