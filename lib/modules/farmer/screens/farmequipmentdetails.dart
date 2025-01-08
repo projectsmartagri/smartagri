@@ -365,7 +365,7 @@ DateTime ?endDate;
                   TextField(
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: 'Enter the quntity',
+                    labelText: 'Enter the quantity',
                   ),
                   onChanged: (value) {
                     
