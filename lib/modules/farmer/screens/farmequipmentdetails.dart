@@ -164,14 +164,15 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
         'totalAmount': totalAmount,
         'startDate': currentDate,
         'endDate': endDate,
+        'isDeliverd' : false,
+        'isReturn' :  false,
+        'quantity' : quantity,
         'paymentId': paymentId, // Store Razorpay payment ID
       };
 
       await FirebaseFirestore.instance.collection('rental_order').add(orderData);
 
-      await FirebaseFirestore.instance.collection('machinary').doc(widget.id).update({
-        'Quantity' : FieldValue.increment(-1)
-      });
+    
 
       await FirebaseFirestore.instance.collection('machinary').doc(widget.id).get().then((docSnapshot) {
   if (docSnapshot.exists) {
@@ -326,54 +327,129 @@ DateTime ?endDate;
 
   _openCheckout(totalAmount!.toDouble());
 }
-
-  // Dialog to select rental days
-  Future<int> _showDaysDialog(BuildContext context, [bool isExtenend = false]) async {
-    int selectedDays = 0;
-    return await showDialog<int>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: isExtenend ?  Text('Extend Rental Days')  : const Text('Select Rental Days'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-
-              if(isExtenend)
-              Text('You are already booked this machine, want to extent fill it'),
+  int quantity = 0;
+  Future<int> _showDaysDialog(BuildContext context, [bool isExtended = false]) async {
+  int selectedDays = 0;
+  bool isAgreementAccepted = false;
 
 
-
-
-              Text(
-                'Price per day: ₹${widget.machinery['price']}',
-                style: TextStyle(fontSize: 16),
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Enter number of days',
+  return await showDialog<int>(
+    context: context,
+    builder: (BuildContext context) {
+      return StatefulBuilder(
+        builder: (BuildContext context, StateSetter setState) {
+          return AlertDialog(
+            title: isExtended
+                ? Text('Extend Rental Days')
+                : const Text('Select Rental Days'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (isExtended)
+                  Text('You are already booked this machine. Want to extend? Fill in the details below.'),
+                Text(
+                  'Price per day: ₹${widget.machinery['price']}',
+                  style: TextStyle(fontSize: 16),
                 ),
-                onChanged: (value) {
-                  selectedDays = int.tryParse(value) ?? 0;
+                const SizedBox(height: 16),
+                TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter number of days',
+                  ),
+                  onChanged: (value) {
+                    selectedDays = int.tryParse(value) ?? 0;
+                  },
+                ),
+                const SizedBox(height: 16),
+                  TextField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    labelText: 'Enter the quntity',
+                  ),
+                  onChanged: (value) {
+                    
+                    quantity = int.tryParse(value) ?? 0;
+                  },
+                ),
+                                const SizedBox(height: 16),
+
+                Row(
+                  children: [
+                    Checkbox(
+                      value: isAgreementAccepted,
+                      onChanged: (value) {
+                        setState(() {
+                          isAgreementAccepted = value ?? false;
+                        });
+                      },
+                    ),
+                    const Text('Accept User Agreement'),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Rental Agreement'),
+                            content: const Text(
+                              '1. The equipment must be returned in good condition.\n'
+                              '2. Late returns will incur additional charges.\n'
+                              '3. The renter is responsible for any damage during the rental period.\n'
+                              '4. Payment must be completed before taking possession of the equipment.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Close'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: const Text(
+                      'View Agreement',
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  if (!isAgreementAccepted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Please accept the user agreement')),
+                    );
+                    return;
+                  }
+
+                  if(widget.machinery['Quantity'] < quantity){
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Quantity exceeded')),
+                    );
+                    return;
+
+                  }
+                  Navigator.of(context).pop(selectedDays);
                 },
+                child: const Text('OK'),
               ),
             ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: (){
-
-                Navigator.of(context).pop(selectedDays);            
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
-    ) ?? 0;
-  }
+          );
+        },
+      );
+    },
+  ) ?? 0;
+}
 
    @override
   Widget build(BuildContext context) {

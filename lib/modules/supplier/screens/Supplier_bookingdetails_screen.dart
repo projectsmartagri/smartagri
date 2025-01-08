@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:smartagri/modules/supplier/screens/Supplierhome_screen.dart';
@@ -79,6 +80,104 @@ class _SupplierBookingDetailsScreenState
     );
   }
 
+
+ Future<void> markAsDelivered(
+    String orderId, String machineryId, int decrementBy, BuildContext context) async {
+  try {
+    // Update the rental_order collection
+    await FirebaseFirestore.instance
+        .collection('rental_order')
+        .doc(orderId)
+        .update({'isDeliverd': true});
+
+    // Decrease the quantity in the machinery collection
+    DocumentReference machineryRef =
+        FirebaseFirestore.instance.collection('machinary').doc(machineryId);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot machinerySnapshot = await transaction.get(machineryRef);
+
+      if (!machinerySnapshot.exists) {
+        throw Exception('Machinery does not exist!');
+      }
+
+      int currentQuantity = machinerySnapshot['Quantity'];
+      int updatedQuantity = currentQuantity - decrementBy;
+
+      // Ensure quantity does not go below zero
+      if (updatedQuantity < 0) {
+        throw Exception('Quantity cannot be less than zero!');
+      }
+
+      transaction.update(machineryRef, {'Quantity': updatedQuantity});
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Marked as Delivered and quantity updated!')),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to update: $e')),
+    );
+  }
+}
+
+Future<void> markAsReturned(
+    String orderId, String machineryId, int decrementBy, BuildContext context,bool isDeleiverd) async {
+  if(isDeleiverd){
+
+    try {
+    // Update the rental_order collection
+    await FirebaseFirestore.instance
+        .collection('rental_order')
+        .doc(orderId)
+        .update({'isReturn': true});
+
+    // Decrease the quantity in the machinery collection
+    DocumentReference machineryRef =
+        FirebaseFirestore.instance.collection('machinary').doc(machineryId);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot machinerySnapshot = await transaction.get(machineryRef);
+
+      if (!machinerySnapshot.exists) {
+        throw Exception('Machinery does not exist!');
+      }
+
+      int currentQuantity = machinerySnapshot['Quantity'];
+      int updatedQuantity = currentQuantity + decrementBy;
+
+      // Ensure quantity does not go below zero
+      if (updatedQuantity < 0) {
+        throw Exception('Quantity cannot be less than zero!');
+      }
+
+      transaction.update(machineryRef, {'Quantity': updatedQuantity});
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Marked as Returned and quantity updated!')),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to update: $e')),
+    );
+  }
+
+
+
+  }else{
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Machine not delivary yet!!!')),
+    );
+
+
+
+  }
+}
+
+
   Widget _buildBookingDetailsCard() {
     return Container(
       padding: const EdgeInsets.all(12),
@@ -101,7 +200,7 @@ class _SupplierBookingDetailsScreenState
           const SizedBox(height: 8),
           StreamBuilder(
             stream: FirebaseFirestore.instance
-                .collection('rental_order')
+                .collection('rental_order').where('supplierId', isEqualTo:FirebaseAuth.instance.currentUser!.uid )
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -163,6 +262,8 @@ class _SupplierBookingDetailsScreenState
                             DataColumn(label: Text('Rental Days')),
                             DataColumn(label: Text('Payment Status')),
                             DataColumn(label: Text('Amount')),
+                            DataColumn(label: Text('Deliverd')),
+                            DataColumn(label: Text('Return')),
                           ],
                           rows: List.generate(filteredOrders.length, (index) {
                             QueryDocumentSnapshot completedData =
@@ -222,6 +323,36 @@ class _SupplierBookingDetailsScreenState
                                 ),
                                 DataCell(
                                     Text('₹${completedData['totalAmount']}')),
+                                DataCell(
+                                  completedData['isDeliverd'] ?  Icon(Icons.check,color: Colors.green,)  : ElevatedButton(
+                                    
+                                    
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)
+                                      )
+                                    ),
+                                    onPressed: () {
+                                    markAsDelivered(completedData.id,completedData['machineryId'],completedData['quantity'] ,context);
+                                    
+                                  }, child: Text('Deliverd'))
+                                ),
+
+                                DataCell(
+                                   completedData['isReturn'] ?  Icon(Icons.check,color: Colors.green,)  : ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5)
+                                      )
+                                    ),
+                                    
+                                    onPressed: () {
+                                    markAsReturned(completedData.id,completedData['machineryId'],completedData['quantity'] ,context,completedData['isDeliverd']);
+                                    
+                                  }, child: Text('Return'))
+                                ),
                               ],
                             );
                           }),
