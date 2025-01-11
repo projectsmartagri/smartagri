@@ -240,13 +240,20 @@ Future<void> markAsReturned(
                   filteredDetails = details;
 
                   if (selectedDate != null) {
-                    filteredOrders = filteredOrders.where((order) {
+                     List<int> validIndices = [];
+                    filteredOrders = rentalOrders.where((order) {
                       Timestamp startDateTimestamp = order['startDate'];
                       DateTime startDate = startDateTimestamp.toDate();
-                      return startDate.year == selectedDate!.year &&
+                       bool matches = startDate.year == selectedDate!.year &&
+                       startDate.year == selectedDate!.year &&
                           startDate.month == selectedDate!.month &&
                           startDate.day == selectedDate!.day;
+                           if (matches) validIndices.add(rentalOrders.indexOf(order));
+                           return matches;
                     }).toList();
+
+                    // Use valid indices to filter details as well
+                  filteredDetails = validIndices.map((index) => details[index]).toList();
                   }
 
                   return Column(
