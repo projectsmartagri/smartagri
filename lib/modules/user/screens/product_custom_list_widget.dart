@@ -126,7 +126,7 @@ class _ProductGridState extends State<ProductGrid> {
                       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                       child: Image.network(
                         imageUrl,
-                        height: 100,
+                        height: 170,
                         width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
@@ -180,7 +180,33 @@ class _ProductGridState extends State<ProductGrid> {
                           style: TextStyle(color: Colors.white, fontSize: 13),
                         ),
                       ),
-                    ): Text('out of stock',style: TextStyle(color: Colors.red),)
+                    ): 
+                 Center(
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+     
+      Text(
+        'Out of Stock',
+        style: TextStyle(
+          color: Colors.red,
+          fontWeight: FontWeight.bold,
+          fontSize: 20, // Larger font size
+          letterSpacing: 1.2, // Slightly spaced letters
+          shadows: [
+            Shadow(
+              color: Colors.black26, // Subtle shadow effect
+              offset: Offset(2, 2),
+              blurRadius: 3,
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+)
+
+
                   ],
                 ),
               ),
