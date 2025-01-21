@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -20,7 +21,7 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
         .where('isCompleted', isEqualTo: true)
         .get();
 
-    final Map<String, Map<String, dynamic>> salesData = {};
+    final List<Map<String, dynamic>> salesData = [];
     double overallTotalSales = 0.0;
 
     for (var order in ordersSnapshot.docs) {
@@ -49,17 +50,13 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
           final String title = productData['title'];
           final double price = productData['price'].toDouble();
 
-          if (!salesData.containsKey(productId)) {
-            salesData[productId] = {
-              'title': title,
-              'quantity': 0,
-              'totalSales': 0.0,
-              'date': date.toDate(),
-            };
-          }
-
-          salesData[productId]!['quantity'] += quantity;
-          salesData[productId]!['totalSales'] += quantity * price;
+          // Add individual purchase data to salesData list
+          salesData.add({
+            'title': title,
+            'quantity': quantity,
+            'date': date.toDate(),
+            'totalSales': quantity * price,
+          });
 
           // Accumulate total sales for all products
           overallTotalSales += quantity * price;
@@ -70,7 +67,10 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
     // Update the ValueNotifier for overall total sales
     totalSales.value = overallTotalSales;
 
-    return salesData.values.toList();
+    // Sort by date in descending order
+    salesData.sort((a, b) => b['date'].compareTo(a['date']));
+
+    return salesData;
   }
 
   void pickDate(BuildContext context) async {
@@ -87,10 +87,15 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
       });
     }
   }
+   void resetDateFilter() {
+    setState(() {
+      selectedDate = null;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final String farmerId = "farmerId"; // Replace with auth ID
+    final String farmerId = FirebaseAuth.instance.currentUser!.uid; 
 
     return Scaffold(
       bottomSheet: Container(
@@ -122,6 +127,12 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
             icon: const Icon(Icons.calendar_today),
             onPressed: () => pickDate(context),
           ),
+           if (selectedDate != null)
+            IconButton(
+              icon: const Icon(Icons.clear),
+              tooltip: "Reset Date Filter",
+              onPressed: resetDateFilter,
+            ),
         ],
       ),
       body: Container(
@@ -204,7 +215,7 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
                             DataCell(Text(productData['title'])),
                             DataCell(Text(productData['quantity'].toString())),
                             DataCell(Text(
-                              DateFormat('yyyy-MM-dd')
+                              DateFormat('dd-MM-yyyy')
                                   .format(productData['date']),
                             )),
                             DataCell(Text(

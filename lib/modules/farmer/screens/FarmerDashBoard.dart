@@ -75,7 +75,7 @@ class FarmerDashboardScreen extends StatelessWidget {
                     
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  FarmerOrdersScreen(farmerId:FirebaseAuth.instance.currentUser!.uid)),
+                      MaterialPageRoute(builder: (context) =>  FarmerProductOrdersScreen(farmerId:FirebaseAuth.instance.currentUser!.uid)),
                     );
                   },
                 ),
@@ -91,8 +91,9 @@ class FarmerDashboardScreen extends StatelessWidget {
             const SizedBox(height: 16),
             Expanded(
               child: SingleChildScrollView(
+                 child: Center( 
                 child: Wrap(
-                  alignment: WrapAlignment.start,
+                  alignment: WrapAlignment.center,
                   spacing: 16,
                   runSpacing: 16,
                   children: categoriesList.map((e) {
@@ -138,6 +139,7 @@ class FarmerDashboardScreen extends StatelessWidget {
                     );
                   }).toList(),
                 ),
+                 ),
               ),
             ),
           ],
