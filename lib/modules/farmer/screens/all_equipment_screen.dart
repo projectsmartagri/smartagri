@@ -84,7 +84,7 @@ class MachineryListScreen extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                               child: Image.network(
                                 machinery['image'],
-                                height: 120,
+                                height: 160,
                                 width: double.infinity,
                                 fit: BoxFit.cover,
                               ),

@@ -221,7 +221,7 @@ Widget _buildCarouselSlider() {
                       ),
                       child: Image.network(
                         data['image'] ?? '',
-                        height: 120,
+                        height: 150,
                         fit: BoxFit.cover,
                       ),
                     ),

@@ -519,13 +519,14 @@ DateTime ?endDate;
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Company name',
+                        'Company name          ',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey.shade400,
                         ),
                       ),
                       
+                     // const Spacer(),
                       Expanded(
 
                         child: Text(
