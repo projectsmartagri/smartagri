@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:smartagri/modules/farmer/screens/farmequipmentdetails.dart';
 
 class Farmercompanyequipment extends StatelessWidget {
-  final String companyId; // Assuming you pass the userId here
+  final String companyId;
   final String companyName;
 
   const Farmercompanyequipment({
@@ -15,9 +16,12 @@ class Farmercompanyequipment extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Agriculture Equipment for $companyName',style: TextStyle(color: Colors.white),),
+        title: Text(
+          companyName,
+          style: const TextStyle(color: Colors.white),
+        ),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back,color: Colors.white,),
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -27,7 +31,7 @@ class Farmercompanyequipment extends StatelessWidget {
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [Colors.green[200]!, Colors.green[700]!], // Green gradient for agriculture theme
+            colors: [Colors.green[200]!, Colors.green[700]!],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -43,13 +47,14 @@ class Farmercompanyequipment extends StatelessWidget {
               return const Center(child: Text('No equipment available.'));
             } else {
               final equipmentList = snapshot.data!.docs.map((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+
                 return {
-                  'name': doc['name'],
-                  'price': doc['price'],
-                  'quantity': doc['Quantity'],
-                  'availability': doc['availability'],
-                  'description': doc['description'],
-                  'image': doc['image'],
+                  'id': doc.id,  // Make sure this is never null
+                  'name': data['name'] ?? 'Unnamed', // Default to 'Unnamed' if null
+                  'price': data['price'] ?? 0, // Default to 0 if null
+                  'quantity': data['Quantity'] ?? 0, // Default to 0 if null
+                  'image': data['image'] ?? '', // Default to empty string if null
                 };
               }).toList();
 
@@ -66,81 +71,24 @@ class Farmercompanyequipment extends StatelessWidget {
                     clipBehavior: Clip.antiAlias,
                     child: InkWell(
                       onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              elevation: 16,
-                              child: Padding(
-                                padding: const EdgeInsets.all(20.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.network(equipment['image'], height: 200, width: double.infinity, fit: BoxFit.cover),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      equipment['name'],
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.green[800],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Description: ${equipment['description']}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.brown[700],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Price: \$${equipment['price']}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.green[600],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Availability: ${equipment['availability']}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.orange[800],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    Text(
-                                      'Quantity: ${equipment['quantity']}',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[700],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 15),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Colors.green[800], // Dark green button
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(18.0),
-                                        ),
-                                      ),
-                                      child: Text('Close'),
-                                    ),
-                                  ],
-                                ),
+                        // Handle null values before navigating
+                        final equipmentId = equipment['id'] ?? '';
+                       
+                        // If id is empty or invalid, do not navigate
+                        if (equipmentId.isNotEmpty) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EquipmentDetailsScreen(
+                                id: equipmentId,  // Ensure a valid id is passed
+                                machinery:equipment,
                               ),
-                            );
-                          },
-                        );
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('Invalid equipment ID')));
+                        }
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -149,7 +97,7 @@ class Farmercompanyequipment extends StatelessWidget {
                           boxShadow: [
                             BoxShadow(
                               color: Colors.black.withOpacity(0.2),
-                              offset: Offset(4, 4),
+                              offset: const Offset(4, 4),
                               blurRadius: 10,
                             ),
                           ],
@@ -157,7 +105,7 @@ class Farmercompanyequipment extends StatelessWidget {
                         padding: const EdgeInsets.all(15.0),
                         child: Row(
                           children: [
-                            equipment['image'] != null
+                            equipment['image'] != null && equipment['image'] != ''
                                 ? ClipRRect(
                                     borderRadius: BorderRadius.circular(12.0),
                                     child: Image.network(
@@ -196,14 +144,6 @@ class Farmercompanyequipment extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Availability: ${equipment['availability']}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.orange[700],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
                                     'Quantity: ${equipment['quantity']}',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -212,82 +152,6 @@ class Farmercompanyequipment extends StatelessWidget {
                                   ),
                                 ],
                               ),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.info_outline, color: Colors.green[700]),
-                              onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20)),
-                                      elevation: 16,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Image.network(equipment['image']),
-                                            const SizedBox(height: 15),
-                                            Text(
-                                              equipment['name'],
-                                              style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.green[700],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Description: ${equipment['description']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.brown[700],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Price: \$${equipment['price']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.green[600],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Availability: ${equipment['availability']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.orange[800],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Quantity: ${equipment['quantity']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey[700],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 15),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.green[700],
-                                              ),
-                                              child: Text('Close'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              },
                             ),
                           ],
                         ),
@@ -304,9 +168,8 @@ class Farmercompanyequipment extends StatelessWidget {
   }
 
   Stream<QuerySnapshot> fetchEquipmentForCompany(String companyId) {
-    final CollectionReference equipmentCollection = FirebaseFirestore.instance.collection('machinary');
-    return equipmentCollection
-        .where('userid', isEqualTo: companyId)
-        .snapshots();
+    final CollectionReference equipmentCollection =
+        FirebaseFirestore.instance.collection('machinary');
+    return equipmentCollection.where('userid', isEqualTo: companyId).snapshots();
   }
 }

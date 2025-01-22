@@ -270,7 +270,10 @@ Widget _buildCarouselSlider() {
             return GestureDetector(
               onTap: () {
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return Farmercompanyequipment (companyId: '', companyName: '',);
+                  return Farmercompanyequipment (
+                    companyId: companiesList[index].id, // Pass the document ID here
+        companyName: data['name'] ?? 'Unknown',
+                  );
                 },));
               },
               child: Card(
