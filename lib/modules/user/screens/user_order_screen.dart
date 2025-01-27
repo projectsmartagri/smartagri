@@ -115,8 +115,8 @@ class OrderScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8.0),
                                 child: Image.network(
                                   itemData['imageUrl'] ?? '',
-                                  width: 50,
-                                  height: 50,
+                                  width: 100,
+                                  height:100,
                                   fit: BoxFit.cover,
                                 ),
                               ),

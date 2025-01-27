@@ -65,21 +65,36 @@ class _SupplierBookingDetailsScreenState
     );
   }
 
-  Widget _buildSearchAndDateFilter() {
-    return TextField(
-      controller: _dateController,
-      decoration: InputDecoration(
-        labelText: 'Select Date',
-        prefixIcon: Icon(Icons.calendar_today),
-        border: OutlineInputBorder(),
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+ Widget _buildSearchAndDateFilter() {
+  return Row(
+    children: [
+      Expanded(
+        child: TextField(
+          controller: _dateController,
+          decoration: InputDecoration(
+            labelText: 'Select Date',
+            prefixIcon: Icon(Icons.calendar_today),
+            border: OutlineInputBorder(),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+          readOnly: true,
+          onTap: _selectDate, // To open the date picker
+        ),
       ),
-      readOnly: true,
-      onTap: _selectDate, // To open the date picker
-    );
-  }
-
+      if (selectedDate != null)
+        IconButton(
+          icon: Icon(Icons.close, color: const Color.fromARGB(255, 14, 138, 35)),
+          onPressed: () {
+            setState(() {
+              selectedDate = null;
+              _dateController.clear();
+            
+            });
+          },
+        ),
+    ],
+  );
+}
 
  Future<void> markAsDelivered(
     String orderId, String machineryId, int decrementBy, BuildContext context) async {

@@ -93,8 +93,11 @@ class _SupplierEquipmentDetailsScreenState extends State<SupplierEquipmentDetail
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
+
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Equipment Details', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -227,6 +230,9 @@ class _SupplierEquipmentDetailsScreenState extends State<SupplierEquipmentDetail
     );
   }
 }
+
+
+
 
 class EditEquipmentScreen extends StatefulWidget {
   final String initialName;

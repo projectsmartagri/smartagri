@@ -12,7 +12,6 @@ class ProductSalesScreen extends StatefulWidget {
 
 class _ProductSalesScreenState extends State<ProductSalesScreen> {
   DateTime? selectedDate;
-
   final ValueNotifier<double> totalSales = ValueNotifier<double>(0.0);
 
   Future<List<Map<String, dynamic>>> fetchSalesData(String farmerId) async {
@@ -21,7 +20,7 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
         .where('isCompleted', isEqualTo: true)
         .get();
 
-    final List<Map<String, dynamic>> salesData = [];
+    final Map<String, Map<String, dynamic>> salesData = {};
     double overallTotalSales = 0.0;
 
     for (var order in ordersSnapshot.docs) {
@@ -50,12 +49,21 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
           final String title = productData['title'];
           final double price = productData['price'].toDouble();
 
-          // Add individual purchase data to salesData list
-          salesData.add({
-            'title': title,
+          if (!salesData.containsKey(productId)) {
+            salesData[productId] = {
+              'title': title,
+              'quantity': 0,
+              'totalSales': 0.0,
+              'purchases': [],
+            };
+          }
+
+          salesData[productId]!['quantity'] += quantity;
+          salesData[productId]!['totalSales'] += quantity * price;
+          salesData[productId]!['purchases'].add({
             'quantity': quantity,
-            'date': date.toDate(),
             'totalSales': quantity * price,
+            'date': date.toDate(),
           });
 
           // Accumulate total sales for all products
@@ -67,10 +75,12 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
     // Update the ValueNotifier for overall total sales
     totalSales.value = overallTotalSales;
 
-    // Sort by date in descending order
-    salesData.sort((a, b) => b['date'].compareTo(a['date']));
+    // Convert the map values to a list and sort by date
+    final List<Map<String, dynamic>> sortedSalesData = salesData.values.toList();
+    sortedSalesData.sort((a, b) => b['purchases'][0]['date']
+        .compareTo(a['purchases'][0]['date'])); // Descending order
 
-    return salesData;
+    return sortedSalesData;
   }
 
   void pickDate(BuildContext context) async {
@@ -87,15 +97,53 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
       });
     }
   }
-   void resetDateFilter() {
+
+  void resetDateFilter() {
     setState(() {
       selectedDate = null;
     });
   }
 
+  // Function to show product purchase details in a dialog
+  void showProductDetailsDialog(BuildContext context, Map<String, dynamic> productData) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(productData['title']),
+          content: SingleChildScrollView(
+            child: Column(
+              children: productData['purchases'].map<Widget>((purchase) {
+                return Card(
+                  margin: const EdgeInsets.symmetric(vertical: 8),
+                  child: ListTile(
+                    title: Text('Quantity: ${purchase['quantity']}'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Total Sales: ₹${purchase['totalSales'].toStringAsFixed(2)}'),
+                        Text('Date: ${DateFormat('dd-MM-yyyy').format(purchase['date'])}'),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final String farmerId = FirebaseAuth.instance.currentUser!.uid; 
+    final String farmerId = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
       bottomSheet: Container(
@@ -127,7 +175,7 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
             icon: const Icon(Icons.calendar_today),
             onPressed: () => pickDate(context),
           ),
-           if (selectedDate != null)
+          if (selectedDate != null)
             IconButton(
               icon: const Icon(Icons.clear),
               tooltip: "Reset Date Filter",
@@ -136,7 +184,7 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
         ],
       ),
       body: Container(
-        child: FutureBuilder<List<Map<String, dynamic>>>(
+        child: FutureBuilder<List<Map<String, dynamic>>>( 
           future: fetchSalesData(farmerId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -212,11 +260,18 @@ class _ProductSalesScreenState extends State<ProductSalesScreen> {
                         ],
                         rows: salesData.map((productData) {
                           return DataRow(cells: [
-                            DataCell(Text(productData['title'])),
+                            DataCell(
+                              GestureDetector(
+                                onTap: () {
+                                  showProductDetailsDialog(context, productData);
+                                },
+                                child: Text(productData['title']),
+                              ),
+                            ),
                             DataCell(Text(productData['quantity'].toString())),
                             DataCell(Text(
                               DateFormat('dd-MM-yyyy')
-                                  .format(productData['date']),
+                                  .format(productData['purchases'][0]['date']),
                             )),
                             DataCell(Text(
                               productData['totalSales'].toStringAsFixed(2),

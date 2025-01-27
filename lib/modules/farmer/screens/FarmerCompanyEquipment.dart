@@ -53,7 +53,7 @@ class Farmercompanyequipment extends StatelessWidget {
                   'id': doc.id,  // Make sure this is never null
                   'name': data['name'] ?? 'Unnamed', // Default to 'Unnamed' if null
                   'price': data['price'] ?? 0, // Default to 0 if null
-                  'quantity': data['Quantity'] ?? 0, // Default to 0 if null
+                  'Quantity': data['Quantity'] ?? 0, // Default to 0 if null
                   'image': data['image'] ?? '', // Default to empty string if null
                 };
               }).toList();
@@ -68,28 +68,27 @@ class Farmercompanyequipment extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(18.0),
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    child: InkWell(
-                      onTap: () {
-                        // Handle null values before navigating
-                        final equipmentId = equipment['id'] ?? '';
-                       
-                        // If id is empty or invalid, do not navigate
-                        if (equipmentId.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => EquipmentDetailsScreen(
-                                id: equipmentId,  // Ensure a valid id is passed
-                                machinery:equipment,
-                              ),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text('Invalid equipment ID')));
-                        }
-                      },
+                   child: Material(
+    color: Colors.white,
+    child: InkWell(
+      onTap: () {
+        print('Card tapped!');
+        final String machineryId = equipment['id'] as String; 
+        if ( machineryId.isNotEmpty) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => EquipmentDetailsScreen(
+                id: machineryId,
+                machinery: equipment,
+              ),
+            ),
+          );
+       }
+        else {
+         print('Invalid machineryId');
+       }
+      },
                       child: Container(
                         decoration: BoxDecoration(
                           color: Colors.white, // Light background for the card
@@ -135,7 +134,7 @@ class Farmercompanyequipment extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Price: \$${equipment['price'].toStringAsFixed(2)}',
+                                    'Price: ₹${equipment['price'].toStringAsFixed(2)}',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
@@ -144,7 +143,7 @@ class Farmercompanyequipment extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Quantity: ${equipment['quantity']}',
+                                    'Quantity: ${equipment['Quantity']}',
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.brown[600],
@@ -157,6 +156,7 @@ class Farmercompanyequipment extends StatelessWidget {
                         ),
                       ),
                     ),
+                   ),
                   );
                 },
               );

@@ -2,14 +2,11 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:smartagri/modules/choose_screen.dart';
+
 import 'package:smartagri/modules/farmer/screens/add_banner_screen.dart';
 import 'package:smartagri/modules/supplier/screens/AddEquipment_screen.dart';
 import 'package:smartagri/modules/supplier/screens/SupplierEquipment_Details_screen.dart';
-import 'package:smartagri/modules/supplier/screens/OtherCompaniesScreen.dart';
-import 'package:smartagri/modules/supplier/screens/Settings_screen.dart';
-import 'package:smartagri/modules/supplier/screens/SupplierProfile_Screen.dart';
-import 'package:smartagri/modules/supplier/screens/Supplier_bookingdetails_screen.dart';
+
 import 'package:smartagri/modules/supplier/screens/custom_supplier_screen.dart';
 
 class SupplierHomeScreen extends StatefulWidget {
@@ -101,85 +98,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
 
     return Scaffold(
       drawer:CustomDrawer()  // Drawer
-          // Drawer(
-          //   child: ListView(
-          //     padding: EdgeInsets.zero,
-          //     children: <Widget>[
-          //       DrawerHeader(
-          //         decoration: const BoxDecoration(
-          //           color: Color.fromARGB(255, 4, 156, 40),
-          //         ),
-          //         child: Container(), // Empty container instead of text
-          //       ),
-          //       ListTile(
-          //         title: const Text('Home'),
-          //         onTap: () {
-          //           Navigator.pop(context);
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) => const SupplierHomeScreen()),
-          //           ); // Close the drawer
-          //         },
-          //       ),
-          //       ListTile(
-          //         title: const Text('Booking Details'),
-          //         onTap: () {
-          //           Navigator.pop(context);
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) =>
-          //                     const SupplierBookingDetailsScreen()),
-          //           ); // Close the drawer
-          //         },
-          //       ),
-          //       ListTile(
-          //         title: const Text('Other Companies'),
-          //         onTap: () {
-          //           Navigator.pop(context);
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) => const OtherCompaniesScreen()),
-          //           ); // Close the drawer
-          //         },
-          //       ),
-          //       ListTile(
-          //         title: const Text('Profile'),
-          //         onTap: () {
-          //           Navigator.pop(context);
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(
-          //                 builder: (context) =>
-          //                      SupplierProfileScreen()),
-          //           ); // Close the drawer
-          //         },
-          //       ),
-               
-          //       const Divider(), // Divider before LOG OUT
-          //       ListTile(
-          //         title: const Text(
-          //           'LOG OUT',
-          //           style: TextStyle(
-          //             color: Colors.red, // Change color to red for emphasis
-          //           ),
-          //         ),
-          //         onTap: () {
-          //           // Handle log out logic here
-          //           Navigator.pop(context);
-          //           Navigator.push(
-          //             context,
-          //             MaterialPageRoute(builder: (context) => ChooseScreen()),
-          //           );
-          //         },
-          //       ),
-          //     ],
-          //   ),
-          
-          
-          // ),
+         
 ,
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -349,7 +268,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('machinary')
-                        .where('availability', isEqualTo: "Available" )
+                       // .where('availability', isEqualTo: "Available" )
                         .where('userid',
                             isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                         .snapshots(),
@@ -492,159 +411,162 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
                   ),
 
                   // Heading for Not Available for Rent Section
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        'BOOKED',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Align(
+                  //     alignment: Alignment.centerLeft,
+                  //     child: Text(
+                  //       'BOOKED',
+                  //       style: TextStyle(
+                  //         fontSize: 20,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
 
-                  StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('machinary')
-                        .where('availability', isEqualTo: "Not Available" ).where('userid',
-                            isEqualTo: FirebaseAuth.instance.currentUser!.uid)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text(
-                            'No valid data',
-                            style: TextStyle(fontSize: 16, color: Colors.red),
-                          ),
-                        );
-                      } else {
-                        var dataDoc = snapshot.data!.docs;
+                  // StreamBuilder(
+                  //   stream: FirebaseFirestore.instance
+                  //       .collection('machinary')
+                        
+                  //       .where('availability', isEqualTo: "Not Available" )
+                  //       .where('Quantity', isEqualTo: 0)
+                  //       .where('userid',
+                  //           isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+                  //       .snapshots(),
+                  //   builder: (context, snapshot) {
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       return Center(child: CircularProgressIndicator());
+                  //     } else if (snapshot.hasError) {
+                  //       return Center(
+                  //         child: Text(
+                  //           'No valid data',
+                  //           style: TextStyle(fontSize: 16, color: Colors.red),
+                  //         ),
+                  //       );
+                  //     } else {
+                  //       var dataDoc = snapshot.data!.docs;
 
-                        return dataDoc.isEmpty
-                            ? Center(
-                                child: Text(
-                                  'No items',
-                                  style: TextStyle(
-                                      fontSize: 18, color: Colors.grey),
-                                ),
-                              )
-                            : ListView.builder(
-                                shrinkWrap: true,
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: dataDoc.length,
-                                itemBuilder: (context, index) {
-                                  return GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              SupplierEquipmentDetailsScreen(
-                                            id: dataDoc[index].id,
-                                            name: dataDoc[index]['name']!,
-                                            imageUrl: dataDoc[index]['image']!,
-                                            rentRate: dataDoc[index]['price']
-                                                .toString(),
-                                            description: dataDoc[index]
-                                                ['description']!,
-                                            quantity:
-                                                dataDoc[index]['Quantity'],
-                                            farmersOrders: [],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: EdgeInsets.symmetric(
-                                          vertical: 10, horizontal: 15),
-                                      child: Card(
-                                        elevation: 6.0,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15.0),
-                                        ),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Colors.purpleAccent,
-                                                Colors.blue
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(15.0),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black12,
-                                                blurRadius: 8.0,
-                                                offset: Offset(2, 4),
-                                              ),
-                                            ],
-                                          ),
-                                          padding: const EdgeInsets.all(12.0),
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              // Equipment Image
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                                child: Image.network(
-                                                  dataDoc[index]['image']!,
-                                                  height: 100,
-                                                  width: 100,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                  width:
-                                                      16), // Space between image and text
-                                              // Equipment Details
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      dataDoc[index]['name']!,
-                                                      style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white,
-                                                      ),
-                                                    ),
-                                                    SizedBox(height: 5),
-                                                    Text(
-                                                      'Rent Rate: ₹${dataDoc[index]['price'].toString()}',
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color:
-                                                            Colors.yellowAccent,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                      }
-                    },
-                  )
+                  //       return dataDoc.isEmpty
+                  //           ? Center(
+                  //               child: Text(
+                  //                 'No items',
+                  //                 style: TextStyle(
+                  //                     fontSize: 18, color: Colors.grey),
+                  //               ),
+                  //             )
+                  //           : ListView.builder(
+                  //               shrinkWrap: true,
+                  //               physics: NeverScrollableScrollPhysics(),
+                  //               itemCount: dataDoc.length,
+                  //               itemBuilder: (context, index) {
+                  //                 return GestureDetector(
+                  //                   onTap: () {
+                  //                     Navigator.push(
+                  //                       context,
+                  //                       MaterialPageRoute(
+                  //                         builder: (context) =>
+                  //                             SupplierEquipmentDetailsScreen(
+                  //                           id: dataDoc[index].id,
+                  //                           name: dataDoc[index]['name']!,
+                  //                           imageUrl: dataDoc[index]['image']!,
+                  //                           rentRate: dataDoc[index]['price']
+                  //                               .toString(),
+                  //                           description: dataDoc[index]
+                  //                               ['description']!,
+                  //                           quantity:
+                  //                               dataDoc[index]['Quantity'],
+                  //                           farmersOrders: [],
+                  //                         ),
+                  //                       ),
+                  //                     );
+                  //                   },
+                  //                   child: Container(
+                  //                     margin: EdgeInsets.symmetric(
+                  //                         vertical: 10, horizontal: 15),
+                  //                     child: Card(
+                  //                       elevation: 6.0,
+                  //                       shape: RoundedRectangleBorder(
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(15.0),
+                  //                       ),
+                  //                       child: Container(
+                  //                         decoration: BoxDecoration(
+                  //                           gradient: LinearGradient(
+                  //                             colors: [
+                  //                               Colors.purpleAccent,
+                  //                               Colors.blue
+                  //                             ],
+                  //                             begin: Alignment.topLeft,
+                  //                             end: Alignment.bottomRight,
+                  //                           ),
+                  //                           borderRadius:
+                  //                               BorderRadius.circular(15.0),
+                  //                           boxShadow: [
+                  //                             BoxShadow(
+                  //                               color: Colors.black12,
+                  //                               blurRadius: 8.0,
+                  //                               offset: Offset(2, 4),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                         padding: const EdgeInsets.all(12.0),
+                  //                         child: Row(
+                  //                           crossAxisAlignment:
+                  //                               CrossAxisAlignment.center,
+                  //                           children: [
+                  //                             // Equipment Image
+                  //                             ClipRRect(
+                  //                               borderRadius:
+                  //                                   BorderRadius.circular(12.0),
+                  //                               child: Image.network(
+                  //                                 dataDoc[index]['image']!,
+                  //                                 height: 100,
+                  //                                 width: 100,
+                  //                                 fit: BoxFit.cover,
+                  //                               ),
+                  //                             ),
+                  //                             SizedBox(
+                  //                                 width:
+                  //                                     16), // Space between image and text
+                  //                             // Equipment Details
+                  //                             Expanded(
+                  //                               child: Column(
+                  //                                 crossAxisAlignment:
+                  //                                     CrossAxisAlignment.start,
+                  //                                 children: [
+                  //                                   Text(
+                  //                                     dataDoc[index]['name']!,
+                  //                                     style: TextStyle(
+                  //                                       fontSize: 20,
+                  //                                       fontWeight:
+                  //                                           FontWeight.bold,
+                  //                                       color: Colors.white,
+                  //                                     ),
+                  //                                   ),
+                  //                                   SizedBox(height: 5),
+                  //                                   Text(
+                  //                                     'Rent Rate: ₹${dataDoc[index]['price'].toString()}',
+                  //                                     style: TextStyle(
+                  //                                       fontSize: 16,
+                  //                                       color:
+                  //                                           Colors.yellowAccent,
+                  //                                     ),
+                  //                                   ),
+                  //                                 ],
+                  //                               ),
+                  //                             ),
+                  //                           ],
+                  //                         ),
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                 );
+                  //               },
+                  //             );
+                  //     }
+                  //   },
+                  // )
                 ],
               ),
             ),

@@ -691,7 +691,7 @@ DateTime ?endDate;
             const SizedBox(height: 20),
 
             // Book Now Button
-            if (widget.machinery['availability'] == "Available")
+          if (widget.machinery['availability'] == "Available" && widget.machinery['Quantity'] > 0)
               Row(
                 children: [
                   Expanded(

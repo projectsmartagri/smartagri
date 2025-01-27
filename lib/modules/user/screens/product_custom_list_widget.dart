@@ -137,7 +137,7 @@ class _ProductGridState extends State<ProductGrid> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
+                 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
