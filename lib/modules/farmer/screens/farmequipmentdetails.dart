@@ -365,7 +365,7 @@ DateTime ?endDate;
                   TextField(
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    labelText: 'Enter the quntity',
+                    labelText: 'Enter the quantity',
                   ),
                   onChanged: (value) {
                     
@@ -519,13 +519,14 @@ DateTime ?endDate;
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Company name',
+                        'Company name          ',
                         style: TextStyle(
                           fontSize: 18,
                           color: Colors.grey.shade400,
                         ),
                       ),
                       
+                     // const Spacer(),
                       Expanded(
 
                         child: Text(
@@ -690,7 +691,7 @@ DateTime ?endDate;
             const SizedBox(height: 20),
 
             // Book Now Button
-            if (widget.machinery['availability'] == "Available")
+          if (widget.machinery['availability'] == "Available" && widget.machinery['Quantity'] > 0)
               Row(
                 children: [
                   Expanded(

@@ -71,7 +71,7 @@ class FarmerDashboardScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) =>  FarmerOrdersScreen(farmerId:  FirebaseAuth.instance.currentUser!.uid
+                      MaterialPageRoute(builder: (context) =>  FarmerProductOrdersScreen(farmerId:  FirebaseAuth.instance.currentUser!.uid
 ,)),
                     );
                   },

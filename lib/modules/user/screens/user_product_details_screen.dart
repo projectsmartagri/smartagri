@@ -11,110 +11,77 @@ class UserProductDetailsScreen extends StatefulWidget {
   const UserProductDetailsScreen({super.key, required this.product});
 
   @override
-  State<UserProductDetailsScreen> createState() => _UserProductDetailsScreenState();
+  State<UserProductDetailsScreen> createState() =>
+      _UserProductDetailsScreenState();
 }
 
 class _UserProductDetailsScreenState extends State<UserProductDetailsScreen> {
-  // Method to delete the product from Firestore
-  Future<void> deleteProduct(BuildContext context) async {
+  Future<void> _addToCart(
+      String productId, String name, String imageUrl, double price) async {
     try {
-      await FirebaseFirestore.instance.collection('products').doc(widget.product.id).delete();
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product deleted successfully')),
-      );
-      Navigator.pop(context); // Go back to the previous screen after deletion
+      String? userId = FirebaseAuth.instance.currentUser?.uid;
+
+      if (userId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User not logged in')),
+        );
+        return;
+      }
+
+      var cartDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('cart')
+          .doc(productId);
+
+      var cartSnapshot = await cartDoc.get();
+
+      if (cartSnapshot.exists) {
+        int currentQuantity = cartSnapshot['quantity'] ?? 0;
+        await cartDoc.update({
+          'quantity': currentQuantity + 1,
+          'addedAt': FieldValue.serverTimestamp(),
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$name quantity updated to ${currentQuantity + 1}')),
+        );
+      } else {
+        await cartDoc.set({
+          'name': name,
+          'imageUrl': imageUrl,
+          'price': price,
+          'productId': productId,
+          'quantity': 1,
+          'addedAt': FieldValue.serverTimestamp(),
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$name added to cart!')),
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to delete product')),
+        SnackBar(content: Text('Failed to add to cart: $e')),
       );
     }
   }
-
-  // Navigate to the edit screen (you would need to implement this screen)
-  void editProduct(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EditProductScreen(product: widget.product),
-      ),
-    );
-  }
-
-  // Method to view the farmer's details
-  void viewFarmerDetails(BuildContext context) {
-    String farmerId = widget.product['farmerId'];
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => FarmerDetailsScreen(farmerId: farmerId),
-      ),
-    );
-  }
-
-   Future<void> _addToCart(String productId, String name, String imageUrl, double price) async {
-  try {
-    // Assuming a user is logged in and you have userId available
-    String? userId = FirebaseAuth.instance.currentUser?.uid; // Replace with the actual userId
-
-    if (userId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('User not logged in')),
-      );
-      return;
-    }
-
-    // Reference to the user's cart in Firestore
-    var cartDoc = FirebaseFirestore.instance.collection('users').doc(userId).collection('cart').doc(productId);
-
-    // Fetch the cart item if it already exists
-    var cartSnapshot = await cartDoc.get();
-
-    if (cartSnapshot.exists) {
-      // If the item exists in the cart, increment the quantity
-      int currentQuantity = cartSnapshot['quantity'] ?? 0;
-      await cartDoc.update({
-        'quantity': currentQuantity + 1,
-        'addedAt': FieldValue.serverTimestamp(), // Update timestamp when the item is added
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$name quantity updated to ${currentQuantity + 1}')),
-      );
-    } else {
-      // If the item does not exist, add it to the cart with quantity 1
-      await cartDoc.set({
-        'name': name,
-        'imageUrl': imageUrl,
-        'price': price,
-        'productId': productId,
-        'quantity': 1,
-        'addedAt': FieldValue.serverTimestamp(), // Timestamp when the item is added
-      });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('$name added to cart!')),
-      );
-    }
-  } catch (e) {
-    // Handle any errors
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to add to cart: $e')),
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-    
-      bottomSheet:  Container(
-        margin: EdgeInsets.symmetric(horizontal: 10),
+      bottomSheet: widget.product['quantity'] > 0
+          ? Container(
+              margin: EdgeInsets.symmetric(horizontal: 10),
               width: MediaQuery.of(context).size.width,
               child: ElevatedButton(
-                onPressed: (){
-
-                  _addToCart(widget.product.id,widget.product['title'] , widget.product['imageUrl'], widget.product['price']);
-
+                onPressed: () {
+                  _addToCart(
+                    widget.product.id,
+                    widget.product['title'],
+                    widget.product['imageUrl'],
+                    widget.product['price'],
+                  );
                 },
                 child: const Text('Add to cart', style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
@@ -126,152 +93,146 @@ class _UserProductDetailsScreenState extends State<UserProductDetailsScreen> {
                   ),
                 ),
               ),
-            ),
+            )
+          : null,
       body: Column(
-      children: [
-        const SizedBox(height: 25), // Top padding
-        Align(
-          alignment: Alignment.topLeft,
-          child: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.green),
-            onPressed: () {
-              Navigator.push(context, MaterialPageRoute(builder:(context) => UserRootScreen()));
-            },
+        children: [
+          const SizedBox(height: 25),
+          Align(
+            alignment: Alignment.topLeft,
+            child: IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.green),
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => UserRootScreen()));
+              },
+            ),
           ),
-        ),
-        Expanded( child: SingleChildScrollView(
-        child: Card(
-          margin: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
-          ),
-          elevation: 5,
-          color: Colors.white,
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 50),
-
-                // Image Section
-                Container(
-                  width: double.infinity,
-                  height: 300,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.green.withOpacity(0.3),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Card(
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 50),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                elevation: 5,
+                color: Colors.white,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 50),
+                      Container(
+                        width: double.infinity,
+                        height: 300,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.green.withOpacity(0.3),
+                              blurRadius: 10,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: CachedNetworkImage(
+                            imageUrl: widget.product['imageUrl'],
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                const Center(child: CircularProgressIndicator()),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error, color: Colors.red),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        widget.product['title'],
+                        style: const TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "₹${widget.product['price']}/kg",
+                        style: const TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.brown,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          Icon(Icons.category, color: Colors.green[700]),
+                          const SizedBox(width: 8),
+                          Text(
+                            widget.product['category'],
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.green[800],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      const Divider(color: Colors.grey, thickness: 0.5),
+                      const SizedBox(height: 16),
+                      Text(
+                        "Product Description",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green[800],
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        widget.product['description'],
+                        style: const TextStyle(
+                          fontSize: 14,
+                          color: Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Divider(color: Colors.grey, thickness: 0.5),
+                      const SizedBox(height: 16),
+                      ElevatedButton(
+                        onPressed: () {
+                          String farmerId = widget.product['farmerId'];
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FarmerDetailsScreen(farmerId: farmerId),
+                            ),
+                          );
+                        },
+                        child: const Text('View Farmer Details',
+                            style: TextStyle(color: Colors.white)),
+                        style: ElevatedButton.styleFrom(
+                          fixedSize: Size(MediaQuery.of(context).size.width, 50),
+                          backgroundColor: Colors.green[700],
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
                       ),
                     ],
                   ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: CachedNetworkImage(
-                      imageUrl: widget.product['imageUrl'],
-                      fit: BoxFit.cover,
-                      placeholder: (context, url) =>
-                          const Center(child: CircularProgressIndicator()),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error, color: Colors.red),
-                    ),
-                  ),
                 ),
-                const SizedBox(height: 20),
-
-                // Product Title and Price Section
-                Text(
-                  widget.product['title'],
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  "₹${widget.product['price']}/kg",
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.brown,
-                  ),
-                ),
-                const SizedBox(height: 16),
-
-                // Category Section
-                Row(
-                  children: [
-                    Icon(Icons.category, color: Colors.green[700]),
-                    const SizedBox(width: 8),
-                    Text(
-                      widget.product['category'],
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.green[800],
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                ),
-                const SizedBox(height: 16),
-
-                // Product Description Section
-                Text(
-                  "Product Description",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.green[800],
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  widget.product['description'],
-                  style: const TextStyle(
-                    fontSize: 14,
-                    color: Colors.black87,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Divider(
-                  color: Colors.grey,
-                  thickness: 0.5,
-                ),
-                const SizedBox(height: 16),
-
-                // View Farmer Details Button
-                ElevatedButton(
-                  onPressed: () => viewFarmerDetails(context),
-                  child: const Text('View Farmer Details', style: TextStyle(color: Colors.white)),
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(MediaQuery.of(context).size.width, 50),
-                    backgroundColor: Colors.green[700],
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
-        ),
-      ]
-      )
     );
   }
 }
-
-
-
 
 class FarmerDetailsScreen extends StatelessWidget {
   final String farmerId;

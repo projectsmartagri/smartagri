@@ -65,21 +65,36 @@ class _SupplierBookingDetailsScreenState
     );
   }
 
-  Widget _buildSearchAndDateFilter() {
-    return TextField(
-      controller: _dateController,
-      decoration: InputDecoration(
-        labelText: 'Select Date',
-        prefixIcon: Icon(Icons.calendar_today),
-        border: OutlineInputBorder(),
-        contentPadding:
-            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+ Widget _buildSearchAndDateFilter() {
+  return Row(
+    children: [
+      Expanded(
+        child: TextField(
+          controller: _dateController,
+          decoration: InputDecoration(
+            labelText: 'Select Date',
+            prefixIcon: Icon(Icons.calendar_today),
+            border: OutlineInputBorder(),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+          readOnly: true,
+          onTap: _selectDate, // To open the date picker
+        ),
       ),
-      readOnly: true,
-      onTap: _selectDate, // To open the date picker
-    );
-  }
-
+      if (selectedDate != null)
+        IconButton(
+          icon: Icon(Icons.close, color: const Color.fromARGB(255, 14, 138, 35)),
+          onPressed: () {
+            setState(() {
+              selectedDate = null;
+              _dateController.clear();
+            
+            });
+          },
+        ),
+    ],
+  );
+}
 
  Future<void> markAsDelivered(
     String orderId, String machineryId, int decrementBy, BuildContext context) async {
@@ -240,13 +255,20 @@ Future<void> markAsReturned(
                   filteredDetails = details;
 
                   if (selectedDate != null) {
-                    filteredOrders = filteredOrders.where((order) {
+                     List<int> validIndices = [];
+                    filteredOrders = rentalOrders.where((order) {
                       Timestamp startDateTimestamp = order['startDate'];
                       DateTime startDate = startDateTimestamp.toDate();
-                      return startDate.year == selectedDate!.year &&
+                       bool matches = startDate.year == selectedDate!.year &&
+                       startDate.year == selectedDate!.year &&
                           startDate.month == selectedDate!.month &&
                           startDate.day == selectedDate!.day;
+                           if (matches) validIndices.add(rentalOrders.indexOf(order));
+                           return matches;
                     }).toList();
+
+                    // Use valid indices to filter details as well
+                  filteredDetails = validIndices.map((index) => details[index]).toList();
                   }
 
                   return Column(

@@ -41,36 +41,39 @@ class _MycartscreenState extends State<Mycartscreen> {
   }
 
   Future<void> decreaseProductQuantity(List<dynamic> orderData) async {
-  final productsCollection = FirebaseFirestore.instance.collection('products');
+    final productsCollection = FirebaseFirestore.instance.collection('products');
 
-  for (var order in orderData) {
-    final productId = order['productId']; // Product ID from the cart
-    final quantityToDecrease = order['quantity']; // Quantity to decrease
+    for (var order in orderData) {
+      final productId = order['productId']; // Product ID from the cart
+      final quantityToDecrease = order['quantity']; // Quantity to decrease
 
-    // Check if productId exists in products collection
-    final productDoc = productsCollection.doc(productId);
+      // Check if productId exists in products collection
+      final productDoc = productsCollection.doc(productId);
 
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      final productSnapshot = await transaction.get(productDoc);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final productSnapshot = await transaction.get(productDoc);
 
-      if (productSnapshot.exists) {
-        final currentQuantity = productSnapshot.data()?['quantity'] ?? 0;
+        if (productSnapshot.exists) {
+          final currentQuantity = productSnapshot.data()?['quantity'] ?? 0;
 
-        
-          // Decrease the quantity
-          transaction.update(productDoc, {
-            'quantity': currentQuantity - quantityToDecrease,
-          });
-        
-      } else {
-        throw Exception('Product not found for ID: $productId');
-      }
-    }).catchError((error) {
-      print('Error updating quantity for product ID: $productId');
-      print(error);
-    });
+          // Check if enough stock is available
+          if (currentQuantity >= quantityToDecrease) {
+            // Decrease the quantity
+            transaction.update(productDoc, {
+              'quantity': currentQuantity - quantityToDecrease,
+            });
+          } else {
+            throw Exception('Not enough stock available for product ID: $productId');
+          }
+        } else {
+          throw Exception('Product not found for ID: $productId');
+        }
+      }).catchError((error) {
+        print('Error updating quantity for product ID: $productId');
+        print(error);
+      });
+    }
   }
-}
 
   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     setState(() {
@@ -88,15 +91,7 @@ class _MycartscreenState extends State<Mycartscreen> {
 
     final orderData = cartSnapshot.docs.map((doc) => doc.data()).toList();
 
-
-     await  decreaseProductQuantity(orderData);
-
-
-
-
-    
-
-    
+    await decreaseProductQuantity(orderData);
 
     await FirebaseFirestore.instance.collection('orders').add({
       'userId': user.uid,
@@ -250,8 +245,8 @@ class _MycartscreenState extends State<Mycartscreen> {
                                   Row(children: [
                                     Image.network(
                                       cartList[index]['imageUrl'],
-                                      height: 100,
-                                      width: 100,
+                                      height: 150,
+                                      width: 150,
                                     ),
                                     const SizedBox(width: 25),
                                     Column(
@@ -299,17 +294,31 @@ class _MycartscreenState extends State<Mycartscreen> {
                                             Text('$itemCount'),
                                             const SizedBox(width: 15),
                                             InkWell(
-                                              onTap: () {
-                                                FirebaseFirestore.instance
-                                                    .collection('users')
-                                                    .doc(FirebaseAuth.instance
-                                                        .currentUser?.uid)
-                                                    .collection('cart')
-                                                    .doc(cartList[index].id)
-                                                    .update({
-                                                  'quantity':
-                                                      FieldValue.increment(1),
-                                                });
+                                              onTap: () async {
+                                                // Fetch product data to check stock
+                                                final productDoc = FirebaseFirestore.instance
+                                                    .collection('products')
+                                                    .doc(cartList[index]['productId']);
+                                                final productSnapshot = await productDoc.get();
+                                                final productData = productSnapshot.data();
+                                                final stockQuantity = productData?['quantity'] ?? 0;
+
+                                                if (itemCount < stockQuantity) {
+                                                  FirebaseFirestore.instance
+                                                      .collection('users')
+                                                      .doc(FirebaseAuth.instance.currentUser?.uid)
+                                                      .collection('cart')
+                                                      .doc(cartList[index].id)
+                                                      .update({
+                                                    'quantity': FieldValue.increment(1),
+                                                  });
+                                                } else {
+                                                  // Show message if not enough stock
+                                                  ScaffoldMessenger.of(context).showSnackBar(
+                                                    const SnackBar(
+                                                        content: Text('Not enough stock available!')),
+                                                  );
+                                                }
                                               },
                                               child: const Icon(
                                                 Icons.add,

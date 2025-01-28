@@ -1,10 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FarmerOrdersScreen extends StatelessWidget {
+class FarmerProductOrdersScreen extends StatelessWidget {
   final String farmerId; // Farmer's unique ID
 
-  const FarmerOrdersScreen({super.key, required this.farmerId});
+  const FarmerProductOrdersScreen({super.key, required this.farmerId});
 
   Future<List<Map<String, dynamic>>> fetchOrders() async {
     // Fetch orders from the 'order' collection
@@ -25,7 +26,7 @@ class FarmerOrdersScreen extends StatelessWidget {
             .doc(productId)
             .get();
 
-        if (productDoc.exists && productDoc.data()?['farmerId'] == farmerId) {
+        if (productDoc.exists && productDoc.data()?['farmerId'] == FirebaseAuth.instance.currentUser!.uid) {
           // If the farmerId matches, add the order to the result
           orderData['items'] = product; // Add only this product item
           orderData['orderId'] = orderDoc.id; // Include the order ID

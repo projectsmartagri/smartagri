@@ -16,6 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   late TextEditingController nameController;
   late TextEditingController phoneController;
+  late TextEditingController addressController;
 
   bool isEditing = false;
 
@@ -24,6 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     nameController = TextEditingController();
     phoneController = TextEditingController();
+    addressController = TextEditingController();
   }
 
   Future<void> _loadUserData() async {
@@ -36,6 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (data != null) {
         nameController.text = data['name'] ?? '';
         phoneController.text = data['phone'] ?? '';
+        addressController.text = data['address'] ?? '';
       }
     }
   }
@@ -45,6 +48,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       await FirebaseFirestore.instance.collection('users').doc(user!.uid).update({
         'name': nameController.text.trim(),
         'phone': phoneController.text.trim(),
+        'address': addressController.text.trim(),
       });
       setState(() {
         isEditing = false;
@@ -65,11 +69,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           title: const Text(
             "Confirm Logout",
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.red,
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.red),
           ),
           content: const Text(
             "Are you sure you want to logout? This will end your session.",
@@ -80,15 +80,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text(
-                "Cancel",
-                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
-              ),
+              child: const Text("Cancel", style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold)),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
-              ),
+              style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
               onPressed: () async {
                 Navigator.pop(context);
                 Navigator.pushAndRemoveUntil(
@@ -97,20 +92,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   (route) => false,
                 );
               },
-              child: const Text(
-                "Logout",
-                style: TextStyle(color: Colors.white),
-              ),
+              child: const Text("Logout", style: TextStyle(color: Colors.white)),
             ),
           ],
         );
       },
     );
-  }
-
-  Future<void> _logout() async {
-    await FirebaseAuth.instance.signOut();
-    Navigator.of(context).pushReplacementNamed('/login');
   }
 
   @override
@@ -124,20 +111,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Profile', style: TextStyle(color: Colors.white)),
+        title: Text(isEditing ? 'Edit Profile' : 'Profile', style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color.fromARGB(255, 58, 166, 108),
         actions: [
-          IconButton(
-            onPressed: () {
-              setState(() {
-                isEditing = !isEditing;
-              });
-            },
-            icon: Icon(
-              isEditing ? Icons.cancel : Icons.edit,
-              color: Colors.white,
+          if (!isEditing)
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isEditing = true;
+                });
+              },
+              icon: const Icon(Icons.edit, color: Colors.white),
             ),
-          ),
+          if (isEditing)
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  isEditing = false;
+                });
+              },
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+            ),
           IconButton(
             onPressed: () => _showLogoutConfirmationDialog(context),
             icon: const Icon(Icons.logout, color: Colors.white),
@@ -152,136 +146,111 @@ class _ProfileScreenState extends State<ProfileScreen> {
           }
           if (!snapshot.hasData || !snapshot.data!.exists) {
             return const Center(
-              child: Text(
-                'User data not found!',
-                style: TextStyle(fontSize: 18, color: Colors.red),
-              ),
+              child: Text('User data not found!', style: TextStyle(fontSize: 18, color: Colors.red)),
             );
           }
 
           final userData = snapshot.data!.data() as Map<String, dynamic>;
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: CircleAvatar(
-                    radius: 50,
-                    backgroundImage: NetworkImage(userData['photoURL'] ?? ''),
-                    backgroundColor: Colors.grey[200],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Card(
-                        margin: const EdgeInsets.symmetric(vertical: 10),
-                        elevation: 4,
+          if (isEditing) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildTextFormField('Name', nameController),
+                    const SizedBox(height: 15),
+                    _buildTextFormField('Phone', phoneController),
+                    const SizedBox(height: 15),
+                    _buildTextFormField('Address', addressController),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _saveChanges,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 58, 166, 108),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Profile Details",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                    color: Color.fromARGB(255, 50, 183, 96)),
-                              ),
-                              const SizedBox(height: 10),
-                              ProfileField(label: 'Name', value: userData['name']),
-                              ProfileField(label: 'Phone', value: userData['phone']),
-                              ProfileField(label: 'Email', value: userData['email']),
-                              const Divider(),
-                            ],
-                          ),
-                        ),
                       ),
-                      if (isEditing)
-                        Column(
-                          children: [
-                            TextFormField(
-                              controller: nameController,
-                              decoration: InputDecoration(
-                                labelText: 'Name',
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your name';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            TextFormField(
-                              controller: phoneController,
-                              decoration: InputDecoration(
-                                labelText: 'Phone',
-                                filled: true,
-                                fillColor: Colors.grey[100],
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your phone number';
-                                }
-                                if (value.length != 10) {
-                                  return 'Enter a valid 10-digit phone number';
-                                }
-                                return null;
-                              },
-                            ),
-                            const SizedBox(height: 20),
-                            ElevatedButton(
-                              onPressed: _saveChanges,
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.teal,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              child: const Text('Save Changes'),
-                            ),
-                          ],
-                        ),
-                    ],
-                  ),
+                      child: const Text('Save Changes', style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          );
+              ),
+            );
+          } else {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  _buildProfileCard(userData),
+                ],
+              ),
+            );
+          }
         },
       ),
     );
   }
-}
 
-class ProfileField extends StatelessWidget {
-  final String label;
-  final String? value;
+  TextFormField _buildTextFormField(String label, TextEditingController controller) {
+    return TextFormField(
+      controller: controller,
+      decoration: InputDecoration(
+        labelText: label,
+        filled: true,
+        fillColor: Colors.grey[100],
+        prefixIcon: Icon(Icons.edit, color: Colors.green),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter your $label';
+        }
+        return null;
+      },
+    );
+  }
 
-  const ProfileField({required this.label, this.value, Key? key}) : super(key: key);
+  Widget _buildProfileCard(Map<String, dynamic> userData) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      elevation: 5,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              "Profile Details",
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromARGB(255, 58, 166, 108)),
+            ),
+            const SizedBox(height: 10),
+            _buildProfileField('Name', userData['name']),
+            _buildProfileField('Phone', userData['phone']),
+            _buildProfileField('Email', userData['email']),
+            _buildProfileField('Address', userData['address']),
+            const Divider(),
+          ],
+        ),
+      ),
+    );
+  }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildProfileField(String label, String? value) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
+      padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

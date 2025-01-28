@@ -14,7 +14,7 @@ class _AddMachineryPageState extends State<AddEquipmentscreen> {
   String machineryName = '';
   String description = '';
   double rentalPrice = 0.0;
-  int quantity = 0;
+ int quantity = 0;
   String availability = 'Available';
   XFile? _image;
   bool loading = false;

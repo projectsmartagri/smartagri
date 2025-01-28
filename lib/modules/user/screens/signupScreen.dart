@@ -2,10 +2,8 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:smartagri/modules/user/screens/User_loginScreen.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -25,23 +23,11 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _isLoading = false;
-  File? _profileImage;
-
-  final ImagePicker _picker = ImagePicker();
-
-  Future<void> _pickImage() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _profileImage = File(pickedFile.path);
-      });
-    }
-  }
 
   Future<void> _signupUser() async {
-    if (!_formKey.currentState!.validate() || _profileImage == null) {
+    if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields and select a profile photo')),
+        const SnackBar(content: Text('Please fill all fields')),
       );
       return;
     }
@@ -57,16 +43,7 @@ class _SignupScreenState extends State<SignupScreen> {
               email: _emailController.text.trim(),
               password: _passwordController.text.trim());
 
-      // Upload profile image to Firebase Storage
-      final storageRef = FirebaseStorage.instance
-          .ref()
-          .child('profile_images')
-          .child('${userCredential.user!.uid}.jpg');
-
-      final uploadTask = await storageRef.putFile(_profileImage!);
-      final photoURL = await uploadTask.ref.getDownloadURL();
-
-      // Save user details to Firestore
+      // Save user details to Firestore without photo
       await FirebaseFirestore.instance
           .collection('users')
           .doc(userCredential.user!.uid)
@@ -74,7 +51,6 @@ class _SignupScreenState extends State<SignupScreen> {
         'name': _nameController.text.trim(),
         'email': _emailController.text.trim(),
         'phone': _phoneController.text.trim(),
-        'photoURL': photoURL,
         'createdAt': DateTime.now(),
       });
 
@@ -85,7 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
       // Navigate to login screen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => UserLoginscreen()),
+        MaterialPageRoute(builder: (context) => const UserLoginscreen()),
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage = 'An error occurred';
@@ -130,23 +106,6 @@ class _SignupScreenState extends State<SignupScreen> {
                     color: Colors.green,
                   ),
                   textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-
-                // Profile Image Picker
-                Center(
-                  child: GestureDetector(
-                    onTap: _pickImage,
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Colors.green[100],
-                      backgroundImage:
-                          _profileImage != null ? FileImage(_profileImage!) : null,
-                      child: _profileImage == null
-                          ? const Icon(Icons.camera_alt, size: 30, color: Colors.green)
-                          : null,
-                    ),
-                  ),
                 ),
                 const SizedBox(height: 20),
 
