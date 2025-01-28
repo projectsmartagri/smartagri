@@ -16,7 +16,10 @@ class SupplierAuthServices {
     required String phone,
     required String address,
     required String companyLogoUrl,
-    required File companyLicenseFile, // Image file for the company license
+    required File companyLicenseFile, 
+    required double lat,
+    required double long
+    // Image file for the company license
   }) async {
     try {
       // Create user with email and password in Firebase Authentication
@@ -41,6 +44,8 @@ class SupplierAuthServices {
         'email': email,
         'phone': phone,
         'address':address,
+        'lat':lat,
+        'long':long,
         'companyLicenseUrl': companyLicenseUrl, // URL of the uploaded company license
         'logo':companyLogoUrl,
         'isApproved': false, // Default value for new suppliers

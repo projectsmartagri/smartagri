@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class FarmerOrderScreen extends StatelessWidget {
   const FarmerOrderScreen({super.key});
@@ -173,50 +174,147 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final supplier = order['supplier'];
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Details'),
         backgroundColor: Colors.green,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             if (order['machinary']?['image'] != null)
-              Image.network(
-                order['machinary']['image'],
-                height: 200,
-                fit: BoxFit.cover,
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  order['machinary']['image'],
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
               ),
             const SizedBox(height: 16),
-            Text(
-              'Machinery: ${order['machinary']?['name'] ?? 'Unknown'}',
-              style: const TextStyle(
+            if (supplier?['lat'] != null && supplier?['long'] != null)
+                      Row(
+                        children: [
+                          Text('Location'),
+                          Spacer(),
+                          TextButton.icon(
+                            onPressed: () {
+                              _navigateToGoogleMaps(
+                                  supplier['lat'], supplier['long']);
+                            },
+                            icon: const Icon(Icons.map, color: Colors.green),
+                            label: const Text(
+                              'View on Map',
+                              style: TextStyle(color: Colors.green),
+                            ),
+                          ),
+                        ],
+                      ),
+                    
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      order['machinary']?['name'] ?? 'Unknown Machinery',
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green,
+                      ),
+                    ),
+                    const Divider(thickness: 1, height: 20),
+                    _buildDetailRow('Supplier', supplier?['name']),
+                    
+                    _buildDetailRow(
+                      'Start Date',
+                      order['startDate']?.toDate().toLocal().toString(),
+                    ),
+                    _buildDetailRow(
+                      'End Date',
+                      order['endDate']?.toDate().toLocal().toString(),
+                    ),
+                    _buildDetailRow(
+                      'Total Amount',
+                      '₹${order['totalAmount']?.toStringAsFixed(2)}',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Details:',
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
+                color: Colors.green,
               ),
             ),
             const SizedBox(height: 8),
-            Text('Supplier: ${order['supplier']?['name'] ?? 'Unknown'}'),
-            const SizedBox(height: 8),
-            Text('Start Date: ${order['startDate'].toDate().toLocal()}'),
-            const SizedBox(height: 8),
-            Text('End Date: ${order['endDate'].toDate().toLocal()}'),
-            const SizedBox(height: 8),
-            Text(
-              'Total Amount: ₹${order['totalAmount'].toStringAsFixed(2)}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            Card(
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  order['machinary']?['description'] ??
+                      'No details available about this machinery.',
+                  style: const TextStyle(fontSize: 16, color: Colors.black87),
+                ),
+              ),
             ),
-            const SizedBox(height: 16),
-            Text(
-              'Details:',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(order['machinary']?['description'] ?? 'No details available'),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildDetailRow(String title, String? value) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.black54,
+            ),
+          ),
+          Text(
+            value ?? 'N/A',
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _navigateToGoogleMaps(double lat, double long) async {
+    final googleMapsUrl = 'https://www.google.com/maps/search/?api=1&query=$lat,$long';
+    if (await canLaunchUrl(Uri.parse(googleMapsUrl))) {
+      await launchUrl(Uri.parse(googleMapsUrl));
+    } else {
+      throw 'Could not open Google Maps.';
+    }
   }
 }

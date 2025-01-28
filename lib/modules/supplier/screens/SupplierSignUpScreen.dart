@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -58,6 +60,75 @@ class _SupplierSignupScreenState extends State<SupplierSignupScreen> {
     return await storageRef.getDownloadURL();
   }
 
+
+  double ? lat;
+  double ? long;
+  
+
+
+  // Get Current Location
+  Future<void> _getCurrentLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Location services are disabled')),
+      );
+      return;
+    }
+
+    // Check and request permission for location
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Location permission denied')),
+        );
+        return;
+      }
+    }
+
+    // Get current position
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+
+
+
+    );
+
+
+     _addressController.text =  await   getAddressFromLatLng(position.latitude, position.longitude);
+
+
+
+    setState(() {
+      lat = position.latitude;
+      long = position.longitude;
+    });
+  }
+
+
+  Future<String> getAddressFromLatLng(double latitude, double longitude) async {
+  try {
+    // Get the list of Placemark from the latitude and longitude
+    List<Placemark> placemarks = await placemarkFromCoordinates(latitude, longitude);
+    
+    // If a valid address is found, return it
+    if (placemarks.isNotEmpty) {
+      Placemark place = placemarks[0]; // Taking the first available place
+      return '${place.name}, ${place.locality}, ${place.country}';
+    }
+    
+    return 'Address not found';
+  } catch (e) {
+    return 'Error occurred while fetching address: $e';
+  }
+}
+
   // Signup Handler
   Future<void> signupHandler() async {
     try {
@@ -80,6 +151,8 @@ class _SupplierSignupScreenState extends State<SupplierSignupScreen> {
         address: _addressController.text,
         companyLicenseFile: File(_companyDocument!.path),
         companyLogoUrl: _companyLogoUrl!,
+        lat: lat!,
+        long: long!,
       );
 
       Navigator.pop(context);
@@ -316,6 +389,24 @@ class _SupplierSignupScreenState extends State<SupplierSignupScreen> {
                             ],
                           ),
                           const SizedBox(height: 16),
+
+                          ElevatedButton.icon(
+                                onPressed: () async{
+
+                                 await _getCurrentLocation();
+                                  
+                                },
+                                
+                                style: ElevatedButton.styleFrom(
+                                  fixedSize: Size(double.maxFinite, 50),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                                  backgroundColor: Colors.green
+                                ),
+                                icon: const Icon(Icons.location_city),
+                                label: const Text('add address'),
+                              ),
+
+                              SizedBox(height: 16),
                           // Sign Up Button
                           isLoading
                               ? const CircularProgressIndicator()
