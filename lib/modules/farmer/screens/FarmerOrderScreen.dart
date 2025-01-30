@@ -9,27 +9,31 @@ class FarmerOrderScreen extends StatelessWidget {
     final ordersSnapshot =
         await FirebaseFirestore.instance.collection('rental_order').get();
 
-    List<Map<String, dynamic>> orders = [];
-    for (var doc in ordersSnapshot.docs) {
+    List<Map<String, dynamic>> orders = ordersSnapshot.docs.map((doc) {
       var order = doc.data();
       order['id'] = doc.id;
+      return order;
+    }).toList();
 
-      // Fetch supplier details
-      final supplierSnapshot = await FirebaseFirestore.instance
+    // Fetch all supplier & machinery details in parallel
+    await Future.wait(orders.map((order) async {
+      final supplierFuture = FirebaseFirestore.instance
           .collection('suppliers')
           .doc(order['supplierId'])
           .get();
-      order['supplier'] = supplierSnapshot.data();
 
-      // Fetch machinery details
-      final machinerySnapshot = await FirebaseFirestore.instance
+      final machineryFuture = FirebaseFirestore.instance
           .collection('machinary')
           .doc(order['machineryId'])
           .get();
-      order['machinary'] = machinerySnapshot.data();
 
-      orders.add(order);
-    }
+      final supplierSnapshot = await supplierFuture;
+      final machinerySnapshot = await machineryFuture;
+
+      order['supplier'] = supplierSnapshot.data();
+      order['machinary'] = machinerySnapshot.data();
+    }));
+
     return orders;
   }
 
@@ -38,7 +42,7 @@ class FarmerOrderScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('Orders',style: TextStyle(color: Colors.white),),
+        title: const Text('Orders', style: TextStyle(color: Colors.white)),
         centerTitle: true,
         backgroundColor: Colors.green,
         elevation: 2,
@@ -50,18 +54,14 @@ class FarmerOrderScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasError) {
-            return const Center(
-              child: Text('Error fetching orders'),
-            );
+            return const Center(child: Text('Error fetching orders'));
           }
 
-          // Group orders into Ongoing and Completed
           final ongoingOrders = snapshot.data!
               .where((order) => order['endDate'].toDate().isAfter(DateTime.now()))
               .toList();
           final completedOrders = snapshot.data!
-              .where((order) =>
-                  order['endDate'].toDate().isBefore(DateTime.now()))
+              .where((order) => order['endDate'].toDate().isBefore(DateTime.now()))
               .toList();
 
           return ListView(
@@ -81,6 +81,7 @@ class FarmerOrderScreen extends StatelessWidget {
     );
   }
 }
+
 
 class SectionHeader extends StatelessWidget {
   final String title;

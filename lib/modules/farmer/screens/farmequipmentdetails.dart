@@ -340,122 +340,124 @@ DateTime ?endDate;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
        
-
-        return AlertDialog(
-          title: isExtended
-              ? Text('Extend Rental Days')
-              : const Text('Select Rental Days'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
+return AlertDialog(
+  title: isExtended
+      ? Text('Extend Rental Days')
+      : const Text('Select Rental Days'),
+  content: Scrollbar( // Add Scrollbar widget to show scroll indicator
+    child: SingleChildScrollView( // Wrap content in SingleChildScrollView
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isExtended)
+            Text(
+                'You are already booked this machine. Want to extend? Fill in the details below.'),
+          Text(
+            'Price per day: ₹${widget.machinery['price']}',
+            style: TextStyle(fontSize: 16),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: 'Enter number of days',
+            ),
+            onChanged: (value) {
+              selectedDays = int.tryParse(value) ?? 0;
+            },
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: 'Enter the quantity',
+            ),
+            onChanged: (value) {
+              quantity = int.tryParse(value) ?? 0;
+            },
+          ),
+          const SizedBox(height: 16),
+          Column(
             children: [
-              if (isExtended)
-                Text(
-                    'You are already booked this machine. Want to extend? Fill in the details below.'),
               Text(
-                'Price per day: ₹${widget.machinery['price']}',
+                selectedStartDate == null
+                    ? 'Start Date: Not selected'
+                    : 'Start Date: ${DateFormat('dd-MM-yyyy').format(selectedStartDate!)}',
                 style: TextStyle(fontSize: 16),
               ),
-              const SizedBox(height: 16),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Enter number of days',
-                ),
-                onChanged: (value) {
-                  selectedDays = int.tryParse(value) ?? 0;
+              const SizedBox(width: 8),
+              TextButton(
+                onPressed: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(Duration(days: 365)),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      selectedStartDate = pickedDate;
+                    });
+                  }
                 },
-              ),
-              const SizedBox(height: 16),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Enter the quantity',
-                ),
-                onChanged: (value) {
-                  quantity = int.tryParse(value) ?? 0;
-                },
-              ),
-              const SizedBox(height: 16),
-              Column(
-                children: [
-                  Text(
-                    selectedStartDate == null
-                        ? 'Start Date: Not selected'
-                        : 'Start Date: ${DateFormat('dd-MM-yyyy').format(selectedStartDate!)}',
-                            
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 8),
-                  TextButton(
-                    onPressed: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(Duration(days: 365)),
-                      );
-                      if (pickedDate != null) {
-                        setState(() {
-                          selectedStartDate = pickedDate;
-                        });
-                      }
-                    },
-                    child: const Text(
-                      'Select Date',
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Checkbox(
-                    value: isAgreementAccepted,
-                    onChanged: (value) {
-                      setState(() {
-                        isAgreementAccepted = value ?? false;
-                      });
-                    },
-                  ),
-                  const Text('Accept User Agreement'),
-                ],
-              ),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: TextButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Rental Agreement'),
-                          content: const Text(
-                            '1. The equipment must be returned in good condition.\n'
-                            '2. Late returns will incur additional charges.\n'
-                            '3. The renter is responsible for any damage during the rental period.\n'
-                            '4. Payment must be completed before taking possession of the equipment.',
-                          ),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('Close'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: const Text(
-                    'View Agreement',
-                    style: TextStyle(decoration: TextDecoration.underline),
-                  ),
+                child: const Text(
+                  'Select Date',
+                  style: TextStyle(decoration: TextDecoration.underline),
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Checkbox(
+                value: isAgreementAccepted,
+                onChanged: (value) {
+                  setState(() {
+                    isAgreementAccepted = value ?? false;
+                  });
+                },
+              ),
+              const Text('Accept User Agreement'),
+            ],
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Rental Agreement'),
+                      content: const Text(
+                        '1. The equipment must be returned in good condition.\n'
+                        '2. Late returns will incur additional charges.\n'
+                        '3. The renter is responsible for any damage during the rental period.\n'
+                        '4. Payment must be completed before taking possession of the equipment.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Close'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Text(
+                'View Agreement',
+                style: TextStyle(decoration: TextDecoration.underline),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
           actions: [
             TextButton(
               onPressed: () {
