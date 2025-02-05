@@ -340,30 +340,67 @@ DateTime ?endDate;
     return StatefulBuilder(
       builder: (BuildContext context, StateSetter setState) {
        
-
-        return AlertDialog(
-          title: isExtended
-              ? Text('Extend Rental Days')
-              : const Text('Select Rental Days'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
+return AlertDialog(
+  title: isExtended
+      ? Text('Extend Rental Days')
+      : const Text('Select Rental Days'),
+  content: Scrollbar( // Add Scrollbar widget to show scroll indicator
+    child: SingleChildScrollView( // Wrap content in SingleChildScrollView
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (isExtended)
+            Text(
+                'You are already booked this machine. Want to extend? Fill in the details below.'),
+          Text(
+            'Price per day: ₹${widget.machinery['price']}',
+            style: TextStyle(fontSize: 16),
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: 'Enter number of days',
+            ),
+            onChanged: (value) {
+              selectedDays = int.tryParse(value) ?? 0;
+            },
+          ),
+          const SizedBox(height: 16),
+          TextField(
+            keyboardType: TextInputType.number,
+            decoration: const InputDecoration(
+              labelText: 'Enter the quantity',
+            ),
+            onChanged: (value) {
+              quantity = int.tryParse(value) ?? 0;
+            },
+          ),
+          const SizedBox(height: 16),
+          Column(
             children: [
-              if (isExtended)
-                Text(
-                    'You are already booked this machine. Want to extend? Fill in the details below.'),
               Text(
-                'Price per day: ₹${widget.machinery['price']}',
+                selectedStartDate == null
+                    ? 'Start Date: Not selected'
+                    : 'Start Date: ${DateFormat('dd-MM-yyyy').format(selectedStartDate!)}',
                 style: TextStyle(fontSize: 16),
               ),
-              const SizedBox(height: 16),
-              TextField(
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  labelText: 'Enter number of days',
-                ),
-                onChanged: (value) {
-                  selectedDays = int.tryParse(value) ?? 0;
+              const SizedBox(width: 8),
+              TextButton(
+                onPressed: () async {
+                  DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime.now(),
+                    lastDate: DateTime.now().add(Duration(days: 365)),
+                  );
+                  if (pickedDate != null) {
+                    setState(() {
+                      selectedStartDate = pickedDate;
+                    });
+                  }
                 },
+<<<<<<< HEAD
               ),
               const SizedBox(height: 16),
               TextField(
@@ -421,10 +458,66 @@ DateTime ?endDate;
                     'View Agreement',
                     style: TextStyle(decoration: TextDecoration.underline),
                   ),
+=======
+                child: const Text(
+                  'Select Date',
+                  style: TextStyle(decoration: TextDecoration.underline),
+>>>>>>> refs/remotes/origin/main
                 ),
               ),
             ],
           ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Checkbox(
+                value: isAgreementAccepted,
+                onChanged: (value) {
+                  setState(() {
+                    isAgreementAccepted = value ?? false;
+                  });
+                },
+              ),
+              const Text('Accept User Agreement'),
+            ],
+          ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Rental Agreement'),
+                      content: const Text(
+                        '1. The equipment must be returned in good condition.\n'
+                        '2. Late returns will incur additional charges.\n'
+                        '3. The renter is responsible for any damage during the rental period.\n'
+                        '4. Payment must be completed before taking possession of the equipment.',
+                      ),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Close'),
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Text(
+                'View Agreement',
+                style: TextStyle(decoration: TextDecoration.underline),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
           actions: [
             TextButton(
               onPressed: () {
@@ -460,198 +553,288 @@ DateTime ?endDate;
 
 
 }
+@override
+Widget build(BuildContext context) {
+  print(widget.machinery['userid']);
+  return Scaffold(
+    appBar: AppBar(
+      title: const Text(
+        'Equipment Details',
+        style: TextStyle(
+          fontFamily: 'PlayfairDisplay',
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+        ),
+      ),
+      centerTitle: true,
+      backgroundColor: Colors.green[800],
+      elevation: 6,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.info_outline), // Instruction icon
+          onPressed: () {
+            // Show dialog with instructions
+           showDialog(
+  context: context,
+  builder: (BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      title: const Text(
+        'Booking Instructions',
+        style: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.bold,
+          color: Colors.green,
+        ),
+      ),
+      content: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // General Booking Instructions
+            const Text(
+              'How to Order:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.green,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '1. Select the desired rental days.\n'
+              '2. Enter the quantity of equipment you wish to rent.\n'
+              '3. Choose your start date for the rental period.\n'
+              '4. Accept the user agreement and confirm your booking.\n'
+              '5. Proceed to make payment upon confirmation of your booking.',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 16),
 
-   @override
-  Widget build(BuildContext context) {
-    print(widget.machinery['userid']);
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Equipment Details',
-          style: TextStyle(
-            fontFamily: 'PlayfairDisplay',
-            fontSize: 24,
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
+            // Booking Conditions
+            const Text(
+              'Booking Conditions:',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+                color: Colors.red,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              '1. No pre-booking is available. You can only book the equipment the day before the start date.\n'
+              '2. Cancellation is not allowed after booking the equipment.\n',
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.black87,
+                height: 1.5,
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close dialog
+            },
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.green,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+            ),
+            child: const Text(
+              'Close',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
           ),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.green[800],
-        elevation: 6,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // Machinery Image
-            Card(
-              margin: const EdgeInsets.all(20),
-              color: Colors.white,
-              elevation: 8,
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Image.network(
-                    widget.machinery['image'],
-                    height: 250,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+      ],
+    );
+  },
+);
+;
+          },
+        ),
+      ],
+    ),
+    body: SingleChildScrollView(
+      child: Column(
+        children: [
+          // Machinery Image
+          Card(
+            margin: const EdgeInsets.all(20),
+            color: Colors.white,
+            elevation: 8,
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.network(
+                  widget.machinery['image'],
+                  height: 250,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
-
-            const SizedBox(height: 16),
-
-            // Machinery Name and Price Section
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey.shade300,
-                ),
-                borderRadius: BorderRadius.circular(15),
-                color: Colors.white,
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 10,
-                    offset: Offset(0, 4),
-                  ),
-                ],
+          ),
+          const SizedBox(height: 16),
+          // Machinery Name and Price Section
+          Container(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.grey.shade300,
               ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Company name          ',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey.shade400,
-                        ),
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 10,
+                  offset: Offset(0, 4),
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Company name          ',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey.shade400,
                       ),
-                      
-                     // const Spacer(),
-                      Expanded(
-
-                        child: Text(
-                          supplierName ?? 'loading....',
-                          style: const TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Location',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        supplierAddress ?? 'loading....',
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Phone Number',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        phoneNumber ?? 'loading....',
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Name',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.grey.shade400,
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        widget.machinery['name'],
-                        style: const TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-
-
-                  Text(
-                    widget.machinery['description'],
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey.shade500,
-                      height: 1.5,
                     ),
-                  ),
-                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-                  Row(
-                    children: [
-                      Text(
-                        'Rent/day',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.green[700],
-                        ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '₹${widget.machinery['price']}',
+                    Expanded(
+                      child: Text(
+                        supplierName ?? 'loading....',
                         style: const TextStyle(
                           fontSize: 18,
-                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+                Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Location',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      supplierAddress ?? 'loading....',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Phone Number',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      phoneNumber ?? 'loading....',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Name',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey.shade400,
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      widget.machinery['name'],
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                Text(
+                  widget.machinery['description'],
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey.shade500,
+                    height: 1.5,
                   ),
-                  Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-
-                  if( widget.machinery['availability'] == "Available")
-
+                ),
+                Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                Row(
+                  children: [
+                    Text(
+                      'Rent/day',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green[700],
+                      ),
+                    ),
+                    const Spacer(),
+                    Text(
+                      '₹${widget.machinery['price']}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
+                if (widget.machinery['availability'] == "Available")
                   Row(
                     children: [
                       Text(
                         'Quantity',
                         style: TextStyle(
                           fontSize: 18,
-                 
-                       
                         ),
                       ),
                       const Spacer(),
@@ -664,83 +847,77 @@ DateTime ?endDate;
                       ),
                     ],
                   ),
-                  if( widget.machinery['availability'] == "Available")
+                if (widget.machinery['availability'] == "Available")
                   Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-                  // Availability Section
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(
-                        widget.machinery['availability'] == "Available"
-                            ? Icons.check_circle
-                            : Icons.cancel,
+                // Availability Section
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      widget.machinery['availability'] == "Available"
+                          ? Icons.check_circle
+                          : Icons.cancel,
+                      color: widget.machinery['availability'] == "Available"
+                          ? Colors.green
+                          : Colors.red,
+                      size: 30,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      widget.machinery['availability'] == "Available"
+                          ? 'Available'
+                          : 'Not Available',
+                      style: TextStyle(
+                        fontSize: 18,
                         color: widget.machinery['availability'] == "Available"
                             ? Colors.green
                             : Colors.red,
-                        size: 30,
+                        fontWeight: FontWeight.w600,
                       ),
-                      const SizedBox(width: 8),
-                      Text(
-                        widget.machinery['availability'] == "Available"
-                            ? 'Available'
-                            : 'Not Available',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: widget.machinery['availability'] == "Available"
-                              ? Colors.green
-                              : Colors.red,
-                          fontWeight: FontWeight.w600,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                // Book Now Button
+                if (widget.machinery['availability'] == "Available" &&
+                    widget.machinery['Quantity'] > 0)
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              makeSuccessOrder();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.green[700],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              padding: const EdgeInsets.symmetric(vertical: 16),
+                              elevation: 8,
+                            ),
+                            child: const Text(
+                              'Book Now',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ],
-              ),
+                const SizedBox(height: 20),
+              ],
             ),
-
-            const SizedBox(height: 20),
-
-            // Book Now Button
-          if (widget.machinery['availability'] == "Available" && widget.machinery['Quantity'] > 0)
-              Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: ElevatedButton(
-                        onPressed: () async{
-                          makeSuccessOrder();
-                        
-                          
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.green[700],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          elevation: 8,
-                        ),
-                        child: const Text(
-                          'Book Now',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            const SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
-
-
-
+    ),
+  );
+}
 }
