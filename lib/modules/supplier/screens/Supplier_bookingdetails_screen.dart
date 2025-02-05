@@ -96,46 +96,6 @@ class _SupplierBookingDetailsScreenState
   );
 }
 
- Future<void> markAsDelivered(
-    String orderId, String machineryId, int decrementBy, BuildContext context) async {
-  try {
-    // Update the rental_order collection
-    await FirebaseFirestore.instance
-        .collection('rental_order')
-        .doc(orderId)
-        .update({'isDeliverd': true});
-
-    // Decrease the quantity in the machinery collection
-    DocumentReference machineryRef =
-        FirebaseFirestore.instance.collection('machinary').doc(machineryId);
-
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot machinerySnapshot = await transaction.get(machineryRef);
-
-      if (!machinerySnapshot.exists) {
-        throw Exception('Machinery does not exist!');
-      }
-
-      int currentQuantity = machinerySnapshot['Quantity'];
-      int updatedQuantity = currentQuantity - decrementBy;
-
-      // Ensure quantity does not go below zero
-      if (updatedQuantity < 0) {
-        throw Exception('Quantity cannot be less than zero!');
-      }
-
-      transaction.update(machineryRef, {'Quantity': updatedQuantity});
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Marked as Delivered and quantity updated!')),
-    );
-  } catch (e) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Failed to update: $e')),
-    );
-  }
-}
 
 Future<void> markAsReturned(
     String orderId, String machineryId, int decrementBy, BuildContext context,bool isDeleiverd) async {
@@ -284,7 +244,7 @@ Future<void> markAsReturned(
                             DataColumn(label: Text('Rental Days')),
                             DataColumn(label: Text('Payment Status')),
                             DataColumn(label: Text('Amount')),
-                            DataColumn(label: Text('Deliverd')),
+                         
                             DataColumn(label: Text('Return')),
                           ],
                           rows: List.generate(filteredOrders.length, (index) {
@@ -345,21 +305,7 @@ Future<void> markAsReturned(
                                 ),
                                 DataCell(
                                     Text('₹${completedData['totalAmount']}')),
-                                DataCell(
-                                  completedData['isDeliverd'] ?  Icon(Icons.check,color: Colors.green,)  : ElevatedButton(
-                                    
-                                    
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5)
-                                      )
-                                    ),
-                                    onPressed: () {
-                                    markAsDelivered(completedData.id,completedData['machineryId'],completedData['quantity'] ,context);
-                                    
-                                  }, child: Text('Deliverd'))
-                                ),
+                               
 
                                 DataCell(
                                    completedData['isReturn'] ?  Icon(Icons.check,color: Colors.green,)  : ElevatedButton(

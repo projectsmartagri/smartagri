@@ -140,87 +140,87 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
   }
 
   // Process the order after successful payment
-  Future<void> _processOrder({required String paymentId}) async {
-    try {
-     
-      String? userId = FirebaseAuth.instance.currentUser?.uid;
+ Future<void> _processOrder({required String paymentId}) async {
+  try {
+    String? userId = FirebaseAuth.instance.currentUser?.uid;
 
-      if (userId == null) {
-        Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please log in to proceed.')),
-        );
-        return;
-      }
+    if (userId == null) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please log in to proceed.')),
+      );
+      return;
+    }
 
-      // Save order data to Firestore
-      final orderData = {
-        'machineryId': widget.id,
-        'supplierId': widget.machinery['userid'],
-        'uid': userId,
-        'bookedAt': FieldValue.serverTimestamp(),
-        'paymentStatus': true, // Set payment status to true after payment
-        'rentalDays': rentalDays,
-        'totalAmount': totalAmount,
-        'startDate': selectedStartDate,
-        'endDate': endDate,
-        'isDeliverd' : false,
-        'isReturn' :  false,
-        'quantity' : quantity,
-        'paymentId': paymentId, // Store Razorpay payment ID
-      };
+    // Reference to the machinery document
+    DocumentReference machineryRef =
+        FirebaseFirestore.instance.collection('machinary').doc(widget.id);
 
-      await FirebaseFirestore.instance.collection('rental_order').add(orderData);
+    // Fetch the current machinery document
+    DocumentSnapshot docSnapshot = await machineryRef.get();
 
-    
+    if (!docSnapshot.exists) {
+      Navigator.pop(context);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Machinery not found.')),
+      );
+      return;
+    }
 
-      await FirebaseFirestore.instance.collection('machinary').doc(widget.id).get().then((docSnapshot) {
-  if (docSnapshot.exists) {
+    // Get the current quantity
     int currentQuantity = docSnapshot['Quantity'];
 
     if (currentQuantity <= 0) {
-      // Set availability to "Not Available" if quantity is zero
-      FirebaseFirestore.instance.collection('machinary').doc(widget.id).update({
-        'availability': 'Not Available',
-      });
-    }
-  }
-});
-
-      // Close loading dialog
-      Navigator.pop(context);
-
-      // Show success popup
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Icon(
-            Icons.check_circle,
-            color: Colors.green,
-            size: 60,
-          ),
-          content: Text(
-            'Successfully booked ${widget.machinery['name']} for $rentalDays days. '
-            '\nTotal: ₹$totalAmount\nStart Date: ${formatTimestamp(selectedStartDate!)}\nEnd Date: ${formatTimestamp(endDate!)}',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => FarmerHomeScreen(),), (route) => false,);
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    } catch (e) {
       Navigator.pop(context);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to book. Error: $e')),
+        const SnackBar(content: Text('This machinery is out of stock.')),
       );
+      return;
     }
+
+    // Save order data to Firestore
+    final orderData = {
+      'machineryId': widget.id,
+      'supplierId': widget.machinery['userid'],
+      'uid': userId,
+      'bookedAt': FieldValue.serverTimestamp(),
+      'paymentStatus': true, // Payment successful
+      'rentalDays': rentalDays,
+      'totalAmount': totalAmount,
+      'endDate': endDate,
+      'isReturn': false,
+      'quantity': quantity,
+      'paymentId': paymentId, // Store Razorpay payment ID
+    };
+
+    await FirebaseFirestore.instance.collection('rental_order').add(orderData);
+
+    // Decrease the quantity after successful booking
+    int newQuantity = currentQuantity - quantity;
+
+    print(newQuantity);
+
+    // Update quantity in Firestore
+    await machineryRef.update({
+      'Quantity': newQuantity,
+      'availability': newQuantity > 0 ? 'Available' : 'Not Available',
+    });
+
+    // Close loading dialog
+    Navigator.pop(context);
+
+    // Show success message
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Order placed successfully!')),
+    );
+
+  } catch (e) {
+    Navigator.pop(context);
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to book. Error: $e')),
+    );
   }
+}
 
    int ? rentalDays;
 
@@ -313,8 +313,8 @@ DateTime ?endDate;
   if (rentalDays == 0 || rentalDays == null) return;
 
   totalAmount = rentalDays! * widget.machinery['price'];
-  currentDate = DateTime.now();
-  endDate = selectedStartDate!.add(Duration(days: rentalDays!));
+  currentDate = DateTime.now().add(Duration(days: 1));
+  endDate =   currentDate!.add(Duration(days: rentalDays!));
 
   // Show loading dialog
   showDialog(
@@ -328,7 +328,7 @@ DateTime ?endDate;
   _openCheckout(totalAmount!.toDouble());
 }
   int quantity = 0;
-   DateTime? selectedStartDate;
+  
   Future<int> _showDaysDialog(BuildContext context, [bool isExtended = false]) async {
   int selectedDays = 0;
   bool isAgreementAccepted = false;
@@ -376,38 +376,7 @@ DateTime ?endDate;
                 },
               ),
               const SizedBox(height: 16),
-              Column(
-                children: [
-                  Text(
-                    selectedStartDate == null
-                        ? 'Start Date: Not selected'
-                        : 'Start Date: ${DateFormat('dd-MM-yyyy').format(selectedStartDate!)}',
-                            
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(width: 8),
-                  TextButton(
-                    onPressed: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now(),
-                        lastDate: DateTime.now().add(Duration(days: 365)),
-                      );
-                      if (pickedDate != null) {
-                        setState(() {
-                          selectedStartDate = pickedDate;
-                        });
-                      }
-                    },
-                    child: const Text(
-                      'Select Date',
-                      style: TextStyle(decoration: TextDecoration.underline),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
+              
               Row(
                 children: [
                   Checkbox(
@@ -474,13 +443,7 @@ DateTime ?endDate;
                   return;
                 }
 
-                if (selectedStartDate == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content: Text('Please select a start date')),
-                  );
-                  return;
-                }
+               
 
                 Navigator.of(context).pop(selectedDays);
               },
