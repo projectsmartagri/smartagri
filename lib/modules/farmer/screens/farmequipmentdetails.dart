@@ -446,6 +446,8 @@ DateTime ?endDate;
                
 
                 Navigator.of(context).pop(selectedDays);
+
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => FarmerHomeScreen(),), (route) => false,);
               },
               child: const Text('OK'),
             ),

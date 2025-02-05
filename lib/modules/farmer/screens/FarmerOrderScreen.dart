@@ -151,7 +151,7 @@ class OrderTile extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text('Supplier: ${order['supplier']?['name'] ?? 'Unknown'}'),
                     Text(
-                        'Start Date: ${order['startDate'].toDate().toLocal()}'),
+                        'Start Date: ${order['rentalDays']}'),
                     Text('End Date: ${order['endDate'].toDate().toLocal()}'),
                     Text(
                       'Total Amount: ₹${order['totalAmount'].toStringAsFixed(2)}',
