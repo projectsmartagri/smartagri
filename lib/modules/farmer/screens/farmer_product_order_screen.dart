@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class FarmerProductOrdersScreen extends StatelessWidget {
   final String farmerId; // Farmer's unique ID
@@ -8,7 +9,6 @@ class FarmerProductOrdersScreen extends StatelessWidget {
   const FarmerProductOrdersScreen({super.key, required this.farmerId});
 
   Future<List<Map<String, dynamic>>> fetchOrders() async {
-    // Fetch orders from the 'order' collection
     final ordersSnapshot = await FirebaseFirestore.instance.collection('orders').get();
 
     List<Map<String, dynamic>> farmerOrders = [];
@@ -16,24 +16,25 @@ class FarmerProductOrdersScreen extends StatelessWidget {
     for (var orderDoc in ordersSnapshot.docs) {
       var orderData = orderDoc.data();
 
-      // Loop through each product in the order
       for (var product in orderData['items']) {
         final productId = product['productId'];
 
-        // Fetch the corresponding product document from the 'products' collection
         final productDoc = await FirebaseFirestore.instance
             .collection('products')
             .doc(productId)
             .get();
 
         if (productDoc.exists && productDoc.data()?['farmerId'] == FirebaseAuth.instance.currentUser!.uid) {
-          // If the farmerId matches, add the order to the result
-          orderData['items'] = product; // Add only this product item
-          orderData['orderId'] = orderDoc.id; // Include the order ID
+          orderData['items'] = product;
+          orderData['orderId'] = orderDoc.id;
           farmerOrders.add(orderData);
         }
       }
     }
+
+    // Sort orders by timestamp (latest first)
+    farmerOrders.sort((a, b) => (b['timestamp'] as Timestamp).compareTo(a['timestamp'] as Timestamp));
+
     return farmerOrders;
   }
 
@@ -58,12 +59,29 @@ class FarmerProductOrdersScreen extends StatelessWidget {
           }
 
           final orders = snapshot.data!;
-          return ListView.builder(
+          Map<String, List<Map<String, dynamic>>> groupedOrders = {};
+
+          for (var order in orders) {
+            String dateKey = DateFormat('yyyy-MM-dd').format((order['timestamp'] as Timestamp).toDate());
+            groupedOrders.putIfAbsent(dateKey, () => []).add(order);
+          }
+
+          return ListView(
             padding: const EdgeInsets.all(16),
-            itemCount: orders.length,
-            itemBuilder: (context, index) {
-              return OrderCard(order: orders[index]);
-            },
+            children: groupedOrders.entries.map((entry) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    entry.key, // Date heading
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),
+                  ),
+                  const SizedBox(height: 8),
+                  ...entry.value.map((order) => OrderCard(order: order)).toList(),
+                  const SizedBox(height: 16),
+                ],
+              );
+            }).toList(),
           );
         },
       ),

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -7,7 +8,7 @@ class FarmerOrderScreen extends StatelessWidget {
 
   Future<List<Map<String, dynamic>>> fetchOrders() async {
     final ordersSnapshot =
-        await FirebaseFirestore.instance.collection('rental_order').get();
+        await FirebaseFirestore.instance.collection('rental_order').where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid).get();
 
     List<Map<String, dynamic>> orders = ordersSnapshot.docs.map((doc) {
       var order = doc.data();
@@ -58,10 +59,10 @@ class FarmerOrderScreen extends StatelessWidget {
           }
 
           final ongoingOrders = snapshot.data!
-              .where((order) => order['endDate'].toDate().isAfter(DateTime.now()))
+              .where((order) => order['isReturn']==false)
               .toList();
           final completedOrders = snapshot.data!
-              .where((order) => order['endDate'].toDate().isBefore(DateTime.now()))
+              .where((order) => order['isReturn']==true)
               .toList();
 
           return ListView(
@@ -152,7 +153,7 @@ class OrderTile extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text('Supplier: ${order['supplier']?['name'] ?? 'Unknown'}'),
                     Text(
-                        'Start Date: ${order['rentalDays']}'),
+                        'Rentel days: ${order['rentalDays']}'),
                     Text('End Date: ${order['endDate'].toDate().toLocal()}'),
                     Text(
                       'Total Amount: ₹${order['totalAmount'].toStringAsFixed(2)}',

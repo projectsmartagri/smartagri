@@ -24,10 +24,12 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
 
   @override
   void initState() {
+    
     super.initState();
     _razorpay = Razorpay();
     // _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
     _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
+    print(widget.machinery);
     fetchSupplierName(widget.machinery['userid']);
   }
 
@@ -36,6 +38,8 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
   Future<void> fetchSupplierName(String supplierId) async {
     try {
       final supplierData = await getSupplierData(supplierId);
+      print(supplierData);
+      
       if (supplierData != null) {
         setState(() {
           supplierName = supplierData['name'];
@@ -468,6 +472,9 @@ return AlertDialog(
 
 
 }
+
+
+
 @override
 Widget build(BuildContext context) {
   print(widget.machinery['userid']);
@@ -835,4 +842,10 @@ Widget build(BuildContext context) {
     ),
   );
 }
+
+
+
+
+
+
 }

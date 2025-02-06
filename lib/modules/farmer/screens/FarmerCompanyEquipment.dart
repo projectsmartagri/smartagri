@@ -48,13 +48,17 @@ class Farmercompanyequipment extends StatelessWidget {
             } else {
               final equipmentList = snapshot.data!.docs.map((doc) {
                 final data = doc.data() as Map<String, dynamic>;
+                print(data['availability']);
 
                 return {
                   'id': doc.id,  // Make sure this is never null
                   'name': data['name'] ?? 'Unnamed', // Default to 'Unnamed' if null
                   'price': data['price'] ?? 0, // Default to 0 if null
                   'Quantity': data['Quantity'] ?? 0, // Default to 0 if null
-                  'image': data['image'] ?? '', // Default to empty string if null
+                  'image': data['image'] ?? '',
+                  'userid':data['userid'] ?? '', // Default to empty string if null
+                  'availability':data['availability'] ?? '',
+                  'description':data['description'] ?? '',
                 };
               }).toList();
 
@@ -73,7 +77,8 @@ class Farmercompanyequipment extends StatelessWidget {
     child: InkWell(
       onTap: () {
         print('Card tapped!');
-        final String machineryId = equipment['id'] as String; 
+        final String  machineryId = equipment['id'] as String; 
+        print(machineryId);
         if ( machineryId.isNotEmpty) {
           Navigator.push(
             context,
