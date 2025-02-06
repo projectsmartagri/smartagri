@@ -113,9 +113,15 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
 
 
   // Handle successful payment
-  void _handlePaymentSuccess(PaymentSuccessResponse response) {
+  void _handlePaymentSuccess(PaymentSuccessResponse response) async{
+    print('jjjjjjjjjjjjjjjjjjjjjjjjjj');
     print('Payment Success: ${response.paymentId}');
-    _processOrder(paymentId:response.paymentId!);
+   await _processOrder(paymentId:response.paymentId!);
+   Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => FarmerHomeScreen()),
+                  (route) => false,
+                );
   }
 
   // Handle failed payment
@@ -237,6 +243,8 @@ DateTime ?endDate;
       .where('uid', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
       .get();
 
+      print(existingOrder.docs.isNotEmpty);
+
 
   if (existingOrder.docs.isNotEmpty) {
 
@@ -291,11 +299,7 @@ DateTime ?endDate;
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => FarmerHomeScreen()),
-                  (route) => false,
-                );
+                
               },
               child: const Text('OK'),
             ),
@@ -304,6 +308,8 @@ DateTime ?endDate;
       );
     });
     return;
+  }else{
+
   }
 
 
@@ -450,7 +456,6 @@ return AlertDialog(
 
                 Navigator.of(context).pop(selectedDays);
 
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => FarmerHomeScreen(),), (route) => false,);
               },
               child: const Text('OK'),
             ),
