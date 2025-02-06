@@ -217,76 +217,85 @@ class EquipmentDetailScreen extends StatelessWidget {
                               icon: Icon(Icons.info_outline, color: Colors.green[700]),
                               onPressed: () {
                                 showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(20)),
-                                      elevation: 16,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(20.0),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Image.network(equipment['image']),
-                                            const SizedBox(height: 15),
-                                            Text(
-                                              equipment['name'],
-                                              style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.green[700],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Description: ${equipment['description']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.brown[700],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Price: \$${equipment['price']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w500,
-                                                color: Colors.green[600],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Availability: ${equipment['availability']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.orange[800],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              'Quantity: ${equipment['quantity']}',
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.grey[700],
-                                              ),
-                                            ),
-                                            const SizedBox(height: 15),
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor: Colors.green[700],
-                                              ),
-                                              child: Text('Close'),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                );
+  context: context,
+  builder: (context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      elevation: 16,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView( // Added this to make the content scrollable
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min, // Set to min to avoid unnecessary space
+            children: [
+              Image.network(equipment['image']),
+              const SizedBox(height: 15),
+              Text(
+                equipment['name'],
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green[700],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Description: ${equipment['description']}',
+                overflow: TextOverflow.ellipsis,
+                maxLines: 6,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.brown[700],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Price: \$${equipment['price']}',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.green[600],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Availability: ${equipment['availability']}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.orange[800],
+                ),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                'Quantity: ${equipment['quantity']}',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+              const SizedBox(height: 15),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green[700],
+                ),
+                child: Text('Close'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  },
+);
+
+                               
+                             
                               },
                             ),
                           ],
