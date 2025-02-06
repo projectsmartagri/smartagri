@@ -162,12 +162,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
             fontSize: 24,
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications),
-            onPressed: () {},
-          ),
-        ],
+        
       ),
       body: Row(
         children: [

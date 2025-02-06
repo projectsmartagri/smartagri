@@ -98,8 +98,8 @@ class _SupplierBookingDetailsScreenState
 
 
 Future<void> markAsReturned(
-    String orderId, String machineryId, int decrementBy, BuildContext context,bool isDeleiverd) async {
-  if(isDeleiverd){
+    String orderId, String machineryId, int decrementBy, BuildContext context) async {
+  
 
     try {
     // Update the rental_order collection
@@ -141,15 +141,7 @@ Future<void> markAsReturned(
 
 
 
-  }else{
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Machine not delivary yet!!!')),
-    );
-
-
-
-  }
+  
 }
 
 
@@ -189,10 +181,10 @@ Future<void> markAsReturned(
 
               List<QueryDocumentSnapshot> rentalOrders = snapshot.data!.docs;
 
-              // Sort rentalOrders based on the startDate (booking date)
+              // Sort rentalOrders based on the bookedAt (booking date)
               rentalOrders.sort((a, b) {
-                Timestamp timestampA = a['startDate'];
-                Timestamp timestampB = b['startDate'];
+                Timestamp timestampA = a['bookedAt'];
+                Timestamp timestampB = b['bookedAt'];
                 DateTime dateA = timestampA.toDate();
                 DateTime dateB = timestampB.toDate();
                 return dateA.compareTo(dateB); // Sorting in ascending order
@@ -217,12 +209,12 @@ Future<void> markAsReturned(
                   if (selectedDate != null) {
                      List<int> validIndices = [];
                     filteredOrders = rentalOrders.where((order) {
-                      Timestamp startDateTimestamp = order['startDate'];
-                      DateTime startDate = startDateTimestamp.toDate();
-                       bool matches = startDate.year == selectedDate!.year &&
-                       startDate.year == selectedDate!.year &&
-                          startDate.month == selectedDate!.month &&
-                          startDate.day == selectedDate!.day;
+                      Timestamp bookedAtTimestamp = order['bookedAt'];
+                      DateTime bookedAt = bookedAtTimestamp.toDate();
+                       bool matches = bookedAt.year == selectedDate!.year &&
+                       bookedAt.year == selectedDate!.year &&
+                          bookedAt.month == selectedDate!.month &&
+                          bookedAt.day == selectedDate!.day;
                            if (matches) validIndices.add(rentalOrders.indexOf(order));
                            return matches;
                     }).toList();
@@ -251,13 +243,13 @@ Future<void> markAsReturned(
                             QueryDocumentSnapshot completedData =
                                 filteredOrders[index];
 
-                            // Format the startDate and endDate
-                            Timestamp startDateTimestamp =
-                                completedData['startDate'];
+                            // Format the bookedAt and endDate
+                            Timestamp bookedAtTimestamp =
+                                completedData['bookedAt'];
                             Timestamp endDateTimestamp =
                                 completedData['endDate'];
-                            String startDateFormatted =
-                                formatDate(startDateTimestamp);
+                            String bookedAtFormatted =
+                                formatDate(bookedAtTimestamp);
                             String endDateFormatted =
                                 formatDate(endDateTimestamp);
 
@@ -266,8 +258,8 @@ Future<void> markAsReturned(
                                 filteredDetails[index]['farmer']['name']!;
                             String machineryName =
                                 filteredDetails[index]['machinery']['name']!;
-                            totalCompletedAmount +=
-                                completedData['totalAmount'];
+                            // totalCompletedAmount +=
+                            //     completedData['totalAmount'];
 
                             return DataRow(
                               cells: [
@@ -289,7 +281,7 @@ Future<void> markAsReturned(
                                     child: Text(machineryName),
                                   ),
                                 ),
-                                DataCell(Text(startDateFormatted)),
+                                DataCell(Text(bookedAtFormatted)),
                                 DataCell(Text(endDateFormatted)),
                                 DataCell(Text(
                                     completedData['rentalDays']!.toString())),
@@ -317,7 +309,7 @@ Future<void> markAsReturned(
                                     ),
                                     
                                     onPressed: () {
-                                    markAsReturned(completedData.id,completedData['machineryId'],completedData['quantity'] ,context,completedData['isDeliverd']);
+                                    markAsReturned(completedData.id,completedData['machineryId'],completedData['quantity'] ,context);
                                     
                                   }, child: Text('Return'))
                                 ),
@@ -327,24 +319,24 @@ Future<void> markAsReturned(
                         ),
                       ),
                       const SizedBox(height: 16),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: Row(
-                          children: [
-                            Text(
-                              'Total:',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                            Spacer(),
-                            Text(
-                              '₹$totalCompletedAmount',
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Container(
+                      //   width: MediaQuery.of(context).size.width,
+                      //   child: Row(
+                      //     children: [
+                      //       Text(
+                      //         'Total:',
+                      //         style: TextStyle(
+                      //             fontSize: 18, fontWeight: FontWeight.bold),
+                      //       ),
+                      //       Spacer(),
+                      //       Text(
+                      //         '₹$totalCompletedAmount',
+                      //         style: TextStyle(
+                      //             fontSize: 18, fontWeight: FontWeight.bold),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
                     ],
                   );
                 },
