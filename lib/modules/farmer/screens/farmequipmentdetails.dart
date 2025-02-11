@@ -117,16 +117,56 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
 
 
   // Handle successful payment
-  void _handlePaymentSuccess(PaymentSuccessResponse response) async{
-    print('jjjjjjjjjjjjjjjjjjjjjjjjjj');
+   void _handlePaymentSuccess(PaymentSuccessResponse response) async {
     print('Payment Success: ${response.paymentId}');
-   await _processOrder(paymentId:response.paymentId!);
-   Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(builder: (context) => FarmerHomeScreen()),
-                  (route) => false,
-                );
+    await _processOrder(paymentId: response.paymentId!);
+
+    // Show success alert before navigating
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Column(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green, size: 60),
+            SizedBox(height: 10),
+            Text(
+              'Booking Confirmed!',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.green),
+            ),
+          ],
+        ),
+        content: Text(
+          'Successfully booked ${widget.machinery['name']}.\n'
+          'Total: ₹$totalAmount\n'
+          'Start Date: ${DateFormat('MMMM dd, yyyy').format(currentDate!)}\n'
+          'End Date: ${DateFormat('MMMM dd, yyyy').format(endDate!)}\n\n\n'
+           '• Please arrive at the location mentioned in the equipment details.\n'
+        '• For further information, contact the supplier directly.\n'
+        '• Please bring a valid ID at the time of pickup.\n\n'
+        'Thank you for choosing our service!',
+
+
+          textAlign: TextAlign.center,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); 
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => FarmerHomeScreen()),
+                (route) => false,
+              );
+            },
+            child: const Text('OK', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+        ],
+      ),
+    );
   }
+
 
   // Handle failed payment
   void _handlePaymentError(PaymentFailureResponse response) {
@@ -218,11 +258,8 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
 
     // Close loading dialog
     Navigator.pop(context);
-
-    // Show success message
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Order placed successfully!')),
-    );
+   
+  
 
   } catch (e) {
     Navigator.pop(context);

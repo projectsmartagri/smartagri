@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class FarmerOrderScreen extends StatelessWidget {
@@ -154,7 +155,11 @@ class OrderTile extends StatelessWidget {
                     Text('Supplier: ${order['supplier']?['name'] ?? 'Unknown'}'),
                     Text(
                         'Rentel days: ${order['rentalDays']}'),
-                    Text('End Date: ${order['endDate'].toDate().toLocal()}'),
+                    Text(
+                         'Start Date: ${DateFormat('dd-MM-yyyy').format(DateTime.now().toLocal().add(Duration(days: 1))).toString().split(' ')[0]}',
+                        ),
+
+                    Text('End Date: ${DateFormat('dd-MM-yyyy').format(order['endDate'].toDate().toLocal())}'),
                     Text(
                       'Total Amount: ₹${order['totalAmount'].toStringAsFixed(2)}',
                       style: const TextStyle(fontWeight: FontWeight.w600),
@@ -240,11 +245,11 @@ class OrderDetailsScreen extends StatelessWidget {
                     
                     _buildDetailRow(
                       'Start Date',
-                      order['startDate']?.toDate().toLocal().toString(),
+                     order['startDate'] =  DateFormat('dd-MM-yyyy').format(DateTime.now().toLocal().add(Duration(days: 1))).toString(),
                     ),
                     _buildDetailRow(
                       'End Date',
-                      order['endDate']?.toDate().toLocal().toString(),
+                       DateFormat('dd-MM-yyyy').format(order['endDate']?.toDate().toLocal()).toString(),
                     ),
                     _buildDetailRow(
                       'Total Amount',

@@ -116,7 +116,7 @@ class OrderCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text("Product: ${product['name']}"),
             Text("Quantity: ${product['quantity']}"),
-            Text("Total Amount: \$${order['totalAmount']}"),
+            Text("Total Amount: ₹${order['totalAmount']}"),
             Text(
               "Order Placed At: ${(order['timestamp'] as Timestamp).toDate()}",
               style: const TextStyle(color: Colors.grey),
