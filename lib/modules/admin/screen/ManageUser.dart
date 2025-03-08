@@ -80,29 +80,29 @@ class ManageUser extends StatelessWidget {
           'Email: $email\nPhone: $phone',
           style: const TextStyle(fontSize: 16, color: Colors.black54),
         ),
-        trailing: PopupMenuButton<String>(
-          onSelected: (String value) {
-            // Handle menu actions
-            if (value == 'edit') {
-              // Edit action
-            } else if (value == 'delete') {
-              // Delete action
-            }
-          },
-          itemBuilder: (BuildContext context) {
-            return <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'edit',
-                child: Text('Edit'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'delete',
-                child: Text('Delete'),
-              ),
-            ];
-          },
-          icon: const Icon(Icons.more_vert, color: Colors.green),
-        ),
+        // trailing: PopupMenuButton<String>(
+        //   onSelected: (String value) {
+        //     // Handle menu actions
+        //     if (value == 'edit') {
+        //       // Edit action
+        //     } else if (value == 'delete') {
+        //       // Delete action
+        //     }
+        //   },
+        //   itemBuilder: (BuildContext context) {
+        //     return <PopupMenuEntry<String>>[
+        //       const PopupMenuItem<String>(
+        //         value: 'edit',
+        //         child: Text('Edit'),
+        //       ),
+        //       const PopupMenuItem<String>(
+        //         value: 'delete',
+        //         child: Text('Delete'),
+        //       ),
+        //     ];
+        // },
+        //   icon: const Icon(Icons.more_vert, color: Colors.green),
+        // ),
         onTap: () {
           // Navigate to the UserDetails page when the card is tapped
           Navigator.push(

@@ -141,10 +141,10 @@ class _EquipmentDetailsScreenState extends State<EquipmentDetailsScreen> {
           'Successfully booked ${widget.machinery['name']}.\n'
           'Total: ₹$totalAmount\n'
           'Start Date: ${DateFormat('MMMM dd, yyyy').format(currentDate!)}\n'
-          'End Date: ${DateFormat('MMMM dd, yyyy').format(endDate!)}\n\n\n'
+          'End Date: ${DateFormat('MMMM dd, yyyy').format(endDate!)}\n\n\n\n'
            '• Please arrive at the location mentioned in the equipment details.\n'
         '• For further information, contact the supplier directly.\n'
-        '• Please bring a valid ID at the time of pickup.\n\n'
+        '• Please bring a valid ID at the time of pickup.\n\n\n'
         'Thank you for choosing our service!',
 
 
