@@ -29,12 +29,24 @@ class FarmerDashboardScreen extends StatelessWidget {
         'title': 'Legumes',
       },
       {
-        'image': 'https://as1.ftcdn.net/v2/jpg/00/60/25/94/1000_F_60259460_5ABiMHI7kE3c7vRTS8KW0Nv50EnxYX6T.jpg',
-        'title': 'Tubers',
+        'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJN1RgS6FMWUIR-a20PgTHLNDBFUNrQ-O_kg&s',
+        'title': ' Spices',
       },
       {
-        'image': 'https://thumbs.dreamstime.com/b/mixed-nuts-group-isolated-white-background-37777972.jpg',
-        'title': 'Nuts',
+        'image': 'https://5.imimg.com/data5/SELLER/Default/2023/11/357769297/DS/IS/HE/201826002/cereal-grains.jpg',
+        'title': 'Cereal crops',
+      },
+        {
+        'image': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQiN2FBaIiH6nUAGkEzRkDZui1eu9YKGxNyw&s',
+        'title': 'Coconut Products',
+      },
+         {
+        'image': 'https://img.freepik.com/free-photo/dairy-products_114579-8756.jpg',
+        'title': 'Diary',
+      },
+         {
+        'image': 'https://img.freepik.com/premium-photo/dark-green-background-clean-no-texture-no-noise-grunge-empty-blank-copy-space-mockup-seamless_941600-69755.jpg?semt=ais_hybrid',
+        'title': 'Other',
       },
     ];
 

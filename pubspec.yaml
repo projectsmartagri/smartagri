@@ -1,10 +1,10 @@
 name: smartagri
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: 'none' # Set this to 'none' if you are not publishing the package
 version: 0.1.0
 
 environment:
-  sdk: ^3.5.0
+  sdk: ">=3.5.0 <4.0.0"  # Ensure the environment is set to Dart SDK 3.x
 
 dependencies:
   animated_text_kit: ^4.2.2

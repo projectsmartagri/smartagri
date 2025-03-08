@@ -549,12 +549,12 @@ Widget build(BuildContext context) {
           color: Colors.green,
         ),
       ),
-      content: SingleChildScrollView(
+      content: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // General Booking Instructions
-            const Text(
+            Text(
               'How to Order:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -562,23 +562,22 @@ Widget build(BuildContext context) {
                 color: Colors.green,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               '1. Select the desired rental days.\n'
               '2. Enter the quantity of equipment you wish to rent.\n'
-              '3. Choose your start date for the rental period.\n'
-              '4. Accept the user agreement and confirm your booking.\n'
-              '5. Proceed to make payment upon confirmation of your booking.',
+              '3. Accept the user agreement and confirm your booking.\n'
+              '4. Proceed to make payment upon confirmation of your booking.',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black87,
                 height: 1.5,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16),
 
             // Booking Conditions
-            const Text(
+            Text(
               'Booking Conditions:',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -586,10 +585,14 @@ Widget build(BuildContext context) {
                 color: Colors.red,
               ),
             ),
-            const SizedBox(height: 8),
-            const Text(
+            SizedBox(height: 8),
+            Text(
               '1. No pre-booking is available. You can only book the equipment the day before the start date.\n'
-              '2. Cancellation is not allowed after booking the equipment.\n',
+              '2. Cancellation is not allowed after booking the equipment.\n'
+              '3. No refunds will be issued after booking the equipment.\n'
+              '4. Verify that you are renting from the nearest shop.\n'
+              '5. Please ensure you have all necessary identification and documents when picking up the equipment.\n'
+              '6. Late returns will incur additional charges.\n',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.black87,
@@ -697,25 +700,32 @@ Widget build(BuildContext context) {
                   ],
                 ),
                 Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Location',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.grey.shade400,
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      supplierAddress ?? 'loading....',
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
+          Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Text(
+      'Location     ',
+      style: TextStyle(
+        fontSize: 18,
+        color: Colors.grey.shade400,
+      ),
+    ),
+   // const SizedBox(),
+   // const Spacer(),
+    Expanded(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal, // Enable horizontal scrolling
+        child: Text(
+          supplierAddress ?? 'loading....',
+          style: const TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    ),
+  ],
+),
+
                 Divider(color: Colors.grey.shade300, thickness: 1, height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

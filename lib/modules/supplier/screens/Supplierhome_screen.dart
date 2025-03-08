@@ -122,7 +122,7 @@ class _SupplierHomeScreenState extends State<SupplierHomeScreen> {
               ),
             ),
 
-
+             SizedBox(width: 50), 
             Expanded(
               child: ElevatedButton(
                 child: Text('Add banner' ,style: TextStyle(color: Colors.white),),

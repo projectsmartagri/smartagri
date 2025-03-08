@@ -255,7 +255,6 @@ class EditEquipmentScreen extends StatefulWidget {
   @override
   _EditEquipmentScreenState createState() => _EditEquipmentScreenState();
 }
-
 class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _rentRateController = TextEditingController();
@@ -288,9 +287,13 @@ class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
   }
 
   void _saveChanges() {
+    // Get the parsed quantity from the input field
     int parsedQuantity = int.tryParse(_quantityController.text) ?? 0;
-    int parsedRentRate = int.tryParse(_rentRateController.text) ?? 0;
 
+    // Use the current rent rate if it was not modified, otherwise, use the updated rent rate.
+    int parsedRentRate = int.tryParse(_rentRateController.text) ?? int.tryParse(widget.initialRentRate) ?? 0;
+
+    // Call the service to update the equipment data
     SupplierMachineryService().machinaryedit(
       name: _nameController.text,
       imageUrl: widget.initialImageUrl,
@@ -299,6 +302,8 @@ class _EditEquipmentScreenState extends State<EditEquipmentScreen> {
       quantity: parsedQuantity, // Store quantity as int
       id: widget.id,
     );
+    
+    // After saving changes, pop the screen
     Navigator.pop(context);
   }
 

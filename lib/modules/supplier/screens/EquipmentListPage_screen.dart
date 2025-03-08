@@ -99,7 +99,7 @@ class EquipmentDetailScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 10),
                                     Text(
-                                      'Price: \$${equipment['price']}',
+                                      'Price: ₹${equipment['price']}',
                                       style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -187,21 +187,21 @@ class EquipmentDetailScreen extends StatelessWidget {
                                   ),
                                   const SizedBox(height: 8),
                                   Text(
-                                    'Price: \$${equipment['price'].toStringAsFixed(2)}',
+                                    'Price: ₹${equipment['price'].toStringAsFixed(2)}',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Colors.green[600],
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    'Availability: ${equipment['availability']}',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.orange[700],
-                                    ),
-                                  ),
+                                 // const SizedBox(height: 8),
+                                  // Text(
+                                  //   'Availability: ${equipment['availability']}',
+                                  //   style: TextStyle(
+                                  //     fontSize: 14,
+                                  //     color: Colors.orange[700],
+                                  //   ),
+                                  // ),
                                   const SizedBox(height: 8),
                                   Text(
                                     'Quantity: ${equipment['quantity']}',

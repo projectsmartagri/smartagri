@@ -245,8 +245,8 @@ class _MycartscreenState extends State<Mycartscreen> {
                                   Row(children: [
                                     Image.network(
                                       cartList[index]['imageUrl'],
-                                      height: 150,
-                                      width: 150,
+                                      height: 120,
+                                      width: 120,
                                     ),
                                     const SizedBox(width: 25),
                                     Column(
@@ -348,7 +348,7 @@ class _MycartscreenState extends State<Mycartscreen> {
                                     ),
                                     const SizedBox(height: 50),
                                     Text(
-                                      '\₹ ${totalPrice.toStringAsFixed(2)}',
+                                      '\₹${totalPrice.toStringAsFixed(2)}',
                                       style: const TextStyle(
                                         color: Color(0xff181725),
                                         fontSize: 16,

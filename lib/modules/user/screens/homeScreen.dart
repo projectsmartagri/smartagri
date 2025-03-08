@@ -27,15 +27,12 @@ class _HomePageState extends State<HomePage> {
     'All',
     'Fruits',
     'Vegetables',
-    'Grains',
+    'Legumes',
     'Cereals',
     'Spices',
-    'Medicinal Plants',
-    'Organic Products',
     'Dairy',
-    'Poultry',
     'Seeds',
-    'Fertilizers'
+    'Other',
   ];
 
   
@@ -68,15 +65,15 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                 ),
-                IconButton(
-                  icon: const Icon(Icons.notifications, color: Color.fromARGB(255, 68, 69, 68)),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const NotificationScreen()),
-                    );
-                  },
-                ),
+                // IconButton(
+                //   icon: const Icon(Icons.notifications, color: Color.fromARGB(255, 68, 69, 68)),
+                //   onPressed: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(builder: (context) => const NotificationScreen()),
+                //     );
+                //   },
+                // ),
                 
               ],
               

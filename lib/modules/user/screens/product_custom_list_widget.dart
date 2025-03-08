@@ -126,12 +126,12 @@ class _ProductGridState extends State<ProductGrid> {
                       borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                       child: Image.network(
                         imageUrl,
-                        height: 170,
+                        height: 140,
                         width: double.infinity,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) => Container(
                           color: Colors.grey[300],
-                          height: 140,
+                          height: 100,
                           width: double.infinity,
                           child: const Icon(Icons.image_not_supported, size: 50),
                         ),
