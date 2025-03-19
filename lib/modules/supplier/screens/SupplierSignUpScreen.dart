@@ -128,47 +128,70 @@ class _SupplierSignupScreenState extends State<SupplierSignupScreen> {
     return 'Error occurred while fetching address: $e';
   }
 }
+// Signup Handler
+Future<void> signupHandler() async {
+  try {
+    setState(() {
+      isLoading = true;
+    });
 
-  // Signup Handler
-  Future<void> signupHandler() async {
-    try {
-
-      setState(() {
-        isLoading = true;
-      });
-      
-      if (_companyLogo != null) {
-        _companyLogoUrl = await _uploadCompanyLogo();
-      }
-
-      
-
-      await auth.registerSupplier(
-        name: _nameController.text,
-        email: _emailController.text,
-        password: _passwordController.text,
-        phone: _phoneNoController.text,
-        address: _addressController.text,
-        companyLicenseFile: File(_companyDocument!.path),
-        companyLogoUrl: _companyLogoUrl!,
-        lat: lat!,
-        long: long!,
-      );
-
-      Navigator.pop(context);
-
-      setState(() {
-        isLoading = false;
-      });
-    } catch (e) {
-      setState(() {
-        isLoading = false;
-      });
+    // Check if logo and document are uploaded
+    if (_companyLogo == null && _companyDocument == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.toString())),
+        const SnackBar(
+          content: Text('Please upload both company logo and document'),
+          backgroundColor: Colors.red,
+        ),
       );
+      setState(() {
+        isLoading = false;
+      });
+      return;
     }
+     if (_companyLogo == null || _companyDocument == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please make sure you have uploaded the required documents.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() {
+        isLoading = false;
+      });
+      return;
+    }
+
+    // Upload company logo
+    _companyLogoUrl = await _uploadCompanyLogo();
+
+    // Register supplier
+    await auth.registerSupplier(
+      name: _nameController.text,
+      email: _emailController.text,
+      password: _passwordController.text,
+      phone: _phoneNoController.text,
+      address: _addressController.text,
+      companyLicenseFile: File(_companyDocument!.path),
+      companyLogoUrl: _companyLogoUrl!,
+      lat: lat!,
+      long: long!,
+    );
+
+    Navigator.pop(context);
+
+    setState(() {
+      isLoading = false;
+    });
+  } catch (e) {
+    setState(() {
+      isLoading = false;
+    });
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(e.toString())),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

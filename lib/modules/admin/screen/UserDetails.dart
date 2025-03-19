@@ -1,20 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserDetails extends StatelessWidget {
-  // Define variables to hold user details
-  final String name;
-  final String email;
-  final String phone;
-  
+class UserDetails extends StatefulWidget {
+  final String userId; // User ID to fetch details
 
-  // Constructor to accept user details
-  const UserDetails({
-    super.key,
-    required this.name,
-    required this.email,
-    required this.phone,
-    
-  });
+  const UserDetails({super.key, required this.userId});
+
+  @override
+  _UserDetailsState createState() => _UserDetailsState();
+}
+
+class _UserDetailsState extends State<UserDetails> {
+  String name = '';
+  String email = '';
+  String phone = '';
+  String address = ''; // Address field
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserDetails();
+  }
+
+  Future<void> _fetchUserDetails() async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .get();
+
+      if (userDoc.exists) {
+        setState(() {
+          name = userDoc['name'] ?? 'N/A';
+          email = userDoc['email'] ?? 'N/A';
+          phone = userDoc['phone'] ?? 'N/A';
+          address = userDoc['address'] ?? 'N/A'; // Fetch address
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error fetching user details: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +53,7 @@ class UserDetails extends StatelessWidget {
         centerTitle: true,
       ),
       body: Container(
-        color: const Color(0xFFF0F0F0), // Light background color for the page
+        color: const Color(0xFFF0F0F0), // Light background color
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
@@ -41,7 +69,7 @@ class UserDetails extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              // Wrap the user details inside a Card widget
+              // User Details Card
               Card(
                 elevation: 8,
                 shape: RoundedRectangleBorder(
@@ -53,12 +81,13 @@ class UserDetails extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildUserInfoRow(Icons.person, 'Name:', name),
+                      _buildUserInfoRow(Icons.person, 'Name', name),
                       const SizedBox(height: 16),
-                      _buildUserInfoRow(Icons.email, 'Email:', email),
+                      _buildUserInfoRow(Icons.email, 'Email', email),
                       const SizedBox(height: 16),
-                      _buildUserInfoRow(Icons.phone, 'Phone:', phone),
-                     
+                      _buildUserInfoRow(Icons.phone, 'Phone', phone),
+                      const SizedBox(height: 16),
+                      _buildMultilineRow(Icons.location_on, 'Address', address), // Address Field
                     ],
                   ),
                 ),
@@ -70,35 +99,60 @@ class UserDetails extends StatelessWidget {
     );
   }
 
-  // Helper method to build a row displaying the label and value
+  // Updated layout to keep label and value on the same line (except address)
   Widget _buildUserInfoRow(IconData icon, String label, String value) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Icon(icon, color: Colors.green, size: 24), // Add icon for better visual appeal
-        const SizedBox(width: 12),
+        Icon(icon, color: Colors.green, size: 24), // Icon for better UI
+        const SizedBox(width: 10),
+        Text(
+          '$label: ', // Add colon for readability
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.normal,
+            color: Colors.black54,
+          ),
+        ),
+      ],
+    );
+  }
+
+  // Special method for address, allowing multi-line wrapping
+  Widget _buildMultilineRow(IconData icon, String label, String value) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start, // Aligns text at the top
+      children: [
+        Icon(icon, color: Colors.green, size: 24),
+        const SizedBox(width: 10),
         Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.black87,
-                ),
+          child: RichText(
+            text: TextSpan(
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.normal,
+                color: Colors.black54,
               ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                  color: Colors.black54,
+              children: [
+                TextSpan(
+                  text: '$label: ',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
                 ),
-              ),
-            ],
+                TextSpan(text: value), // Address will wrap automatically
+              ],
+            ),
           ),
         ),
       ],

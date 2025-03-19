@@ -45,10 +45,12 @@ class ManageUser extends StatelessWidget {
                     itemCount: users.length,
                     itemBuilder: (context, index) {
                       final user = users[index];
+                      final userId = user.id; // Get document ID (userId)
                       final name = user['name'] ?? 'N/A';
                       final email = user['email'] ?? 'N/A';
                       final phone = user['phone'] ?? 'N/A';
-                      return _buildUserCard(context, name, email, phone);
+
+                      return _buildUserCard(context, userId, name, email, phone);
                     },
                   );
                 },
@@ -61,7 +63,7 @@ class ManageUser extends StatelessWidget {
   }
 
   // Reusable method to build user cards
-  Widget _buildUserCard(BuildContext context, String name, String email, String phone) {
+  Widget _buildUserCard(BuildContext context, String userId, String name, String email, String phone) {
     return Card(
       elevation: 6,
       margin: const EdgeInsets.symmetric(vertical: 10),
@@ -80,39 +82,11 @@ class ManageUser extends StatelessWidget {
           'Email: $email\nPhone: $phone',
           style: const TextStyle(fontSize: 16, color: Colors.black54),
         ),
-        // trailing: PopupMenuButton<String>(
-        //   onSelected: (String value) {
-        //     // Handle menu actions
-        //     if (value == 'edit') {
-        //       // Edit action
-        //     } else if (value == 'delete') {
-        //       // Delete action
-        //     }
-        //   },
-        //   itemBuilder: (BuildContext context) {
-        //     return <PopupMenuEntry<String>>[
-        //       const PopupMenuItem<String>(
-        //         value: 'edit',
-        //         child: Text('Edit'),
-        //       ),
-        //       const PopupMenuItem<String>(
-        //         value: 'delete',
-        //         child: Text('Delete'),
-        //       ),
-        //     ];
-        // },
-        //   icon: const Icon(Icons.more_vert, color: Colors.green),
-        // ),
         onTap: () {
-          // Navigate to the UserDetails page when the card is tapped
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => UserDetails(
-                name: name,
-                email: email,
-                phone: phone, 
-              ),
+              builder: (context) => UserDetails(userId: userId), // Pass userId to fetch address
             ),
           );
         },

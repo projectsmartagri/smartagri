@@ -19,7 +19,7 @@ class AdminHomescreen extends StatelessWidget {
             fontSize: 28,
           ),
         ),
-        backgroundColor: const Color.fromARGB(234, 32, 203, 32),
+        backgroundColor: const Color.fromARGB(234, 17, 140, 17),
         automaticallyImplyLeading: false,
       ),
       body: Padding(

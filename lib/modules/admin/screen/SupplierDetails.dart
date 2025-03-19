@@ -20,36 +20,49 @@ class SupplierDetails extends StatelessWidget {
     required this.companyLicenseUrl,
     required this.isApproved,
   });
+// Firebase Firestore instance
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Firebase Firestore instance
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+// Method to update approval status or remove supplier if rejected
+Future<void> _updateSupplierStatus(BuildContext context, bool newApprovalStatus) async {
+  try {
+    // Ensure supplierId is valid
+    if (supplierId == null || supplierId.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Invalid supplier ID!')),
+      );
+      return;
+    }
 
-  // Method to update approval status
-  Future<void> _updateSupplierStatus(
-      BuildContext context, bool newApprovalStatus) async {
-    try {
-      // Update the `isApproved` field in the database
+    if (newApprovalStatus) {
+      // Approve supplier
       await _firestore.collection('suppliers').doc(supplierId).update({
-        'isApproved': newApprovalStatus,
+        'isApproved': true,
       });
 
-      // Show feedback
-      String statusMessage = newApprovalStatus
-          ? 'Supplier Approved Successfully!'
-          : 'Supplier Rejected Successfully!';
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(statusMessage)),
+        const SnackBar(content: Text('Supplier Approved Successfully!')),
       );
+    } else {
+      // Reject supplier: Remove from Firestore
+      await _firestore.collection('suppliers').doc(supplierId).delete();
 
-      // Optionally: Close the screen or refresh state
-      Navigator.pop(context, true); // Pass `true` to indicate a change
-    } catch (e) {
-      // Handle errors
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error updating supplier: $e')),
+        const SnackBar(content: Text('Supplier Rejected and Removed!')),
       );
     }
+
+    // Ensure UI updates properly
+    if (context.mounted) {
+      Navigator.pop(context, true);
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Error updating supplier: $e')),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
