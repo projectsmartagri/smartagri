@@ -41,7 +41,7 @@ class Orderacceptedscreen extends StatelessWidget {
           ),
           const SizedBox(height: 15,),
           
-          const Text('Your item has been placed and is on \nits way to being processed',
+            const Text('Your item has been placed and is on its way to being processed 📦',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 16,

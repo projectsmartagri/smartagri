@@ -173,12 +173,12 @@ class _ExploreScreenState extends State<ExploreScreen> {
                             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
                             child: Image.network(
                               imageUrl,
-                              height: 170,
+                              height: 150,
                               width: double.infinity,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) => Container(
                                 color: Colors.grey[300],
-                                height: 140,
+                                height: 120,
                                 width: double.infinity,
                                 child: const Icon(Icons.image_not_supported, size: 50),
                               ),
