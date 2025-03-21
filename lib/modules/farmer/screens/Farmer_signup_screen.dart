@@ -164,7 +164,7 @@ class _FarmerSignupScreenState extends State<FarmerSignupScreen> {
                     const Text("Profile Photo"),
                     _buildImageUploadSection(isProfileImage: true, image: _profileImage),
                     const SizedBox(height: 16.0),
-                    const Text("Farmer ID (Optional)"),
+                    const Text("Farmer ID (Adhaar Id)"),
                     _buildImageUploadSection(isProfileImage: false, image: _farmerIdImage),
                     const SizedBox(height: 24.0),
                     SizedBox(
